@@ -19,6 +19,12 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
                 .fetchOne();
     }
 
+    public Member findByEmail(String email) {
+        return queryFactory.selectFrom(member)
+                .where(member.email.eq(email))
+                .fetchOne();
+    }
+
     public void deleteByUsername(String username) {
         queryFactory.delete(member)
                 .where(member.username.eq(username))

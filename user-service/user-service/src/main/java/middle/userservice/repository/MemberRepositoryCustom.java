@@ -6,5 +6,7 @@ public interface MemberRepositoryCustom {
 
     Member findByUsername(String username);
 
+    Member findByEmail(String email);
+
     void deleteByUsername(String username);
 }
