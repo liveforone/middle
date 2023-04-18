@@ -54,6 +54,7 @@ public class Member implements UserDetails {
 
     public void signup(MemberSignupRequest request) {
         final String ADMIN = "admin@maybeAllHere.com";
+
         if (Objects.equals(request.getEmail(), ADMIN)) {
             request.setAuth(Role.ADMIN);
         } else {
@@ -64,7 +65,7 @@ public class Member implements UserDetails {
         buildingMember(request);
     }
 
-    public void signupSeller(MemberSignupRequest request) {
+    public void signupOwner(MemberSignupRequest request) {
         request.setPassword(PasswordUtils.encodePassword(request.getPassword()));
         request.setAuth(Role.OWNER);
 
