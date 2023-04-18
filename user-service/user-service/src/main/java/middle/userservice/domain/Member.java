@@ -5,9 +5,9 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import middle.userservice.dto.changeInfo.EditInfoRequest;
+import middle.userservice.domain.util.MemberConstant;
 import middle.userservice.dto.signupAndLogin.MemberSignupRequest;
-import middle.userservice.utility.PasswordUtils;
+import middle.userservice.domain.util.PasswordUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -43,6 +43,7 @@ public class Member implements UserDetails {
     @Builder
     public Member(Long id, String username, String email, String password, String realName, Role auth) {
         this.id = id;
+        this.username = username;
         this.email = email;
         this.password = password;
         this.realName = realName;
@@ -85,9 +86,12 @@ public class Member implements UserDetails {
         return UUID.randomUUID() + RandomStringUtils.random(MemberConstant.RANDOM_STRING_LENGTH);
     }
 
-    public void updateMemberInfo(EditInfoRequest request) {
-        this.email = request.getEmail();
-        this.password = PasswordUtils.encodePassword(request.getPassword());
+    public void updateEmail(String newEmail) {
+        this.email = newEmail;
+    }
+
+    public void updatePassword(String password) {
+        this.password = PasswordUtils.encodePassword(password);
     }
 
     //==End Domain Logic Space==//
