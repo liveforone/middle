@@ -13,4 +13,6 @@ public class JwtConstant {
     public static final String EXPIRED_MESSAGE = "Expired JWT Token";
     public static final String UNSUPPORTED_MESSAGE = "Unsupported JWT Token";
     public static final String EMPTY_MESSAGE = "JWT claims string is empty.";
+    public static final String SECRET_KEY_PATH = "${jwt.secret}";
+    public static final int TOKEN_SUB_INDEX = 7;
 }
