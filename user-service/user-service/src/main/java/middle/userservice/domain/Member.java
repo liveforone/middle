@@ -83,7 +83,7 @@ public class Member implements UserDetails {
     }
 
     private String createUsername() {
-        return UUID.randomUUID() + RandomStringUtils.random(MemberConstant.RANDOM_STRING_LENGTH);
+        return UUID.randomUUID() + RandomStringUtils.randomAlphabetic(MemberConstant.RANDOM_STRING_LENGTH);
     }
 
     public void updateEmail(String newEmail) {
