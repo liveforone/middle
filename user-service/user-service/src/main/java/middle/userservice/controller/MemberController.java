@@ -1,9 +1,11 @@
 package middle.userservice.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import middle.userservice.authentication.AuthenticationInfo;
 import middle.userservice.controller.constant.ControllerLog;
 import middle.userservice.controller.constant.MemberUrl;
 import middle.userservice.controller.restResponse.RestResponse;
@@ -15,14 +17,15 @@ import middle.userservice.dto.signupAndLogin.MemberLoginRequest;
 import middle.userservice.dto.signupAndLogin.MemberSignupRequest;
 import middle.userservice.jwt.TokenInfo;
 import middle.userservice.jwt.constant.JwtConstant;
+import middle.userservice.kafka.UserProducer;
 import middle.userservice.service.MemberService;
 import middle.userservice.validator.MemberValidator;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,6 +34,8 @@ public class MemberController {
 
     private final MemberService memberService;
     private final MemberValidator memberValidator;
+    private final AuthenticationInfo authenticationInfo;
+    private final UserProducer userProducer;
 
     @GetMapping(MemberUrl.HOME)
     public ResponseEntity<?> home() {
@@ -111,8 +116,10 @@ public class MemberController {
     }
 
     @GetMapping(MemberUrl.MY_PAGE)
-    public ResponseEntity<MemberResponse> myPage(Principal principal) {
-        MemberResponse member = memberService.getMemberByUsername(principal.getName());
+    public ResponseEntity<MemberResponse> myPage(HttpServletRequest request) {
+        String username = authenticationInfo.getUsername(request);
+        MemberResponse member = memberService.getMemberByUsername(username);
+
         return ResponseEntity.ok(member);
     }
 
@@ -120,7 +127,7 @@ public class MemberController {
     public ResponseEntity<?> changeEmail(
             @RequestBody @Valid ChangeEmailRequest changeEmailRequest,
             BindingResult bindingResult,
-            Principal principal
+            HttpServletRequest request
     ) {
         if (bindingResult.hasErrors()) {
             return RestResponse.validError(bindingResult);
@@ -130,7 +137,8 @@ public class MemberController {
             return RestResponse.duplicateEmail();
         }
 
-        memberService.updateEmail(changeEmailRequest, principal.getName());
+        String username = authenticationInfo.getUsername(request);
+        memberService.updateEmail(changeEmailRequest, username);
         log.info(ControllerLog.CHANGE_EMAIL_SUCCESS.getValue());
 
         return RestResponse.changeEmailSuccess();
@@ -140,14 +148,14 @@ public class MemberController {
     public ResponseEntity<?> changePassword(
             @RequestBody @Valid ChangePasswordRequest changePasswordRequest,
             BindingResult bindingResult,
-            Principal principal
+            HttpServletRequest request
     ) {
         if (bindingResult.hasErrors()) {
             return RestResponse.validError(bindingResult);
         }
 
         String inputPw = changePasswordRequest.getOldPassword();
-        String username = principal.getName();
+        String username = authenticationInfo.getUsername(request);
         if (memberValidator.isNotMatchingPassword(inputPw, username)) {
             return RestResponse.notMatchPassword();
         }
@@ -162,11 +170,16 @@ public class MemberController {
     @DeleteMapping(MemberUrl.WITHDRAW)
     public ResponseEntity<?> withdraw(
             @RequestBody String password,
-            Principal principal
+            HttpServletRequest request
     ) {
-        String username = principal.getName();
+        String username = authenticationInfo.getUsername(request);
         if (memberValidator.isNotMatchingPassword(password, username)) {
             return RestResponse.notMatchPassword();
+        }
+
+        String auth = authenticationInfo.getAuth(request);
+        if (Objects.equals(auth, Role.OWNER.getValue())) {
+            userProducer.removeShopBelongMember(username);
         }
 
         memberService.withdrawByUsername(username);
@@ -176,8 +189,9 @@ public class MemberController {
     }
 
     @GetMapping(MemberUrl.ADMIN)
-    public ResponseEntity<?> adminPage(Principal principal) {
-        MemberResponse foundMember = memberService.getMemberByUsername(principal.getName());
+    public ResponseEntity<?> adminPage(HttpServletRequest request) {
+        String username = authenticationInfo.getUsername(request);
+        MemberResponse foundMember = memberService.getMemberByUsername(username);
 
         if (!foundMember.getAuth().equals(Role.ADMIN)) {
             log.error(ControllerLog.ADMIN_FAIL.getValue());
