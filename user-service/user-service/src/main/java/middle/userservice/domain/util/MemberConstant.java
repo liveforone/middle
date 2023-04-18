@@ -1,4 +1,4 @@
-package middle.userservice.domain;
+package middle.userservice.domain.util;
 
 public class MemberConstant {
 

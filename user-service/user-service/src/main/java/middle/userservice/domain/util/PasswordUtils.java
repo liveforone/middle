@@ -1,4 +1,4 @@
-package middle.userservice.utility;
+package middle.userservice.domain.util;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
