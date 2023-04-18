@@ -84,8 +84,8 @@ public class MemberService {
 
     @Transactional
     @Async(AsyncConstant.commandAsync)
-    public void updatePassword(String inputPassword, String email) {
-        Member member = memberRepository.findByEmail(email);
+    public void updatePassword(String inputPassword, String username) {
+        Member member = memberRepository.findByUsername(username);
         member.updatePassword(inputPassword);
     }
 
