@@ -64,6 +64,18 @@
 }
 ```
 
+## 서비스간 통신
+### 회원 탈퇴시 상점 삭제
+* user-service에서 회원 탈퇴시 회원의 권한을 체크한다.
+* 회원이 OWNER 권한을 가지고 있다면, 상점을 삭제하라는 카프카 메세지를 shop-service로 보낸다.
+* shop-service에서는 해당 username으로 shop을 찾은 후, shop이 존재한다면 shop을 삭제하고, 
+* shop서비스는 상점 예약서비스로 상점에 속한 모든 등록된 예약을 삭제하도록 메세지를 보낸다.
+```
+topic : remove-shop-belong-member
+request : username
+```
+
+
 ## 주인의 경우
 * 가게 주인은 따로 회원가입한다.
 * 로그인은 같이 한다.
