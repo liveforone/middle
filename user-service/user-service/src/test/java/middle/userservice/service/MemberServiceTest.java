@@ -1,8 +1,8 @@
 package middle.userservice.service;
 
 import jakarta.persistence.EntityManager;
+import middle.userservice.dto.changeInfo.ChangeEmailRequest;
 import middle.userservice.dto.signupAndLogin.MemberSignupRequest;
-import middle.userservice.repository.MemberRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,14 +16,19 @@ class MemberServiceTest {
     MemberService memberService;
 
     @Autowired
-    MemberRepository memberRepository;
-
-    @Autowired
     EntityManager em;
+
+    String createMember(String email, String password, String realName) {
+        MemberSignupRequest memberSignupRequest = new MemberSignupRequest();
+        memberSignupRequest.setEmail(email);
+        memberSignupRequest.setPassword(password);
+        memberSignupRequest.setRealName(realName);
+        return memberService.signup(memberSignupRequest);
+    }
 
     @Test
     @Transactional
-    void signupOwner() {
+    void signupOwnerTest() {
         //given
         String email = "owner11@gmail.com";
         String password = "1111";
@@ -34,13 +39,39 @@ class MemberServiceTest {
         memberSignupRequest.setRealName(realName);
 
         //when
-        memberService.signupOwner(memberSignupRequest);
+        String username = memberService.signupOwner(memberSignupRequest);
         em.flush();
         em.clear();
 
         //then
         Assertions
-                .assertThat(memberRepository.findByEmail(email).getRealName())
+                .assertThat(memberService.getMemberByUsername(username).getRealName())
                 .isEqualTo(realName);
+    }
+
+    @Test
+    @Transactional
+    void updateEmailTest() {
+        //given
+        String email = "abcd1234@gmail.com";
+        String password = "1234";
+        String realName = "test_member";
+        String username = createMember(email, password, realName);
+        em.flush();
+        em.clear();
+
+        //when
+        String updatedEmail = "zzzz1111@gmail.com";
+        ChangeEmailRequest request = new ChangeEmailRequest();
+        request.setEmail(updatedEmail);
+        memberService.updateEmail(request, username);
+        em.flush();
+        em.clear();
+
+        //then
+        Assertions
+                .assertThat(memberService.getMemberByUsername(username).getEmail())
+                .isEqualTo(updatedEmail);
+
     }
 }
