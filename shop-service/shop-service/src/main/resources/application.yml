@@ -33,7 +33,7 @@ logging:
   level:
     org.hibernate.SQL: DEBUG
     org.springframework.web: DEBUG
-    #feingservice 주소 참조 복붙: DEBUG
+    middle.shopservice.feignClient.AdvertisementFeignService: DEBUG
 
 management:
   endpoints:
