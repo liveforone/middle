@@ -40,20 +40,20 @@ public class MemberService {
 
     @Transactional
     @Async(AsyncConstant.commandAsync)
-    public void signup(MemberSignupRequest memberSignupRequest) {
+    public String signup(MemberSignupRequest memberSignupRequest) {
         Member member = Member.builder().build();
         member.signup(memberSignupRequest);
 
-        memberRepository.save(member);
+        return memberRepository.save(member).getUsername();
     }
 
     @Transactional
     @Async(AsyncConstant.commandAsync)
-    public void signupOwner(MemberSignupRequest memberSignupRequest) {
+    public String signupOwner(MemberSignupRequest memberSignupRequest) {
         Member member = Member.builder().build();
         member.signupOwner(memberSignupRequest);
 
-        memberRepository.save(member);
+        return memberRepository.save(member).getUsername();
     }
 
     @Transactional
