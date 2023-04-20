@@ -1,4 +1,4 @@
-package middle.shopservice.dto;
+package middle.shopservice.dto.updateShop;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
