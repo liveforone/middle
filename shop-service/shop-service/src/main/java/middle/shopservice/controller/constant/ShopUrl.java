@@ -11,4 +11,5 @@ public class ShopUrl {
     public static final String CREATE_SHOP = "/create-shop";
     public static final String UPDATE_SHOP_NAME = "/update/name";
     public static final String UPDATE_SHOP_TEL = "/update/tel";
+    public static final String UPDATE_SHOP_ADDRESS = "/update/address";
 }
