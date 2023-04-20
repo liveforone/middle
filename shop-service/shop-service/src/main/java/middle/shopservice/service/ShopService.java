@@ -43,4 +43,14 @@ public class ShopService {
         Long recommendShopId = getRecommendShopId();
         return shopRepository.searchShopNamePage(shopName, recommendShopId, lastId, pageSize);
     }
+
+    public List<ShopResponse> searchCityPage(String city, Long lastId, int pageSize) {
+        Long recommendShopId = getRecommendShopId();
+        return shopRepository.searchCityPage(city, recommendShopId, lastId, pageSize);
+    }
+
+    public List<ShopResponse> searchStreetPage(String street, Long lastId, int pageSize) {
+        Long recommendShopId = getRecommendShopId();
+        return shopRepository.searchStreetPage(street, recommendShopId, lastId, pageSize);
+    }
 }
