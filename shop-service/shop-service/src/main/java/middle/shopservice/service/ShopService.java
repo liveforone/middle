@@ -38,4 +38,9 @@ public class ShopService {
         Long recommendShopId = getRecommendShopId();
         return shopRepository.findHomePage(recommendShopId, lastId, pageSize);
     }
+
+    public List<ShopResponse> searchShopNamePage(String shopName, Long lastId, int pageSize) {
+        Long recommendShopId = getRecommendShopId();
+        return shopRepository.searchShopNamePage(shopName, recommendShopId, lastId, pageSize);
+    }
 }
