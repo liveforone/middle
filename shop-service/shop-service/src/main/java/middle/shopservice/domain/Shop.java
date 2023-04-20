@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import middle.shopservice.dto.updateShop.ShopAddressRequest;
+import middle.shopservice.dto.updateShop.UpdateAddressRequest;
 import middle.shopservice.dto.ShopRequest;
 import middle.shopservice.dto.updateShop.UpdateNameRequest;
 import middle.shopservice.dto.updateShop.UpdateTelRequest;
@@ -70,7 +70,7 @@ public class Shop {
         this.tel = updateTelRequest.getTel();
     }
 
-    public void updateAddress(ShopAddressRequest request) {
+    public void updateAddress(UpdateAddressRequest request) {
         this.city = request.getCity();
         this.street = request.getStreet();
         this.detail = request.getDetail();
