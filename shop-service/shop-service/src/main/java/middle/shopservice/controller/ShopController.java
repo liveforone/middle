@@ -11,6 +11,7 @@ import middle.shopservice.controller.constant.ShopUrl;
 import middle.shopservice.controller.restResponse.RestResponse;
 import middle.shopservice.dto.ShopRequest;
 import middle.shopservice.dto.ShopResponse;
+import middle.shopservice.dto.updateShop.UpdateAddressRequest;
 import middle.shopservice.dto.updateShop.UpdateNameRequest;
 import middle.shopservice.dto.updateShop.UpdateTelRequest;
 import middle.shopservice.service.ShopService;
@@ -170,5 +171,31 @@ public class ShopController {
         log.info(ControllerLog.UPDATE_TEL_SUCCESS.getValue() + username);
 
         return RestResponse.updateTelSuccess();
+    }
+
+    @PutMapping(ShopUrl.UPDATE_SHOP_ADDRESS)
+    public ResponseEntity<?> updateAddress(
+            @RequestBody @Valid UpdateAddressRequest updateAddressRequest,
+            BindingResult bindingResult,
+            HttpServletRequest request
+    ) {
+        String auth = authenticationInfo.getAuth(request);
+        if (shopValidator.isNotOwner(auth)) {
+            return RestResponse.authIsNotOwner();
+        }
+
+        String username = authenticationInfo.getUsername(request);
+        if (shopValidator.isNull(username)) {
+            return RestResponse.shopIsNull();
+        }
+
+        if (bindingResult.hasErrors()) {
+            return RestResponse.validError(bindingResult);
+        }
+
+        shopService.updateAddress(updateAddressRequest, username);
+        log.info(ControllerLog.UPDATE_ADDRESS_SUCCESS.getValue() + username);
+
+        return RestResponse.updateAddressSuccess();
     }
 }
