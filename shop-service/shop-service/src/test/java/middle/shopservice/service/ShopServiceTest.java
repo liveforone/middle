@@ -2,6 +2,7 @@ package middle.shopservice.service;
 
 import jakarta.persistence.EntityManager;
 import middle.shopservice.dto.ShopRequest;
+import middle.shopservice.dto.updateShop.UpdateAddressRequest;
 import middle.shopservice.dto.updateShop.UpdateNameRequest;
 import middle.shopservice.dto.updateShop.UpdateTelRequest;
 import org.assertj.core.api.Assertions;
@@ -112,6 +113,30 @@ class ShopServiceTest {
     }
 
     @Test
-    void updateAddress() {
+    @Transactional
+    void updateAddressTest() {
+        //given
+        String username = "2ojfesdafjljeoafjoewjfoajof";
+        String shopName = "test1";
+        String tel = "01000000000";
+        String city = "seoul";
+        String street = "jongro";
+        String detail = "changshin building 54-1";
+        createShop(username, shopName, tel, city, street, detail);
+
+        //when
+        String updatedDetail = "bomun building 11-11";
+        UpdateAddressRequest request = new UpdateAddressRequest();
+        request.setCity(city);
+        request.setStreet(street);
+        request.setDetail(updatedDetail);
+        shopService.updateAddress(request, username);
+        em.flush();
+        em.clear();
+
+        //then
+        Assertions
+                .assertThat(shopService.getShopByUsername(username).getDetail())
+                .isEqualTo(updatedDetail);
     }
 }
