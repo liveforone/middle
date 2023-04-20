@@ -13,7 +13,10 @@ import middle.shopservice.validator.ShopValidator;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -52,6 +55,15 @@ public class ShopController {
         ShopResponse shop = shopService.getShopByUsername(username);
         return ResponseEntity.ok(shop);
     }
-    
+
+    @GetMapping(ShopUrl.HOME_PAGE)
+    public ResponseEntity<?> homePage(
+            @RequestParam(name = ParamConstant.LAST_ID) Long lastId,
+            @RequestParam(name = ParamConstant.PAGE_SIZE) int pageSize
+    ) {
+        List<ShopResponse> shop = shopService.getHomePage(lastId, pageSize);
+        return ResponseEntity.ok(shop);
+    }
+
     //상정 생성시 auth owner인지 판별
 }
