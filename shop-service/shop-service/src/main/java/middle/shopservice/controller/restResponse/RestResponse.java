@@ -10,4 +10,10 @@ public class RestResponse {
                 .status(HttpStatus.BAD_REQUEST)
                 .body(RestMessage.SHOP_IS_NULL.getValue());
     }
+
+    public static ResponseEntity<?> authIsNotOwner() {
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(RestMessage.AUTH_IS_NOT_OWNER.getValue());
+    }
 }
