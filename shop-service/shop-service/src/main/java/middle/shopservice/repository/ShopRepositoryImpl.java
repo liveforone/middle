@@ -18,6 +18,13 @@ public class ShopRepositoryImpl implements ShopCustomRepository {
     private final JPAQueryFactory queryFactory;
     QShop shop = QShop.shop;
 
+    public Long findOneIdForValidation(Long shopId) {
+        return queryFactory.select(shop.id)
+                .from(shop)
+                .where(shop.id.eq(shopId))
+                .fetchOne();
+    }
+
     public Shop findOneById(Long shopId) {
         return queryFactory.selectFrom(shop)
                 .where(shop.id.eq(shopId))

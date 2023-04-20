@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface ShopCustomRepository {
 
+    Long findOneIdForValidation(Long shopId);
     Shop findOneById(Long shopId);
     Shop findOneByUsername(String username);
     List<ShopResponse> findHomePage(Long recommendShopId, Long lastId, int pageSize);
