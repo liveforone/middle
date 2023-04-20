@@ -23,14 +23,16 @@ public class ShopRepositoryImpl implements ShopCustomRepository {
                 .fetchOne();
     }
 
-    public List<ShopResponse> findFirstHomePage(Long recommendShopId, Long lastId, int pageSize) {
+    public List<ShopResponse> findHomePage(Long recommendShopId, Long lastId, int pageSize) {
         ShopResponse recommendShop = queryFactory
                 .select(ShopRepositoryUtil.shopResponseConstructor())
+                .from(shop)
                 .where(shop.id.eq(recommendShopId))
                 .fetchOne();
 
         List<ShopResponse> shopPageList = queryFactory
                 .select(ShopRepositoryUtil.shopResponseConstructor())
+                .from(shop)
                 .where(ShopRepositoryUtil.ltShopId(lastId))
                 .orderBy(shop.id.desc())
                 .limit(pageSize)
@@ -41,23 +43,16 @@ public class ShopRepositoryImpl implements ShopCustomRepository {
         return shopPageList;
     }
 
-    public List<ShopResponse> findHomePage(Long lastId, int pageSize) {
-        return queryFactory
-                .select(ShopRepositoryUtil.shopResponseConstructor())
-                .where(ShopRepositoryUtil.ltShopId(lastId))
-                .orderBy(shop.id.desc())
-                .limit(pageSize)
-                .fetch();
-    }
-
-    public List<ShopResponse> searchShopNameFirstPage(String shopName, Long recommendShopId, Long lastId, int pageSize) {
+    public List<ShopResponse> searchShopNamePage(String shopName, Long recommendShopId, Long lastId, int pageSize) {
         ShopResponse recommendShop = queryFactory
                 .select(ShopRepositoryUtil.shopResponseConstructor())
+                .from(shop)
                 .where(shop.id.eq(recommendShopId))
                 .fetchOne();
 
         List<ShopResponse> shopPageList = queryFactory
                 .select(ShopRepositoryUtil.shopResponseConstructor())
+                .from(shop)
                 .where(
                         shop.shopName.startsWith(shopName),
                         ShopRepositoryUtil.ltShopId(lastId)
@@ -71,26 +66,16 @@ public class ShopRepositoryImpl implements ShopCustomRepository {
         return shopPageList;
     }
 
-    public List<ShopResponse> searchShopNamePage(String shopName, Long lastId, int pageSize) {
-        return queryFactory
-                .select(ShopRepositoryUtil.shopResponseConstructor())
-                .where(
-                        shop.shopName.startsWith(shopName),
-                        ShopRepositoryUtil.ltShopId(lastId)
-                )
-                .orderBy(shop.id.desc())
-                .limit(pageSize)
-                .fetch();
-    }
-
-    public List<ShopResponse> searchCityFirstPage(String city, Long recommendShopId, Long lastId, int pageSize) {
+    public List<ShopResponse> searchCityPage(String city, Long recommendShopId, Long lastId, int pageSize) {
         ShopResponse recommendShop = queryFactory
                 .select(ShopRepositoryUtil.shopResponseConstructor())
+                .from(shop)
                 .where(shop.id.eq(recommendShopId))
                 .fetchOne();
 
         List<ShopResponse> shopPageList = queryFactory
                 .select(ShopRepositoryUtil.shopResponseConstructor())
+                .from(shop)
                 .where(
                         shop.city.startsWith(city),
                         ShopRepositoryUtil.ltShopId(lastId)
@@ -104,26 +89,16 @@ public class ShopRepositoryImpl implements ShopCustomRepository {
         return shopPageList;
     }
 
-    public List<ShopResponse> searchCityPage(String city, Long lastId, int pageSize) {
-        return queryFactory
-                .select(ShopRepositoryUtil.shopResponseConstructor())
-                .where(
-                        shop.city.startsWith(city),
-                        ShopRepositoryUtil.ltShopId(lastId)
-                )
-                .orderBy(shop.id.desc())
-                .limit(pageSize)
-                .fetch();
-    }
-
-    public List<ShopResponse> searchStreetFirstPage(String street, Long recommendShopId, Long lastId, int pageSize) {
+    public List<ShopResponse> searchStreetPage(String street, Long recommendShopId, Long lastId, int pageSize) {
         ShopResponse recommendShop = queryFactory
                 .select(ShopRepositoryUtil.shopResponseConstructor())
+                .from(shop)
                 .where(shop.id.eq(recommendShopId))
                 .fetchOne();
 
         List<ShopResponse> shopPageList = queryFactory
                 .select(ShopRepositoryUtil.shopResponseConstructor())
+                .from(shop)
                 .where(
                         shop.street.startsWith(street),
                         ShopRepositoryUtil.ltShopId(lastId)
@@ -135,18 +110,6 @@ public class ShopRepositoryImpl implements ShopCustomRepository {
         shopPageList.add(ShopRepositoryUtil.ZERO_INDEX, recommendShop);
 
         return shopPageList;
-    }
-
-    public List<ShopResponse> searchStreetPage(String street, Long lastId, int pageSize) {
-        return queryFactory
-                .select(ShopRepositoryUtil.shopResponseConstructor())
-                .where(
-                        shop.street.startsWith(street),
-                        ShopRepositoryUtil.ltShopId(lastId)
-                )
-                .orderBy(shop.id.desc())
-                .limit(pageSize)
-                .fetch();
     }
 
     public void deleteOneByUsername(String username) {
