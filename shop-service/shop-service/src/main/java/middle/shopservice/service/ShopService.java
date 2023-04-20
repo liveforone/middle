@@ -6,6 +6,7 @@ import middle.shopservice.domain.Shop;
 import middle.shopservice.dto.ShopAddressRequest;
 import middle.shopservice.dto.ShopRequest;
 import middle.shopservice.dto.ShopResponse;
+import middle.shopservice.dto.UpdateNameRequest;
 import middle.shopservice.feignClient.AdvertisementFeignService;
 import middle.shopservice.feignClient.constant.CircuitLog;
 import middle.shopservice.repository.ShopRepository;
@@ -74,9 +75,9 @@ public class ShopService {
 
     @Transactional
     @Async(AsyncConstant.commandAsync)
-    public void updateShopName(String shopName, String username) {
+    public void updateShopName(UpdateNameRequest request, String username) {
         Shop shop = shopRepository.findOneByUsername(username);
-        shop.updateShopName(shopName);
+        shop.updateShopName(request.getShopName());
     }
 
     @Transactional
