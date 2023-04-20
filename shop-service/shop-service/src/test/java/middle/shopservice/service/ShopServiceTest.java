@@ -3,6 +3,7 @@ package middle.shopservice.service;
 import jakarta.persistence.EntityManager;
 import middle.shopservice.dto.ShopRequest;
 import middle.shopservice.dto.updateShop.UpdateNameRequest;
+import middle.shopservice.dto.updateShop.UpdateTelRequest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,7 +86,29 @@ class ShopServiceTest {
     }
 
     @Test
-    void updateTel() {
+    @Transactional
+    void updateTelTest() {
+        //given
+        String username = "2ojfesdafjljeoafjoewjfoajof";
+        String shopName = "test1";
+        String tel = "01000000000";
+        String city = "seoul";
+        String street = "jongro";
+        String detail = "changshin building 54-1";
+        createShop(username, shopName, tel, city, street, detail);
+
+        //when
+        String updatedTel = "01012345678";
+        UpdateTelRequest request = new UpdateTelRequest();
+        request.setTel(updatedTel);
+        shopService.updateTel(request, username);
+        em.flush();
+        em.clear();
+
+        //then
+        Assertions
+                .assertThat(shopService.getShopByUsername(username).getTel())
+                .isEqualTo(updatedTel);
     }
 
     @Test
