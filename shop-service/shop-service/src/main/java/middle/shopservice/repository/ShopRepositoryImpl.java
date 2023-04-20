@@ -19,9 +19,9 @@ public class ShopRepositoryImpl implements ShopCustomRepository {
                 .fetchOne();
     }
 
-//    public void deleteOneByUsername(String username) {
-//        queryFactory.delete(shop)
-//                .where(shop.username.eq(username))
-//                .execute();
-//    }
+    public void deleteOneByUsername(String username) {
+        queryFactory.delete(shop)
+                .where(shop.username.eq(username))
+                .execute();
+    }
 }

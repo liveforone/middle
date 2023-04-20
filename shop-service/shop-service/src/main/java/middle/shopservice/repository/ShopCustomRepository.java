@@ -6,5 +6,5 @@ public interface ShopCustomRepository {
 
     Shop findOneById(Long shopId);
 
-//    void deleteOneByUsername(String username);
+    void deleteOneByUsername(String username);
 }
