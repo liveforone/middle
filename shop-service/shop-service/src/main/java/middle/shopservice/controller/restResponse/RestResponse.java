@@ -42,4 +42,8 @@ public class RestResponse {
     public static ResponseEntity<?> updateTelSuccess() {
         return ResponseEntity.ok(RestMessage.UPDATE_TEL_SUCCESS.getValue());
     }
+
+    public static ResponseEntity<?> updateAddressSuccess() {
+        return ResponseEntity.ok(RestMessage.UPDATE_ADDRESS_SUCCESS.getValue());
+    }
 }

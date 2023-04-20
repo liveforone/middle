@@ -11,7 +11,8 @@ public enum RestMessage {
     AUTH_IS_NOT_OWNER("가게 주인만 접근 가능합니다."),
     CREATE_SHOP_SUCCESS("상점을 성공적으로 등록했습니다."),
     UPDATE_NAME_SUCCESS("상호를 성공적으로 수정했습니다."),
-    UPDATE_TEL_SUCCESS("전화번호를 성공적으로 수정했습니다.");
+    UPDATE_TEL_SUCCESS("전화번호를 성공적으로 수정했습니다."),
+    UPDATE_ADDRESS_SUCCESS("주소를 성공적으로 수정했습니다.");
 
     private final String value;
 }
