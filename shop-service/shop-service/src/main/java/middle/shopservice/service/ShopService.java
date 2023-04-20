@@ -1,12 +1,16 @@
 package middle.shopservice.service;
 
 import lombok.RequiredArgsConstructor;
+import middle.shopservice.async.AsyncConstant;
+import middle.shopservice.domain.Shop;
+import middle.shopservice.dto.ShopRequest;
 import middle.shopservice.dto.ShopResponse;
 import middle.shopservice.feignClient.AdvertisementFeignService;
 import middle.shopservice.feignClient.constant.CircuitLog;
 import middle.shopservice.repository.ShopRepository;
 import middle.shopservice.service.util.ShopMapper;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,4 +61,15 @@ public class ShopService {
         Long recommendShopId = getRecommendShopId();
         return shopRepository.searchStreetPage(street, recommendShopId, lastId, pageSize);
     }
+
+    @Transactional
+    @Async(AsyncConstant.commandAsync)
+    public void createShop(ShopRequest shopRequest, String username) {
+        Shop shop = Shop.builder().build();
+        shop.create(shopRequest, username);
+
+        shopRepository.save(shop);
+    }
+
+
 }
