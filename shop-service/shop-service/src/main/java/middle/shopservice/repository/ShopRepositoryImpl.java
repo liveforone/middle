@@ -4,8 +4,8 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import middle.shopservice.domain.QShop;
 import middle.shopservice.domain.Shop;
-import middle.shopservice.dto.ShopRepositoryUtil;
 import middle.shopservice.dto.ShopResponse;
+import middle.shopservice.repository.util.ShopRepositoryUtil;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

@@ -1,9 +1,10 @@
-package middle.shopservice.dto;
+package middle.shopservice.repository.util;
 
 import com.querydsl.core.types.ConstructorExpression;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import middle.shopservice.domain.QShop;
+import middle.shopservice.dto.ShopResponse;
 
 public class ShopRepositoryUtil {
 
