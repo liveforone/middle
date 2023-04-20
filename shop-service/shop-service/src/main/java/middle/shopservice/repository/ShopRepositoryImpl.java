@@ -117,11 +117,36 @@ public class ShopRepositoryImpl implements ShopCustomRepository {
     }
 
     public List<ShopResponse> searchStreetFirstPage(String street, Long recommendShopId, Long lastId, int pageSize) {
-        return null;
+        ShopResponse recommendShop = queryFactory
+                .select(ShopRepositoryUtil.shopResponseConstructor())
+                .where(shop.id.eq(recommendShopId))
+                .fetchOne();
+
+        List<ShopResponse> shopPageList = queryFactory
+                .select(ShopRepositoryUtil.shopResponseConstructor())
+                .where(
+                        shop.street.startsWith(street),
+                        ShopRepositoryUtil.ltShopId(lastId)
+                )
+                .orderBy(shop.id.desc())
+                .limit(pageSize)
+                .fetch();
+
+        shopPageList.add(ShopRepositoryUtil.ZERO_INDEX, recommendShop);
+
+        return shopPageList;
     }
 
     public List<ShopResponse> searchStreetPage(String street, Long lastId, int pageSize) {
-        return null;
+        return queryFactory
+                .select(ShopRepositoryUtil.shopResponseConstructor())
+                .where(
+                        shop.street.startsWith(street),
+                        ShopRepositoryUtil.ltShopId(lastId)
+                )
+                .orderBy(shop.id.desc())
+                .limit(pageSize)
+                .fetch();
     }
 
     public void deleteOneByUsername(String username) {
