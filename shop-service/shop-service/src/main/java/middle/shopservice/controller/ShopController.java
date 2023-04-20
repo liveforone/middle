@@ -85,7 +85,15 @@ public class ShopController {
         return ResponseEntity.ok(shop);
     }
 
-
+    @GetMapping(ShopUrl.SEARCH_STREET)
+    public ResponseEntity<?> searchByStreet(
+            @PathVariable(name = ParamConstant.STREET) String street,
+            @RequestParam(name = ParamConstant.LAST_ID) Long lastId,
+            @RequestParam(name = ParamConstant.PAGE_SIZE) int pageSize
+    ) {
+        List<ShopResponse> shop = shopService.searchStreetPage(street, lastId, pageSize);
+        return ResponseEntity.ok(shop);
+    }
 
     //상정 생성시 auth owner인지 판별
 }
