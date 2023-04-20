@@ -24,6 +24,12 @@ public class ShopRepositoryImpl implements ShopCustomRepository {
                 .fetchOne();
     }
 
+    public Shop findOneByUsername(String username) {
+        return queryFactory.selectFrom(shop)
+                .where(shop.username.eq(username))
+                .fetchOne();
+    }
+
     public List<ShopResponse> findHomePage(Long recommendShopId, Long lastId, int pageSize) {
         List<ShopResponse> shopPageList = queryFactory
                 .select(ShopRepositoryUtil.shopResponseConstructor())
