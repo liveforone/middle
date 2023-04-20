@@ -7,4 +7,5 @@ public class ParamConstant {
     public static final String PAGE_SIZE = "pageSize";
     public static final String SHOP_NAME = "name";
     public static final String CITY = "city";
+    public static final String STREET = "street";
 }
