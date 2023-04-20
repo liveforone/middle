@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class ShopAddressRequest {
+public class UpdateAddressRequest {
 
     @NotBlank(message = "시재지는 반드시 기입해야합니다.")
     private String city;
