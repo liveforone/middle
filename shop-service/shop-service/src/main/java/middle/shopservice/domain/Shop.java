@@ -5,8 +5,10 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import middle.shopservice.dto.ShopAddressRequest;
+import middle.shopservice.dto.updateShop.ShopAddressRequest;
 import middle.shopservice.dto.ShopRequest;
+import middle.shopservice.dto.updateShop.UpdateNameRequest;
+import middle.shopservice.dto.updateShop.UpdateTelRequest;
 
 @Entity
 @Getter
@@ -60,12 +62,12 @@ public class Shop {
         this.detail = shopRequest.getDetail();
     }
 
-    public void updateShopName(String shopName) {
-        this.shopName = shopName;
+    public void updateShopName(UpdateNameRequest updateNameRequest) {
+        this.shopName = updateNameRequest.getShopName();
     }
 
-    public void updateTel(String tel) {
-        this.tel = tel;
+    public void updateTel(UpdateTelRequest updateTelRequest) {
+        this.tel = updateTelRequest.getTel();
     }
 
     public void updateAddress(ShopAddressRequest request) {
