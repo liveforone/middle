@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ShopResponse {
 
+    private Long id;
     private String shopName;
     private String tel;
     private String city;
