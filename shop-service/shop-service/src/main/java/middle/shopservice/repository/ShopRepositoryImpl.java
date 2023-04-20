@@ -25,12 +25,6 @@ public class ShopRepositoryImpl implements ShopCustomRepository {
     }
 
     public List<ShopResponse> findHomePage(Long recommendShopId, Long lastId, int pageSize) {
-        ShopResponse recommendShop = queryFactory
-                .select(ShopRepositoryUtil.shopResponseConstructor())
-                .from(shop)
-                .where(shop.id.eq(recommendShopId))
-                .fetchOne();
-
         List<ShopResponse> shopPageList = queryFactory
                 .select(ShopRepositoryUtil.shopResponseConstructor())
                 .from(shop)
@@ -39,18 +33,24 @@ public class ShopRepositoryImpl implements ShopCustomRepository {
                 .limit(pageSize)
                 .fetch();
 
-        shopPageList.add(ShopRepositoryUtil.ZERO_INDEX, recommendShop);
+        if (CommonUtils.isNull(recommendShopId)) {
+            return shopPageList;
+        }
 
-        return shopPageList;
-    }
-
-    public List<ShopResponse> searchShopNamePage(String shopName, Long recommendShopId, Long lastId, int pageSize) {
         ShopResponse recommendShop = queryFactory
                 .select(ShopRepositoryUtil.shopResponseConstructor())
                 .from(shop)
                 .where(shop.id.eq(recommendShopId))
                 .fetchOne();
 
+        if (!CommonUtils.isNull(recommendShop)) {
+            shopPageList.add(ShopRepositoryUtil.ZERO_INDEX, recommendShop);
+        }
+
+        return shopPageList;
+    }
+
+    public List<ShopResponse> searchShopNamePage(String shopName, Long recommendShopId, Long lastId, int pageSize) {
         List<ShopResponse> shopPageList = queryFactory
                 .select(ShopRepositoryUtil.shopResponseConstructor())
                 .from(shop)
@@ -62,6 +62,16 @@ public class ShopRepositoryImpl implements ShopCustomRepository {
                 .limit(pageSize)
                 .fetch();
 
+        if (CommonUtils.isNull(recommendShopId)) {
+            return shopPageList;
+        }
+
+        ShopResponse recommendShop = queryFactory
+                .select(ShopRepositoryUtil.shopResponseConstructor())
+                .from(shop)
+                .where(shop.id.eq(recommendShopId))
+                .fetchOne();
+
         if (!CommonUtils.isNull(recommendShop)) {
             shopPageList.add(ShopRepositoryUtil.ZERO_INDEX, recommendShop);
         }
@@ -70,12 +80,6 @@ public class ShopRepositoryImpl implements ShopCustomRepository {
     }
 
     public List<ShopResponse> searchCityPage(String city, Long recommendShopId, Long lastId, int pageSize) {
-        ShopResponse recommendShop = queryFactory
-                .select(ShopRepositoryUtil.shopResponseConstructor())
-                .from(shop)
-                .where(shop.id.eq(recommendShopId))
-                .fetchOne();
-
         List<ShopResponse> shopPageList = queryFactory
                 .select(ShopRepositoryUtil.shopResponseConstructor())
                 .from(shop)
@@ -87,6 +91,16 @@ public class ShopRepositoryImpl implements ShopCustomRepository {
                 .limit(pageSize)
                 .fetch();
 
+        if (CommonUtils.isNull(recommendShopId)) {
+            return shopPageList;
+        }
+
+        ShopResponse recommendShop = queryFactory
+                .select(ShopRepositoryUtil.shopResponseConstructor())
+                .from(shop)
+                .where(shop.id.eq(recommendShopId))
+                .fetchOne();
+
         if (!CommonUtils.isNull(recommendShop)) {
             shopPageList.add(ShopRepositoryUtil.ZERO_INDEX, recommendShop);
         }
@@ -95,12 +109,6 @@ public class ShopRepositoryImpl implements ShopCustomRepository {
     }
 
     public List<ShopResponse> searchStreetPage(String street, Long recommendShopId, Long lastId, int pageSize) {
-        ShopResponse recommendShop = queryFactory
-                .select(ShopRepositoryUtil.shopResponseConstructor())
-                .from(shop)
-                .where(shop.id.eq(recommendShopId))
-                .fetchOne();
-
         List<ShopResponse> shopPageList = queryFactory
                 .select(ShopRepositoryUtil.shopResponseConstructor())
                 .from(shop)
@@ -111,6 +119,16 @@ public class ShopRepositoryImpl implements ShopCustomRepository {
                 .orderBy(shop.id.desc())
                 .limit(pageSize)
                 .fetch();
+
+        if (CommonUtils.isNull(recommendShopId)) {
+            return shopPageList;
+        }
+
+        ShopResponse recommendShop = queryFactory
+                .select(ShopRepositoryUtil.shopResponseConstructor())
+                .from(shop)
+                .where(shop.id.eq(recommendShopId))
+                .fetchOne();
 
         if (!CommonUtils.isNull(recommendShop)) {
             shopPageList.add(ShopRepositoryUtil.ZERO_INDEX, recommendShop);
