@@ -6,6 +6,7 @@ import middle.shopservice.domain.QShop;
 import middle.shopservice.domain.Shop;
 import middle.shopservice.dto.ShopResponse;
 import middle.shopservice.repository.util.ShopRepositoryUtil;
+import middle.shopservice.utility.CommonUtils;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -61,7 +62,9 @@ public class ShopRepositoryImpl implements ShopCustomRepository {
                 .limit(pageSize)
                 .fetch();
 
-        shopPageList.add(ShopRepositoryUtil.ZERO_INDEX, recommendShop);
+        if (!CommonUtils.isNull(recommendShop)) {
+            shopPageList.add(ShopRepositoryUtil.ZERO_INDEX, recommendShop);
+        }
 
         return shopPageList;
     }
@@ -84,7 +87,9 @@ public class ShopRepositoryImpl implements ShopCustomRepository {
                 .limit(pageSize)
                 .fetch();
 
-        shopPageList.add(ShopRepositoryUtil.ZERO_INDEX, recommendShop);
+        if (!CommonUtils.isNull(recommendShop)) {
+            shopPageList.add(ShopRepositoryUtil.ZERO_INDEX, recommendShop);
+        }
 
         return shopPageList;
     }
@@ -107,7 +112,9 @@ public class ShopRepositoryImpl implements ShopCustomRepository {
                 .limit(pageSize)
                 .fetch();
 
-        shopPageList.add(ShopRepositoryUtil.ZERO_INDEX, recommendShop);
+        if (!CommonUtils.isNull(recommendShop)) {
+            shopPageList.add(ShopRepositoryUtil.ZERO_INDEX, recommendShop);
+        }
 
         return shopPageList;
     }
