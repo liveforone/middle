@@ -78,5 +78,10 @@ public class ShopService {
         shop.updateShopName(shopName);
     }
 
-
+    @Transactional
+    @Async(AsyncConstant.commandAsync)
+    public void updateTel(String tel, Long shopId) {
+        Shop shop = shopRepository.findOneById(shopId);
+        shop.updateTel(tel);
+    }
 }
