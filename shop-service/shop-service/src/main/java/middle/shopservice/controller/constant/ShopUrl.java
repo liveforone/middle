@@ -7,4 +7,5 @@ public class ShopUrl {
     public static final String HOME_PAGE = "/shop/home";
     public static final String SEARCH_SHOP_NAME = "/search/name/{name}";
     public static final String SEARCH_CITY = "/search/city/{city}";
+    public static final String SEARCH_STREET = "/search/street/{street}";
 }
