@@ -68,7 +68,7 @@ public class ShopConsumer {
         if (CommonUtils.isNull(username)) {
             log.info(KafkaLog.KAFKA_NULL_LOG.getValue());
         } else {
-            //repos
+            shopRepository.deleteOneByUsername(username);
             log.info(KafkaLog.REMOVE_SHOP_BELONG_MEMBER.getValue() + username);
         }
     }
