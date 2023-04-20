@@ -11,6 +11,7 @@ import middle.shopservice.controller.constant.ShopUrl;
 import middle.shopservice.controller.restResponse.RestResponse;
 import middle.shopservice.dto.ShopRequest;
 import middle.shopservice.dto.ShopResponse;
+import middle.shopservice.dto.UpdateNameRequest;
 import middle.shopservice.service.ShopService;
 import middle.shopservice.validator.ShopValidator;
 import org.springframework.http.ResponseEntity;
@@ -116,5 +117,31 @@ public class ShopController {
         log.info(ControllerLog.CREATE_SHOP_SUCCESS.getValue());
 
         return RestResponse.createShopSuccess();
+    }
+
+    @PutMapping(ShopUrl.UPDATE_SHOP_NAME)
+    public ResponseEntity<?> updateShopName(
+            @RequestBody @Valid UpdateNameRequest updateNameRequest,
+            BindingResult bindingResult,
+            HttpServletRequest request
+    ) {
+        String auth = authenticationInfo.getAuth(request);
+        if (shopValidator.isNotOwner(auth)) {
+            return RestResponse.authIsNotOwner();
+        }
+
+        String username = authenticationInfo.getUsername(request);
+        if (shopValidator.isNull(username)) {
+            return RestResponse.shopIsNull();
+        }
+
+        if (bindingResult.hasErrors()) {
+            return RestResponse.validError(bindingResult);
+        }
+
+        shopService.updateShopName(updateNameRequest, username);
+        log.info(ControllerLog.UPDATE_NAME_SUCCESS.name() + username);
+
+        return RestResponse.updateNameSuccess();
     }
 }
