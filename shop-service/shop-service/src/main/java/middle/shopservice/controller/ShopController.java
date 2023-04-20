@@ -1,7 +1,9 @@
 package middle.shopservice.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import middle.shopservice.authentication.AuthenticationInfo;
 import middle.shopservice.controller.constant.ParamConstant;
 import middle.shopservice.controller.constant.ShopUrl;
 import middle.shopservice.controller.restResponse.RestResponse;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ShopController {
 
     private final ShopService shopService;
+    public final AuthenticationInfo authenticationInfo;
     private final ShopValidator shopValidator;
 
     @GetMapping(ShopUrl.SHOP_DETAIL)
@@ -30,6 +33,23 @@ public class ShopController {
         }
 
         ShopResponse shop = shopService.getShopById(shopId);
+        return ResponseEntity.ok(shop);
+    }
+
+    @GetMapping(ShopUrl.MY_SHOP)
+    public ResponseEntity<?> myShop(HttpServletRequest request) {
+        String auth = authenticationInfo.getAuth(request);
+
+        if (shopValidator.isNotOwner(auth)) {
+            return RestResponse.authIsNotOwner();
+        }
+
+        String username = authenticationInfo.getUsername(request);
+        if (shopValidator.isNull(username)) {
+            return RestResponse.shopIsNull();
+        }
+
+        ShopResponse shop = shopService.getShopByUsername(username);
         return ResponseEntity.ok(shop);
     }
     
