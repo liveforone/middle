@@ -34,4 +34,8 @@ public class RestResponse {
                 .status(HttpStatus.CREATED)
                 .body(RestMessage.CREATE_SHOP_SUCCESS.getValue());
     }
+
+    public static ResponseEntity<?> updateNameSuccess() {
+        return ResponseEntity.ok(RestMessage.UPDATE_NAME_SUCCESS.getValue());
+    }
 }
