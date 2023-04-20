@@ -84,11 +84,36 @@ public class ShopRepositoryImpl implements ShopCustomRepository {
     }
 
     public List<ShopResponse> searchCityFirstPage(String city, Long recommendShopId, Long lastId, int pageSize) {
-        return null;
+        ShopResponse recommendShop = queryFactory
+                .select(ShopRepositoryUtil.shopResponseConstructor())
+                .where(shop.id.eq(recommendShopId))
+                .fetchOne();
+
+        List<ShopResponse> shopPageList = queryFactory
+                .select(ShopRepositoryUtil.shopResponseConstructor())
+                .where(
+                        shop.city.startsWith(city),
+                        ShopRepositoryUtil.ltShopId(lastId)
+                )
+                .orderBy(shop.id.desc())
+                .limit(pageSize)
+                .fetch();
+
+        shopPageList.add(ShopRepositoryUtil.ZERO_INDEX, recommendShop);
+
+        return shopPageList;
     }
 
     public List<ShopResponse> searchCityPage(String city, Long lastId, int pageSize) {
-        return null;
+        return queryFactory
+                .select(ShopRepositoryUtil.shopResponseConstructor())
+                .where(
+                        shop.city.startsWith(city),
+                        ShopRepositoryUtil.ltShopId(lastId)
+                )
+                .orderBy(shop.id.desc())
+                .limit(pageSize)
+                .fetch();
     }
 
     public List<ShopResponse> searchStreetFirstPage(String street, Long recommendShopId, Long lastId, int pageSize) {
