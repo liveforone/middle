@@ -15,7 +15,13 @@ public class ShopValidator {
     private final ShopRepository shopRepository;
 
     public boolean isNull(Long shopId) {
-        Long foundId = shopRepository.findOneIdForValidation(shopId);
+        Long foundId = shopRepository.findOneIdByIdForValidation(shopId);
+
+        return CommonUtils.isNull(foundId);
+    }
+
+    public boolean isNull(String username) {
+        Long foundId = shopRepository.findOneIdByUsernameForValidation(username);
 
         return CommonUtils.isNull(foundId);
     }
