@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ShopConsumer {
 
     private final ShopRepository shopRepository;
+    private final ShopProducer shopProducer;
     ObjectMapper objectMapper = new ObjectMapper();
 
     @KafkaListener(topics = Topic.SHOP_IS_GOOD)
@@ -68,6 +69,8 @@ public class ShopConsumer {
         if (CommonUtils.isNull(username)) {
             log.info(KafkaLog.KAFKA_NULL_LOG.getValue());
         } else {
+            Shop shop = shopRepository.findOneByUsername(username);
+            shopProducer.removeTimetable(shop.getId());
             shopRepository.deleteOneByUsername(username);
             log.info(KafkaLog.REMOVE_SHOP_BELONG_MEMBER.getValue() + username);
         }
