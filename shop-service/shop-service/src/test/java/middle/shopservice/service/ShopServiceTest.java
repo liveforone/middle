@@ -2,6 +2,7 @@ package middle.shopservice.service;
 
 import jakarta.persistence.EntityManager;
 import middle.shopservice.dto.ShopRequest;
+import middle.shopservice.dto.updateShop.UpdateNameRequest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,17 @@ class ShopServiceTest {
 
     @Autowired
     EntityManager em;
+
+    void createShop(String username, String shopName, String tel, String city, String street, String detail) {
+        ShopRequest shopRequest = ShopRequest.builder()
+                .shopName(shopName)
+                .tel(tel)
+                .city(city)
+                .street(street)
+                .detail(detail)
+                .build();
+        shopService.createShop(shopRequest, username);
+    }
 
     @Test
     @Transactional
@@ -47,7 +59,29 @@ class ShopServiceTest {
     }
 
     @Test
-    void updateShopName() {
+    @Transactional
+    void updateShopNameTest() {
+        //given
+        String username = "2ojfesdafjljeoafjoewjfoajof";
+        String shopName = "test1";
+        String tel = "01000000000";
+        String city = "seoul";
+        String street = "jongro";
+        String detail = "changshin building 54-1";
+        createShop(username, shopName, tel, city, street, detail);
+
+        //when
+        String updateShopName = "update_test1";
+        UpdateNameRequest request = new UpdateNameRequest();
+        request.setShopName(updateShopName);
+        shopService.updateShopName(request, username);
+        em.flush();
+        em.clear();
+
+        //then
+        Assertions
+                .assertThat(shopService.getShopByUsername(username).getShopName())
+                .isEqualTo(updateShopName);
     }
 
     @Test
