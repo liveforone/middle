@@ -71,5 +71,12 @@ public class ShopService {
         shopRepository.save(shop);
     }
 
+    @Transactional
+    @Async(AsyncConstant.commandAsync)
+    public void updateShopName(String shopName, Long shopId) {
+        Shop shop = shopRepository.findOneById(shopId);
+        shop.updateShopName(shopName);
+    }
+
 
 }
