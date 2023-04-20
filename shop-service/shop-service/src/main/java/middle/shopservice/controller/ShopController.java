@@ -1,20 +1,21 @@
 package middle.shopservice.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import middle.shopservice.authentication.AuthenticationInfo;
+import middle.shopservice.controller.constant.ControllerLog;
 import middle.shopservice.controller.constant.ParamConstant;
 import middle.shopservice.controller.constant.ShopUrl;
 import middle.shopservice.controller.restResponse.RestResponse;
+import middle.shopservice.dto.ShopRequest;
 import middle.shopservice.dto.ShopResponse;
 import middle.shopservice.service.ShopService;
 import middle.shopservice.validator.ShopValidator;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -95,5 +96,25 @@ public class ShopController {
         return ResponseEntity.ok(shop);
     }
 
-    //상정 생성시 auth owner인지 판별
+    @PostMapping(ShopUrl.CREATE_SHOP)
+    public ResponseEntity<?> createShop(
+            @RequestBody @Valid ShopRequest shopRequest,
+            BindingResult bindingResult,
+            HttpServletRequest request
+    ) {
+        String auth = authenticationInfo.getAuth(request);
+        if (shopValidator.isNotOwner(auth)) {
+            return RestResponse.authIsNotOwner();
+        }
+
+        if (bindingResult.hasErrors()) {
+            return RestResponse.validError(bindingResult);
+        }
+
+        String username = authenticationInfo.getUsername(request);
+        shopService.createShop(shopRequest, username);
+        log.info(ControllerLog.CREATE_SHOP_SUCCESS.getValue());
+
+        return RestResponse.createShopSuccess();
+    }
 }
