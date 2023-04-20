@@ -9,4 +9,5 @@ public class ShopUrl {
     public static final String SEARCH_CITY = "/search/city/{city}";
     public static final String SEARCH_STREET = "/search/street/{street}";
     public static final String CREATE_SHOP = "/create-shop";
+    public static final String UPDATE_SHOP_NAME = "/update/name";
 }
