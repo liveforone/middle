@@ -3,10 +3,11 @@ package middle.shopservice.service;
 import lombok.RequiredArgsConstructor;
 import middle.shopservice.async.AsyncConstant;
 import middle.shopservice.domain.Shop;
-import middle.shopservice.dto.ShopAddressRequest;
+import middle.shopservice.dto.updateShop.ShopAddressRequest;
 import middle.shopservice.dto.ShopRequest;
 import middle.shopservice.dto.ShopResponse;
-import middle.shopservice.dto.UpdateNameRequest;
+import middle.shopservice.dto.updateShop.UpdateNameRequest;
+import middle.shopservice.dto.updateShop.UpdateTelRequest;
 import middle.shopservice.feignClient.AdvertisementFeignService;
 import middle.shopservice.feignClient.constant.CircuitLog;
 import middle.shopservice.repository.ShopRepository;
@@ -77,14 +78,14 @@ public class ShopService {
     @Async(AsyncConstant.commandAsync)
     public void updateShopName(UpdateNameRequest request, String username) {
         Shop shop = shopRepository.findOneByUsername(username);
-        shop.updateShopName(request.getShopName());
+        shop.updateShopName(request);
     }
 
     @Transactional
     @Async(AsyncConstant.commandAsync)
-    public void updateTel(String tel, String username) {
+    public void updateTel(UpdateTelRequest request, String username) {
         Shop shop = shopRepository.findOneByUsername(username);
-        shop.updateTel(tel);
+        shop.updateTel(request);
     }
 
     @Transactional
