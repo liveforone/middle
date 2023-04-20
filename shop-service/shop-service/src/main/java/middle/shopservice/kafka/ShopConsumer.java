@@ -5,8 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import middle.shopservice.async.AsyncConstant;
+import middle.shopservice.domain.Shop;
 import middle.shopservice.kafka.constant.KafkaLog;
 import middle.shopservice.kafka.constant.Topic;
+import middle.shopservice.repository.ShopRepository;
 import middle.shopservice.utility.CommonUtils;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.scheduling.annotation.Async;
@@ -18,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class ShopConsumer {
 
-    //repos
+    private final ShopRepository shopRepository;
     ObjectMapper objectMapper = new ObjectMapper();
 
     @KafkaListener(topics = Topic.SHOP_IS_GOOD)
@@ -32,7 +34,8 @@ public class ShopConsumer {
         if (CommonUtils.isNull(shopId)) {
             log.info(KafkaLog.KAFKA_NULL_LOG.getValue());
         } else {
-            //repos
+            Shop shop = shopRepository.findOneById(shopId);
+            shop.increaseGood();
             log.info(KafkaLog.INCREASE_SHOP_GOOD.getValue() + shopId);
         }
     }
@@ -48,7 +51,8 @@ public class ShopConsumer {
         if (CommonUtils.isNull(shopId)) {
             log.info(KafkaLog.KAFKA_NULL_LOG.getValue());
         } else {
-            //repos
+            Shop shop = shopRepository.findOneById(shopId);
+            shop.increaseBad();
             log.info(KafkaLog.INCREASE_SHOP_BAD.getValue() + shopId);
         }
     }
