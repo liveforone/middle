@@ -29,4 +29,10 @@ public class ShopValidator {
     public boolean isNotOwner(String auth) {
         return !Objects.equals(auth, Role.OWNER.getValue());
     }
+
+    public boolean isDuplicateOwner(String username) {
+        Long foundId = shopRepository.findOneIdByUsernameForValidation(username);
+
+        return !CommonUtils.isNull(foundId);
+    }
 }
