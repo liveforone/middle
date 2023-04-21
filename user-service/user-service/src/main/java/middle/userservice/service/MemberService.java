@@ -39,7 +39,6 @@ public class MemberService {
 
 
     @Transactional
-    @Async(AsyncConstant.commandAsync)
     public String signup(MemberSignupRequest memberSignupRequest) {
         Member member = Member.builder().build();
         member.signup(memberSignupRequest);
@@ -48,7 +47,6 @@ public class MemberService {
     }
 
     @Transactional
-    @Async(AsyncConstant.commandAsync)
     public String signupOwner(MemberSignupRequest memberSignupRequest) {
         Member member = Member.builder().build();
         member.signupOwner(memberSignupRequest);
