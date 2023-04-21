@@ -29,6 +29,12 @@ public class RestResponse {
                 .body(errorMessage);
     }
 
+    public static ResponseEntity<?> duplicateOwner() {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(RestMessage.DUPLICATE_OWNER.getValue());
+    }
+
     public static ResponseEntity<?> createShopSuccess() {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
