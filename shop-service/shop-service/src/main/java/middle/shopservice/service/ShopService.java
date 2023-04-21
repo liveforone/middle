@@ -45,6 +45,10 @@ public class ShopService {
         return ShopMapper.entityToDtoDetail(shopRepository.findOneByUsername(username));
     }
 
+    public Long getShopByUsernameForProvide(String username) {
+        return shopRepository.findOneByUsernameForProvide(username);
+    }
+
     public List<ShopResponse> getHomePage(Long lastId, int pageSize) {
         Long recommendShopId = getRecommendShopId();
         return shopRepository.findHomePage(recommendShopId, lastId, pageSize);
