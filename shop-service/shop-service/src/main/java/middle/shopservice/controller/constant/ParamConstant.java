@@ -8,4 +8,5 @@ public class ParamConstant {
     public static final String SHOP_NAME = "name";
     public static final String CITY = "city";
     public static final String STREET = "street";
+    public static final String USERNAME = "username";
 }
