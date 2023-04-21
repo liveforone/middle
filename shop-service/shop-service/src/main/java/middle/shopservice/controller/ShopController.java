@@ -110,11 +110,15 @@ public class ShopController {
             return RestResponse.authIsNotOwner();
         }
 
+        String username = authenticationInfo.getUsername(request);
+        if (shopValidator.isDuplicateOwner(username)) {
+            return RestResponse.duplicateOwner();
+        }
+
         if (bindingResult.hasErrors()) {
             return RestResponse.validError(bindingResult);
         }
 
-        String username = authenticationInfo.getUsername(request);
         shopService.createShop(shopRequest, username);
         log.info(ControllerLog.CREATE_SHOP_SUCCESS.getValue());
 
