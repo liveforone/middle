@@ -66,7 +66,6 @@ public class ShopService {
     }
 
     @Transactional
-    @Async(AsyncConstant.commandAsync)
     public void createShop(ShopRequest shopRequest, String username) {
         Shop shop = Shop.builder().build();
         shop.create(shopRequest, username);
