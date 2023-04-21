@@ -9,6 +9,7 @@ public interface ShopCustomRepository {
 
     Long findOneIdByIdForValidation(Long shopId);
     Long findOneIdByUsernameForValidation(String username);
+    Long findOneByUsernameForProvide(String username);
     Shop findOneById(Long shopId);
     Shop findOneByUsername(String username);
     List<ShopResponse> findHomePage(Long recommendShopId, Long lastId, int pageSize);

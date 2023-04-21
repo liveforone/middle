@@ -32,6 +32,13 @@ public class ShopRepositoryImpl implements ShopCustomRepository {
                 .fetchOne();
     }
 
+    public Long findOneByUsernameForProvide(String username) {
+        return queryFactory.select(shop.id)
+                .from(shop)
+                .where(shop.username.eq(username))
+                .fetchOne();
+    }
+
     public Shop findOneById(Long shopId) {
         return queryFactory.selectFrom(shop)
                 .where(shop.id.eq(shopId))
