@@ -10,6 +10,7 @@
 
 ## 상세 요구사항
 * 회원은 일반회원(MEMBER)과 관리자(ADMIN) 마지막으로 주인(owner -> 가게 주인), 세 종류가 있다.
+* 회원가입의 경우 일반 회원/관리자와 주인은 분리되어 있다. 다만 로그인은 같이 한다.
 * 모든 회원은 uuid기반인 username으로 식별한다.
 * username은 uuid + 문자4개의 형태이다. uuid의 중복을 완전히 없애기 위해 뒤에 문자를 붙였다.
 * jwt에는 회원의 권한(role)과 username(식별자)가 있다.
@@ -26,6 +27,7 @@
 ```
 [GET] / : 홈(토큰 불필요)
 [GET/POST] /signup : 회원가입(토큰 불필요), MemberRequest 형식 필요
+[GET/POST] /signup/owner : 가게 주인 회원가입(토큰 불필요), MemberRequest 형식 필요
 [GET/POST] /login : 로그인(토큰 불필요)
 [GET] /logout : 로그아웃, get으로 받아도 정상 작동(토큰 불필요)
 [GET] /my-page : 마이페이지(토큰 필요)
