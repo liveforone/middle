@@ -22,6 +22,7 @@
 [PUT] /update/name : 상호명 업데이트
 [PUT] /update/tel : 상점 전화번호 업데이트
 [PUT] /update/address : 상점 주소 업데이트(모두)
+[POST] /shop/username/{username} : provide url, 추천 서비스에 상점 등록시 사용
 ```
 
 ## Json body
