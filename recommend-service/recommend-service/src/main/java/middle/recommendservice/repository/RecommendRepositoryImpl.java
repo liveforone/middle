@@ -34,4 +34,11 @@ public class RecommendRepositoryImpl implements RecommendCustomRepository {
                 .from(recommend)
                 .fetchOne();
     }
+
+    public Recommend findOneByShopId(Long shopId) {
+        return queryFactory
+                .selectFrom(recommend)
+                .where(recommend.shopId.eq(shopId))
+                .fetchOne();
+    }
 }
