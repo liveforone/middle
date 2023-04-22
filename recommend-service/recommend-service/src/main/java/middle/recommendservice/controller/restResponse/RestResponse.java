@@ -22,4 +22,10 @@ public class RestResponse {
                 .status(HttpStatus.CREATED)
                 .body(RestMessage.CREATE_RECOMMEND_SUCCESS.getValue());
     }
+
+    public static ResponseEntity<?> recommendIsNull() {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(RestMessage.RECOMMEND_IS_NULL.getValue());
+    }
 }
