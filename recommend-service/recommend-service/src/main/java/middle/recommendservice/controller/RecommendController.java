@@ -7,6 +7,7 @@ import middle.recommendservice.authentication.AuthenticationInfo;
 import middle.recommendservice.controller.constant.ControllerLog;
 import middle.recommendservice.controller.constant.RecommendUrl;
 import middle.recommendservice.controller.restResponse.RestResponse;
+import middle.recommendservice.dto.RecommendResponse;
 import middle.recommendservice.feignClient.ShopFeignService;
 import middle.recommendservice.feignClient.constant.CircuitLog;
 import middle.recommendservice.service.RecommendService;
@@ -14,6 +15,7 @@ import middle.recommendservice.utility.CommonUtils;
 import middle.recommendservice.validator.RecommendValidator;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,18 +30,19 @@ public class RecommendController {
     private final AuthenticationInfo authenticationInfo;
     private final RecommendValidator recommendValidator;
 
-    private Long getShopByUsername(String username) {
-        return circuitBreakerFactory
-                .create(CircuitLog.SHOP_CIRCUIT.getValue())
-                .run(() -> shopFeignService.getShopByUsername(username),
-                        throwable -> null
-                );
+    @GetMapping(RecommendUrl.MY_RECOMMEND)
+    public ResponseEntity<?> myRecommend(HttpServletRequest request) {
+        String username = authenticationInfo.getUsername(request);
+        if (recommendValidator.isNotExistRecommend(username)) {
+            return RestResponse.recommendIsNull();
+        }
+
+        RecommendResponse recommend = recommendService.getRecommendByUsername(username);
+        return ResponseEntity.ok(recommend);
     }
 
     @PostMapping(RecommendUrl.CREATE_RECOMMEND)
-    public ResponseEntity<?> createRecommend(
-            HttpServletRequest request
-    ) {
+    public ResponseEntity<?> createRecommend(HttpServletRequest request) {
         String username = authenticationInfo.getUsername(request);
         if (recommendValidator.isDuplicateRecommend(username)) {
             return RestResponse.duplicateRecommend();
@@ -54,6 +57,14 @@ public class RecommendController {
         log.info(ControllerLog.CREATE_RECOMMEND_SUCCESS.getValue());
 
         return RestResponse.createRecommendSuccess();
+    }
+
+    private Long getShopByUsername(String username) {
+        return circuitBreakerFactory
+                .create(CircuitLog.SHOP_CIRCUIT.getValue())
+                .run(() -> shopFeignService.getShopByUsername(username),
+                        throwable -> null
+                );
     }
 
     //switch 문에서 하나씩 검증해보고, 만약에 없는 값이라서 default까지 가면 badrequest 날려야함
