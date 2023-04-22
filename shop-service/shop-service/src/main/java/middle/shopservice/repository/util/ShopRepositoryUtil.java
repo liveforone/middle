@@ -19,7 +19,7 @@ public class ShopRepositoryUtil {
         return shop.id.lt(lastId);
     }
 
-    public static ConstructorExpression<ShopResponse> shopResponseConstructor() {
+    public static ConstructorExpression<ShopResponse> shopDtoConstructor() {
         return Projections.constructor(ShopResponse.class,
                 shop.id,
                 shop.shopName,

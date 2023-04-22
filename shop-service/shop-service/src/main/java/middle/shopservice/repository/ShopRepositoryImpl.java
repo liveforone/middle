@@ -53,7 +53,7 @@ public class ShopRepositoryImpl implements ShopCustomRepository {
 
     public List<ShopResponse> findHomePage(Long recommendShopId, Long lastId, int pageSize) {
         List<ShopResponse> shopPageList = queryFactory
-                .select(ShopRepositoryUtil.shopResponseConstructor())
+                .select(ShopRepositoryUtil.shopDtoConstructor())
                 .from(shop)
                 .where(ShopRepositoryUtil.ltShopId(lastId))
                 .orderBy(shop.id.desc())
@@ -65,7 +65,7 @@ public class ShopRepositoryImpl implements ShopCustomRepository {
         }
 
         ShopResponse recommendShop = queryFactory
-                .select(ShopRepositoryUtil.shopResponseConstructor())
+                .select(ShopRepositoryUtil.shopDtoConstructor())
                 .from(shop)
                 .where(shop.id.eq(recommendShopId))
                 .fetchOne();
@@ -79,7 +79,7 @@ public class ShopRepositoryImpl implements ShopCustomRepository {
 
     public List<ShopResponse> searchShopNamePage(String shopName, Long recommendShopId, Long lastId, int pageSize) {
         List<ShopResponse> shopPageList = queryFactory
-                .select(ShopRepositoryUtil.shopResponseConstructor())
+                .select(ShopRepositoryUtil.shopDtoConstructor())
                 .from(shop)
                 .where(
                         shop.shopName.startsWith(shopName),
@@ -94,7 +94,7 @@ public class ShopRepositoryImpl implements ShopCustomRepository {
         }
 
         ShopResponse recommendShop = queryFactory
-                .select(ShopRepositoryUtil.shopResponseConstructor())
+                .select(ShopRepositoryUtil.shopDtoConstructor())
                 .from(shop)
                 .where(shop.id.eq(recommendShopId))
                 .fetchOne();
@@ -108,7 +108,7 @@ public class ShopRepositoryImpl implements ShopCustomRepository {
 
     public List<ShopResponse> searchCityPage(String city, Long recommendShopId, Long lastId, int pageSize) {
         List<ShopResponse> shopPageList = queryFactory
-                .select(ShopRepositoryUtil.shopResponseConstructor())
+                .select(ShopRepositoryUtil.shopDtoConstructor())
                 .from(shop)
                 .where(
                         shop.city.startsWith(city),
@@ -123,7 +123,7 @@ public class ShopRepositoryImpl implements ShopCustomRepository {
         }
 
         ShopResponse recommendShop = queryFactory
-                .select(ShopRepositoryUtil.shopResponseConstructor())
+                .select(ShopRepositoryUtil.shopDtoConstructor())
                 .from(shop)
                 .where(shop.id.eq(recommendShopId))
                 .fetchOne();
@@ -137,7 +137,7 @@ public class ShopRepositoryImpl implements ShopCustomRepository {
 
     public List<ShopResponse> searchStreetPage(String street, Long recommendShopId, Long lastId, int pageSize) {
         List<ShopResponse> shopPageList = queryFactory
-                .select(ShopRepositoryUtil.shopResponseConstructor())
+                .select(ShopRepositoryUtil.shopDtoConstructor())
                 .from(shop)
                 .where(
                         shop.street.startsWith(street),
@@ -152,7 +152,7 @@ public class ShopRepositoryImpl implements ShopCustomRepository {
         }
 
         ShopResponse recommendShop = queryFactory
-                .select(ShopRepositoryUtil.shopResponseConstructor())
+                .select(ShopRepositoryUtil.shopDtoConstructor())
                 .from(shop)
                 .where(shop.id.eq(recommendShopId))
                 .fetchOne();
