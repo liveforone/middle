@@ -33,7 +33,7 @@ logging:
   level:
     org.hibernate.SQL: DEBUG
     org.springframework.web: DEBUG
-    #feign 설정: DEBUG
+    middle.recommendservice.feignClient.ShopFeignService: DEBUG
 
 management:
   endpoints:
