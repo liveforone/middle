@@ -36,4 +36,11 @@ public class RecommendService {
         Recommend recommend = recommendRepository.findOneByUsername(username);
         recommend.increaseImpression(impressionRequest.getImpression());
     }
+
+    @Transactional
+    @Async(AsyncConstant.commandAsync)
+    public void decreaseImpression(Long shopId) {
+        Recommend recommend = recommendRepository.findOneByShopId(shopId);
+        recommend.decreaseImpression();
+    }
 }
