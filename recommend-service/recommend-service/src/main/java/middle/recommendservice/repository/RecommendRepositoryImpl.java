@@ -3,6 +3,7 @@ package middle.recommendservice.repository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import middle.recommendservice.domain.QRecommend;
+import middle.recommendservice.domain.Recommend;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -15,6 +16,12 @@ public class RecommendRepositoryImpl implements RecommendCustomRepository {
     public Long findOneIdByUsernameForValidation(String username) {
         return queryFactory.select(recommend.id)
                 .from(recommend)
+                .where(recommend.username.eq(username))
+                .fetchOne();
+    }
+
+    public Recommend findOneByUsername(String username) {
+        return queryFactory.selectFrom(recommend)
                 .where(recommend.username.eq(username))
                 .fetchOne();
     }
