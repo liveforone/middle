@@ -2,6 +2,9 @@ package middle.recommendservice.controller.restResponse;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+
+import java.util.Objects;
 
 public class RestResponse {
 
@@ -27,5 +30,18 @@ public class RestResponse {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(RestMessage.RECOMMEND_IS_NULL.getValue());
+    }
+
+    public static ResponseEntity<?> validError(BindingResult bindingResult) {
+        String errorMessage = Objects
+                .requireNonNull(bindingResult.getFieldError())
+                .getDefaultMessage();
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(errorMessage);
+    }
+
+    public static ResponseEntity<?> increaseImpressionSuccess() {
+        return ResponseEntity.ok(RestMessage.INCREASE_IMPRESSION_SUCCESS.getValue());
     }
 }
