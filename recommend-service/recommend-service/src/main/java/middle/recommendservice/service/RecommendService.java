@@ -1,10 +1,13 @@
 package middle.recommendservice.service;
 
 import lombok.RequiredArgsConstructor;
+import middle.recommendservice.async.AsyncConstant;
 import middle.recommendservice.domain.Recommend;
+import middle.recommendservice.dto.ImpressionRequest;
 import middle.recommendservice.dto.RecommendResponse;
 import middle.recommendservice.repository.RecommendRepository;
 import middle.recommendservice.service.util.RecommendMapper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,5 +28,12 @@ public class RecommendService {
         Recommend recommend = Recommend.builder().build();
         recommend.createRecommend(shopId, username);
         recommendRepository.save(recommend);
+    }
+
+    @Transactional
+    @Async(AsyncConstant.commandAsync)
+    public void increaseImpression(ImpressionRequest impressionRequest, String username) {
+        Recommend recommend = recommendRepository.findOneByUsername(username);
+        recommend.increaseImpression(impressionRequest.getImpression());
     }
 }
