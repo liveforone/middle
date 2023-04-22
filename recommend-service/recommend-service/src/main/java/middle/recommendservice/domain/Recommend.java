@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import middle.recommendservice.domain.constant.RecommendConstant;
 
 @Entity
 @Getter
@@ -21,7 +22,6 @@ public class Recommend {
     @Column(unique = true, nullable = false)
     private String username;
 
-    @Column(nullable = false)
     private long impression;
 
     @Builder
@@ -35,13 +35,14 @@ public class Recommend {
     public void createRecommend(Long shopId, String username) {
         this.shopId = shopId;
         this.username = username;
+        this.impression = RecommendConstant.ZERO;
     }
 
-    public void increaseImpression() {
-        this.impression += 1;
+    public void increaseImpression(long inputImpression) {
+        this.impression += inputImpression;
     }
 
     public void decreaseImpression() {
-        this.impression -= 1;
+        this.impression -= RecommendConstant.ONE_IMPRESSION;
     }
 }
