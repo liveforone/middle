@@ -41,4 +41,19 @@ public class FallbackController {
     public Mono<String> fallbackShopPut() {
         return Mono.just(FallbackMessage.SHOP_LOG);
     }
+
+    @GetMapping(FallbackUrl.RECOMMEND)
+    public Mono<String> fallbackRecommendGet() {
+        return Mono.just(FallbackMessage.RECOMMEND_LOG);
+    }
+
+    @PostMapping(FallbackUrl.RECOMMEND)
+    public Mono<String> fallbackRecommendPost() {
+        return Mono.just(FallbackMessage.RECOMMEND_LOG);
+    }
+
+    @PutMapping(FallbackUrl.RECOMMEND)
+    public Mono<String> fallbackRecommendPut() {
+        return Mono.just(FallbackMessage.RECOMMEND_LOG);
+    }
 }

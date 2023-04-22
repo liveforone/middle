@@ -47,6 +47,18 @@ spring:
               args:
                 name: shop-service
                 fallbackuri: forward:/fallback/shop
+        - id: recommend-service
+          uri: lb://RECOMMEND-SERVICE
+          predicates:
+            - Path=/recommend-service/**
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/recommend-service/(?<segment>.*), /$\{segment}
+            - AuthorizationHeaderFilter
+            - name: CircuitBreaker
+              args:
+                name: recommend-service
+                fallbackuri: forward:/fallback/recommend
 
 management:
   endpoints:
