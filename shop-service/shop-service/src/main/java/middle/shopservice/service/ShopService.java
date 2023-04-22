@@ -8,7 +8,7 @@ import middle.shopservice.dto.ShopRequest;
 import middle.shopservice.dto.ShopResponse;
 import middle.shopservice.dto.updateShop.UpdateNameRequest;
 import middle.shopservice.dto.updateShop.UpdateTelRequest;
-import middle.shopservice.feignClient.AdvertisementFeignService;
+import middle.shopservice.feignClient.RecommendFeignService;
 import middle.shopservice.feignClient.constant.CircuitLog;
 import middle.shopservice.repository.ShopRepository;
 import middle.shopservice.service.util.ShopMapper;
@@ -25,14 +25,14 @@ import java.util.List;
 public class ShopService {
 
     private final ShopRepository shopRepository;
-    private final AdvertisementFeignService advertisementFeignService;
+    private final RecommendFeignService recommendFeignService;
     private final CircuitBreakerFactory<?, ?> circuitBreakerFactory;
 
     private Long getRecommendShopId() {
         return circuitBreakerFactory
                 .create(CircuitLog.SHOP_CIRCUIT_LOG.getValue())
                 .run(
-                        advertisementFeignService::getDrawShopId,
+                        recommendFeignService::getRecommendShopId,
                         throwable -> null
                 );
     }
