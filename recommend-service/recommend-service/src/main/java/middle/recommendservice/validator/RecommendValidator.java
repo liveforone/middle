@@ -11,6 +11,12 @@ public class RecommendValidator {
 
     private final RecommendRepository recommendRepository;
 
+    public boolean isNotExistRecommend(String username) {
+        Long foundId = recommendRepository.findOneIdByUsernameForValidation(username);
+
+        return CommonUtils.isNull(foundId);
+    }
+
     public boolean isDuplicateRecommend(String username) {
         Long foundId = recommendRepository.findOneIdByUsernameForValidation(username);
 
