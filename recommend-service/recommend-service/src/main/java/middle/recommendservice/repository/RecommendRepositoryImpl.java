@@ -14,15 +14,24 @@ public class RecommendRepositoryImpl implements RecommendCustomRepository {
     QRecommend recommend = QRecommend.recommend;
 
     public Long findOneIdByUsernameForValidation(String username) {
-        return queryFactory.select(recommend.id)
+        return queryFactory
+                .select(recommend.id)
                 .from(recommend)
                 .where(recommend.username.eq(username))
                 .fetchOne();
     }
 
     public Recommend findOneByUsername(String username) {
-        return queryFactory.selectFrom(recommend)
+        return queryFactory
+                .selectFrom(recommend)
                 .where(recommend.username.eq(username))
+                .fetchOne();
+    }
+
+    public Long countSizeOfRecommend() {
+        return queryFactory
+                .select(recommend.id.count())
+                .from(recommend)
                 .fetchOne();
     }
 }
