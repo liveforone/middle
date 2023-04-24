@@ -39,6 +39,10 @@ public class Recommend {
     }
 
     public void increaseImpression(long inputImpression) {
+        if (inputImpression <= RecommendConstant.DEFAULT_IMPRESSION) {
+            this.impression += RecommendConstant.DEFAULT_IMPRESSION;
+        }
+
         this.impression += inputImpression;
     }
 
