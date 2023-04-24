@@ -12,6 +12,7 @@ public class RecommendRepositoryImpl implements RecommendCustomRepository {
 
     private final JPAQueryFactory queryFactory;
     QRecommend recommend = QRecommend.recommend;
+    private static final long ZERO = 0;
 
     public Long findOneIdByUsernameForValidation(String username) {
         return queryFactory
@@ -32,6 +33,7 @@ public class RecommendRepositoryImpl implements RecommendCustomRepository {
         return queryFactory
                 .select(recommend.id.count())
                 .from(recommend)
+                .where(recommend.impression.gt(ZERO))
                 .fetchOne();
     }
 
