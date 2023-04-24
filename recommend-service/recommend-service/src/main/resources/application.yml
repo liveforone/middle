@@ -34,7 +34,6 @@ logging:
     org.hibernate.SQL: DEBUG
     org.springframework.web: DEBUG
     middle.recommendservice.feignClient.ShopFeignService: DEBUG
-    org.springframework.cache: TRACE
 
 management:
   endpoints:
