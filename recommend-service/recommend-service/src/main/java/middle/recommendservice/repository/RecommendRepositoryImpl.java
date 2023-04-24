@@ -31,7 +31,7 @@ public class RecommendRepositoryImpl implements RecommendCustomRepository {
 
     public Long countSizeOfRecommend() {
         return queryFactory
-                .select(recommend.id.count())
+                .select(recommend.count())
                 .from(recommend)
                 .where(recommend.impression.gt(ZERO))
                 .fetchOne();
