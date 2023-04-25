@@ -4,8 +4,6 @@ public class ParamConstant {
 
     public static final String SHOP_ID = "shopId";
     public static final String LAST_ID = "lastId";
-    public static final String PAGE_SIZE = "pageSize";
-    public static final String ORDER = "order";
     public static final String SHOP_NAME = "name";
     public static final String CITY = "city";
     public static final String STREET = "street";
