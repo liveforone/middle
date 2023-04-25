@@ -54,19 +54,19 @@ public class ShopService {
         return shopRepository.findHomePage(recommendShopId, lastId, pageSize);
     }
 
-    public List<ShopResponse> searchShopNamePage(String shopName, Long lastId, int pageSize) {
+    public List<ShopResponse> searchShopNamePage(String shopName, Long lastId, int pageSize, String order) {
         Long recommendShopId = getRecommendShopId();
-        return shopRepository.searchShopNamePage(shopName, recommendShopId, lastId, pageSize);
+        return shopRepository.searchShopNamePage(shopName, recommendShopId, lastId, pageSize, order);
     }
 
-    public List<ShopResponse> searchCityPage(String city, Long lastId, int pageSize) {
+    public List<ShopResponse> searchCityPage(String city, Long lastId, int pageSize, String order) {
         Long recommendShopId = getRecommendShopId();
-        return shopRepository.searchCityPage(city, recommendShopId, lastId, pageSize);
+        return shopRepository.searchCityPage(city, recommendShopId, lastId, pageSize, order);
     }
 
-    public List<ShopResponse> searchStreetPage(String street, Long lastId, int pageSize) {
+    public List<ShopResponse> searchStreetPage(String street, Long lastId, int pageSize, String order) {
         Long recommendShopId = getRecommendShopId();
-        return shopRepository.searchStreetPage(street, recommendShopId, lastId, pageSize);
+        return shopRepository.searchStreetPage(street, recommendShopId, lastId, pageSize, order);
     }
 
     @Transactional
