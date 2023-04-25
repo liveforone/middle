@@ -68,30 +68,14 @@ public class ShopController {
         return ResponseEntity.ok(shop);
     }
 
-    @GetMapping(ShopUrl.SEARCH_SHOP_NAME)
-    public ResponseEntity<?> searchByShopName(
-            @PathVariable(name = ParamConstant.SHOP_NAME) String shopName,
-            @RequestParam(name = ParamConstant.LAST_ID) Long lastId
+    @GetMapping(ShopUrl.SEARCH_SHOP)
+    public ResponseEntity<?> searchByShop(
+            @RequestParam(name = ParamConstant.CITY, required = false) String city,
+            @RequestParam(name = ParamConstant.STREET, required = false) String street,
+            @RequestParam(name = ParamConstant.SHOP_NAME, required = false) String shopName,
+            @RequestParam(name = ParamConstant.LAST_ID, defaultValue = ParamConstant.DEFAULT_ID) Long lastId
     ) {
-        List<ShopResponse> shop = shopService.searchShopNamePage(shopName, lastId);
-        return ResponseEntity.ok(shop);
-    }
-
-    @GetMapping(ShopUrl.SEARCH_CITY)
-    public ResponseEntity<?> searchByCity(
-            @PathVariable(name = ParamConstant.CITY) String city,
-            @RequestParam(name = ParamConstant.LAST_ID) Long lastId
-    ) {
-        List<ShopResponse> shop = shopService.searchCityPage(city, lastId);
-        return ResponseEntity.ok(shop);
-    }
-
-    @GetMapping(ShopUrl.SEARCH_STREET)
-    public ResponseEntity<?> searchByStreet(
-            @PathVariable(name = ParamConstant.STREET) String street,
-            @RequestParam(name = ParamConstant.LAST_ID) Long lastId
-    ) {
-        List<ShopResponse> shop = shopService.searchStreetPage(street, lastId);
+        List<ShopResponse> shop = shopService.searchShop(city, street, shopName, lastId);
         return ResponseEntity.ok(shop);
     }
 
