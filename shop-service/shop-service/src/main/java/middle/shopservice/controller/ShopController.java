@@ -73,9 +73,10 @@ public class ShopController {
     public ResponseEntity<?> searchByShopName(
             @PathVariable(name = ParamConstant.SHOP_NAME) String shopName,
             @RequestParam(name = ParamConstant.LAST_ID) Long lastId,
-            @RequestParam(name = ParamConstant.PAGE_SIZE) int pageSize
+            @RequestParam(name = ParamConstant.PAGE_SIZE) int pageSize,
+            @RequestParam(name = ParamConstant.ORDER) String order
     ) {
-        List<ShopResponse> shop = shopService.searchShopNamePage(shopName, lastId, pageSize);
+        List<ShopResponse> shop = shopService.searchShopNamePage(shopName, lastId, pageSize, order);
         return ResponseEntity.ok(shop);
     }
 
@@ -83,9 +84,10 @@ public class ShopController {
     public ResponseEntity<?> searchByCity(
             @PathVariable(name = ParamConstant.CITY) String city,
             @RequestParam(name = ParamConstant.LAST_ID) Long lastId,
-            @RequestParam(name = ParamConstant.PAGE_SIZE) int pageSize
+            @RequestParam(name = ParamConstant.PAGE_SIZE) int pageSize,
+            @RequestParam(name = ParamConstant.ORDER) String order
     ) {
-        List<ShopResponse> shop = shopService.searchCityPage(city, lastId, pageSize);
+        List<ShopResponse> shop = shopService.searchCityPage(city, lastId, pageSize, order);
         return ResponseEntity.ok(shop);
     }
 
@@ -93,9 +95,10 @@ public class ShopController {
     public ResponseEntity<?> searchByStreet(
             @PathVariable(name = ParamConstant.STREET) String street,
             @RequestParam(name = ParamConstant.LAST_ID) Long lastId,
-            @RequestParam(name = ParamConstant.PAGE_SIZE) int pageSize
+            @RequestParam(name = ParamConstant.PAGE_SIZE) int pageSize,
+            @RequestParam(name = ParamConstant.ORDER) String order
     ) {
-        List<ShopResponse> shop = shopService.searchStreetPage(street, lastId, pageSize);
+        List<ShopResponse> shop = shopService.searchStreetPage(street, lastId, pageSize, order);
         return ResponseEntity.ok(shop);
     }
 
