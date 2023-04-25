@@ -13,8 +13,6 @@ public interface ShopCustomRepository {
     Shop findOneById(Long shopId);
     Shop findOneByUsername(String username);
     List<ShopResponse> findHomePage(Long recommendShopId, Long lastId);
-    List<ShopResponse> searchShopNamePage(String shopName, Long recommendShopId, Long lastId);
-    List<ShopResponse> searchCityPage(String city, Long recommendShopId, Long lastId);
-    List<ShopResponse> searchStreetPage(String street, Long recommendShopId, Long lastId);
+    List<ShopResponse> searchShopPage(String city, String street, String shopName, Long recommendShopId, Long lastId);
     void deleteOneByUsername(String username);
 }

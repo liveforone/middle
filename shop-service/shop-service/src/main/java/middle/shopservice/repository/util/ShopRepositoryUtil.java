@@ -5,6 +5,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import middle.shopservice.domain.QShop;
 import middle.shopservice.dto.ShopResponse;
+import middle.shopservice.utility.CommonUtils;
 
 public class ShopRepositoryUtil {
 
@@ -30,5 +31,29 @@ public class ShopRepositoryUtil {
                 shop.detail,
                 shop.good,
                 shop.bad);
+    }
+
+    public static BooleanExpression searchName(String shopName) {
+        if (CommonUtils.isNull(shopName)) {
+            return null;
+        }
+
+        return shop.shopName.startsWith(shopName);
+    }
+
+    public static BooleanExpression searchCity(String city) {
+        if (CommonUtils.isNull(city)) {
+            return null;
+        }
+
+        return shop.city.startsWith(city);
+    }
+
+    public static BooleanExpression searchStreet(String street) {
+        if (CommonUtils.isNull(street)) {
+            return null;
+        }
+
+        return shop.street.startsWith(street);
     }
 }

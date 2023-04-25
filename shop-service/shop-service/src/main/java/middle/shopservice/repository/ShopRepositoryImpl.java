@@ -81,68 +81,17 @@ public class ShopRepositoryImpl implements ShopCustomRepository {
         return shopPageList;
     }
 
-    public List<ShopResponse> searchShopNamePage(
+    public List<ShopResponse> searchShopPage(
+            String city, String street,
             String shopName, Long recommendShopId, Long lastId
     ) {
         List<ShopResponse> shopPageList = queryFactory
                 .select(ShopRepositoryUtil.shopDtoConstructor())
                 .from(shop)
                 .where(
-                        shop.shopName.startsWith(shopName),
-                        ShopRepositoryUtil.ltShopId(lastId)
-                )
-                .orderBy(shop.id.desc())
-                .limit(ShopRepositoryUtil.PAGE_SIZE)
-                .fetch();
-
-        if (CommonUtils.isNull(recommendShopId)) {
-            return shopPageList;
-        }
-
-        ShopResponse recommendShop = createRecommendShop(recommendShopId);
-
-        if (!CommonUtils.isNull(recommendShop)) {
-            shopPageList.add(ShopRepositoryUtil.ZERO_INDEX, recommendShop);
-        }
-
-        return shopPageList;
-    }
-
-    public List<ShopResponse> searchCityPage(
-            String city, Long recommendShopId, Long lastId
-    ) {
-        List<ShopResponse> shopPageList = queryFactory
-                .select(ShopRepositoryUtil.shopDtoConstructor())
-                .from(shop)
-                .where(
-                        shop.city.startsWith(city),
-                        ShopRepositoryUtil.ltShopId(lastId)
-                )
-                .orderBy(shop.id.desc())
-                .limit(ShopRepositoryUtil.PAGE_SIZE)
-                .fetch();
-
-        if (CommonUtils.isNull(recommendShopId)) {
-            return shopPageList;
-        }
-
-        ShopResponse recommendShop = createRecommendShop(recommendShopId);
-
-        if (!CommonUtils.isNull(recommendShop)) {
-            shopPageList.add(ShopRepositoryUtil.ZERO_INDEX, recommendShop);
-        }
-
-        return shopPageList;
-    }
-
-    public List<ShopResponse> searchStreetPage(
-            String street, Long recommendShopId, Long lastId
-    ) {
-        List<ShopResponse> shopPageList = queryFactory
-                .select(ShopRepositoryUtil.shopDtoConstructor())
-                .from(shop)
-                .where(
-                        shop.street.startsWith(street),
+                        ShopRepositoryUtil.searchCity(city),
+                        ShopRepositoryUtil.searchStreet(street),
+                        ShopRepositoryUtil.searchName(shopName),
                         ShopRepositoryUtil.ltShopId(lastId)
                 )
                 .orderBy(shop.id.desc())
