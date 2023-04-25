@@ -49,24 +49,24 @@ public class ShopService {
         return shopRepository.findOneByUsernameForProvide(username);
     }
 
-    public List<ShopResponse> getHomePage(Long lastId, int pageSize) {
+    public List<ShopResponse> getHomePage(Long lastId) {
         Long recommendShopId = getRecommendShopId();
-        return shopRepository.findHomePage(recommendShopId, lastId, pageSize);
+        return shopRepository.findHomePage(recommendShopId, lastId);
     }
 
-    public List<ShopResponse> searchShopNamePage(String shopName, Long lastId, int pageSize, String order) {
+    public List<ShopResponse> searchShopNamePage(String shopName, Long lastId) {
         Long recommendShopId = getRecommendShopId();
-        return shopRepository.searchShopNamePage(shopName, recommendShopId, lastId, pageSize, order);
+        return shopRepository.searchShopNamePage(shopName, recommendShopId, lastId);
     }
 
-    public List<ShopResponse> searchCityPage(String city, Long lastId, int pageSize, String order) {
+    public List<ShopResponse> searchCityPage(String city, Long lastId) {
         Long recommendShopId = getRecommendShopId();
-        return shopRepository.searchCityPage(city, recommendShopId, lastId, pageSize, order);
+        return shopRepository.searchCityPage(city, recommendShopId, lastId);
     }
 
-    public List<ShopResponse> searchStreetPage(String street, Long lastId, int pageSize, String order) {
+    public List<ShopResponse> searchStreetPage(String street, Long lastId) {
         Long recommendShopId = getRecommendShopId();
-        return shopRepository.searchStreetPage(street, recommendShopId, lastId, pageSize, order);
+        return shopRepository.searchStreetPage(street, recommendShopId, lastId);
     }
 
     @Transactional

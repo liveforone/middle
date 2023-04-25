@@ -59,13 +59,13 @@ public class ShopRepositoryImpl implements ShopCustomRepository {
                 .fetchOne();
     }
 
-    public List<ShopResponse> findHomePage(Long recommendShopId, Long lastId, int pageSize) {
+    public List<ShopResponse> findHomePage(Long recommendShopId, Long lastId) {
         List<ShopResponse> shopPageList = queryFactory
                 .select(ShopRepositoryUtil.shopDtoConstructor())
                 .from(shop)
                 .where(ShopRepositoryUtil.ltShopId(lastId))
                 .orderBy(shop.id.desc())
-                .limit(pageSize)
+                .limit(ShopRepositoryUtil.PAGE_SIZE)
                 .fetch();
 
         if (CommonUtils.isNull(recommendShopId)) {
@@ -82,8 +82,7 @@ public class ShopRepositoryImpl implements ShopCustomRepository {
     }
 
     public List<ShopResponse> searchShopNamePage(
-            String shopName, Long recommendShopId,
-            Long lastId, int pageSize, String order
+            String shopName, Long recommendShopId, Long lastId
     ) {
         List<ShopResponse> shopPageList = queryFactory
                 .select(ShopRepositoryUtil.shopDtoConstructor())
@@ -92,8 +91,8 @@ public class ShopRepositoryImpl implements ShopCustomRepository {
                         shop.shopName.startsWith(shopName),
                         ShopRepositoryUtil.ltShopId(lastId)
                 )
-                .orderBy(ShopRepositoryUtil.dynamicOrder(order))
-                .limit(pageSize)
+                .orderBy(shop.id.desc())
+                .limit(ShopRepositoryUtil.PAGE_SIZE)
                 .fetch();
 
         if (CommonUtils.isNull(recommendShopId)) {
@@ -110,8 +109,7 @@ public class ShopRepositoryImpl implements ShopCustomRepository {
     }
 
     public List<ShopResponse> searchCityPage(
-            String city, Long recommendShopId,
-            Long lastId, int pageSize, String order
+            String city, Long recommendShopId, Long lastId
     ) {
         List<ShopResponse> shopPageList = queryFactory
                 .select(ShopRepositoryUtil.shopDtoConstructor())
@@ -120,8 +118,8 @@ public class ShopRepositoryImpl implements ShopCustomRepository {
                         shop.city.startsWith(city),
                         ShopRepositoryUtil.ltShopId(lastId)
                 )
-                .orderBy(ShopRepositoryUtil.dynamicOrder(order))
-                .limit(pageSize)
+                .orderBy(shop.id.desc())
+                .limit(ShopRepositoryUtil.PAGE_SIZE)
                 .fetch();
 
         if (CommonUtils.isNull(recommendShopId)) {
@@ -138,8 +136,7 @@ public class ShopRepositoryImpl implements ShopCustomRepository {
     }
 
     public List<ShopResponse> searchStreetPage(
-            String street, Long recommendShopId,
-            Long lastId, int pageSize, String order
+            String street, Long recommendShopId, Long lastId
     ) {
         List<ShopResponse> shopPageList = queryFactory
                 .select(ShopRepositoryUtil.shopDtoConstructor())
@@ -148,8 +145,8 @@ public class ShopRepositoryImpl implements ShopCustomRepository {
                         shop.street.startsWith(street),
                         ShopRepositoryUtil.ltShopId(lastId)
                 )
-                .orderBy(ShopRepositoryUtil.dynamicOrder(order))
-                .limit(pageSize)
+                .orderBy(shop.id.desc())
+                .limit(ShopRepositoryUtil.PAGE_SIZE)
                 .fetch();
 
         if (CommonUtils.isNull(recommendShopId)) {

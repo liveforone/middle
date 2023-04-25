@@ -62,43 +62,36 @@ public class ShopController {
 
     @GetMapping(ShopUrl.HOME_PAGE)
     public ResponseEntity<?> homePage(
-            @RequestParam(name = ParamConstant.LAST_ID) Long lastId,
-            @RequestParam(name = ParamConstant.PAGE_SIZE) int pageSize
+            @RequestParam(name = ParamConstant.LAST_ID) Long lastId
     ) {
-        List<ShopResponse> shop = shopService.getHomePage(lastId, pageSize);
+        List<ShopResponse> shop = shopService.getHomePage(lastId);
         return ResponseEntity.ok(shop);
     }
 
     @GetMapping(ShopUrl.SEARCH_SHOP_NAME)
     public ResponseEntity<?> searchByShopName(
             @PathVariable(name = ParamConstant.SHOP_NAME) String shopName,
-            @RequestParam(name = ParamConstant.LAST_ID) Long lastId,
-            @RequestParam(name = ParamConstant.PAGE_SIZE) int pageSize,
-            @RequestParam(name = ParamConstant.ORDER) String order
+            @RequestParam(name = ParamConstant.LAST_ID) Long lastId
     ) {
-        List<ShopResponse> shop = shopService.searchShopNamePage(shopName, lastId, pageSize, order);
+        List<ShopResponse> shop = shopService.searchShopNamePage(shopName, lastId);
         return ResponseEntity.ok(shop);
     }
 
     @GetMapping(ShopUrl.SEARCH_CITY)
     public ResponseEntity<?> searchByCity(
             @PathVariable(name = ParamConstant.CITY) String city,
-            @RequestParam(name = ParamConstant.LAST_ID) Long lastId,
-            @RequestParam(name = ParamConstant.PAGE_SIZE) int pageSize,
-            @RequestParam(name = ParamConstant.ORDER) String order
+            @RequestParam(name = ParamConstant.LAST_ID) Long lastId
     ) {
-        List<ShopResponse> shop = shopService.searchCityPage(city, lastId, pageSize, order);
+        List<ShopResponse> shop = shopService.searchCityPage(city, lastId);
         return ResponseEntity.ok(shop);
     }
 
     @GetMapping(ShopUrl.SEARCH_STREET)
     public ResponseEntity<?> searchByStreet(
             @PathVariable(name = ParamConstant.STREET) String street,
-            @RequestParam(name = ParamConstant.LAST_ID) Long lastId,
-            @RequestParam(name = ParamConstant.PAGE_SIZE) int pageSize,
-            @RequestParam(name = ParamConstant.ORDER) String order
+            @RequestParam(name = ParamConstant.LAST_ID) Long lastId
     ) {
-        List<ShopResponse> shop = shopService.searchStreetPage(street, lastId, pageSize, order);
+        List<ShopResponse> shop = shopService.searchStreetPage(street, lastId);
         return ResponseEntity.ok(shop);
     }
 

@@ -1,7 +1,6 @@
 package middle.shopservice.repository.util;
 
 import com.querydsl.core.types.ConstructorExpression;
-import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import middle.shopservice.domain.QShop;
@@ -10,7 +9,7 @@ import middle.shopservice.dto.ShopResponse;
 public class ShopRepositoryUtil {
 
     public static final int ZERO_INDEX = 0;
-    private static final String RECOMMEND = "recommend";
+    public static final int PAGE_SIZE = 10;
     static QShop shop = QShop.shop;
 
     public static BooleanExpression ltShopId(Long lastId) {
@@ -31,17 +30,5 @@ public class ShopRepositoryUtil {
                 shop.detail,
                 shop.good,
                 shop.bad);
-    }
-
-    public static OrderSpecifier<?> dynamicOrder(String order) {
-        if (order == null) {
-            return shop.id.desc();
-        }
-
-        if (order.equals(RECOMMEND)) {
-            return shop.good.desc();
-        }
-
-        return shop.id.desc();
     }
 }
