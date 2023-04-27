@@ -2,10 +2,13 @@ package middle.userservice.validator;
 
 import lombok.RequiredArgsConstructor;
 import middle.userservice.domain.Member;
+import middle.userservice.domain.Role;
 import middle.userservice.repository.MemberRepository;
 import middle.userservice.utility.CommonUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
+
+import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
@@ -26,5 +29,13 @@ public class MemberValidator {
         Member member = memberRepository.findByEmail(email);
 
         return !CommonUtils.isNull(member);
+    }
+
+    public boolean isOwner(String auth) {
+        return Objects.equals(auth, Role.OWNER.getValue());
+    }
+
+    public boolean isOwner(Role auth) {
+        return auth.equals(Role.ADMIN);
     }
 }

@@ -178,7 +178,7 @@ public class MemberController {
         }
 
         String auth = authenticationInfo.getAuth(request);
-        if (Objects.equals(auth, Role.OWNER.getValue())) {
+        if (memberValidator.isOwner(auth)) {
             userProducer.removeShopBelongMember(username);
         }
 
@@ -193,7 +193,7 @@ public class MemberController {
         String username = authenticationInfo.getUsername(request);
         MemberResponse foundMember = memberService.getMemberByUsername(username);
 
-        if (!foundMember.getAuth().equals(Role.ADMIN)) {
+        if (!memberValidator.isOwner(foundMember.getAuth())) {
             log.error(ControllerLog.ADMIN_FAIL.getValue());
             return RestResponse.prohibition();
         }
