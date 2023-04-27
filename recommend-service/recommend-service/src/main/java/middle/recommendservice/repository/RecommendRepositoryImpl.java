@@ -43,4 +43,10 @@ public class RecommendRepositoryImpl implements RecommendCustomRepository {
                 .where(recommend.shopId.eq(shopId))
                 .fetchOne();
     }
+
+    public void deleteOneByShopId(Long shopId) {
+        queryFactory.delete(recommend)
+                .where(recommend.shopId.eq(shopId))
+                .execute();
+    }
 }

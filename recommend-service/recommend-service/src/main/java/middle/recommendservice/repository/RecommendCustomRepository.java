@@ -8,4 +8,5 @@ public interface RecommendCustomRepository {
     Recommend findOneByUsername(String username);
     Long countSizeOfRecommend();
     Recommend findOneByShopId(Long shopId);
+    void deleteOneByShopId(Long shopId);
 }
