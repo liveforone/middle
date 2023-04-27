@@ -19,6 +19,14 @@ public class ShopProducer {
     Gson gson = new Gson();
 
     @Async(AsyncConstant.commandAsync)
+    public void removeRecommend(Long shopId) {
+        String jsonOrder = gson.toJson(shopId);
+        String topic = Topic.REMOVE_RECOMMEND;
+        kafkaTemplate.send(topic, jsonOrder);
+        log.info(KafkaLog.KAFKA_SEND_LOG.getValue() + topic);
+    }
+
+    @Async(AsyncConstant.commandAsync)
     public void removeTimetable(Long shopId) {
         String jsonOrder = gson.toJson(shopId);
         String topic = Topic.REMOVE_TIMETABLE;
