@@ -9,7 +9,6 @@ import middle.userservice.authentication.AuthenticationInfo;
 import middle.userservice.controller.constant.ControllerLog;
 import middle.userservice.controller.constant.MemberUrl;
 import middle.userservice.controller.restResponse.RestResponse;
-import middle.userservice.domain.Role;
 import middle.userservice.dto.changeInfo.ChangeEmailRequest;
 import middle.userservice.dto.changeInfo.ChangePasswordRequest;
 import middle.userservice.dto.response.MemberResponse;
@@ -25,7 +24,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
