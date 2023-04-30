@@ -1,6 +1,6 @@
 package middle.shopservice.kafka.constant;
 
-public class Topic {
+public final class Topic {
 
     public static final String SHOP_IS_GOOD = "shop-is-good";
     public static final String SHOP_IS_BAD = "shop-is-bad";

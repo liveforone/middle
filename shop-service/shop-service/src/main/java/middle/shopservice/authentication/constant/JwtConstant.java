@@ -1,6 +1,6 @@
 package middle.shopservice.authentication.constant;
 
-public class JwtConstant {
+public final class JwtConstant {
     public static final String HEADER = "Authorization";
     public static final String CLAIM_NAME = "auth";
     public static final String BEARER_TOKEN = "Bearer";
