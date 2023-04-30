@@ -13,7 +13,6 @@ import middle.recommendservice.dto.RecommendResponse;
 import middle.recommendservice.feignClient.ShopFeignService;
 import middle.recommendservice.feignClient.constant.CircuitLog;
 import middle.recommendservice.service.RecommendService;
-import middle.recommendservice.utility.CommonUtils;
 import middle.recommendservice.validator.RecommendValidator;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.http.ResponseEntity;
@@ -34,9 +33,7 @@ public class RecommendController {
     @GetMapping(RecommendUrl.MY_RECOMMEND)
     public ResponseEntity<?> myRecommend(HttpServletRequest request) {
         String username = authenticationInfo.getUsername(request);
-        if (recommendValidator.isNotExistRecommend(username)) {
-            return RestResponse.recommendIsNull();
-        }
+        recommendValidator.validateRecommendNull(username);
 
         RecommendResponse recommend = recommendService.getRecommendByUsername(username);
         return ResponseEntity.ok(recommend);
@@ -45,14 +42,10 @@ public class RecommendController {
     @PostMapping(RecommendUrl.CREATE_RECOMMEND)
     public ResponseEntity<?> createRecommend(HttpServletRequest request) {
         String username = authenticationInfo.getUsername(request);
-        if (recommendValidator.isDuplicateRecommend(username)) {
-            return RestResponse.duplicateRecommend();
-        }
+        recommendValidator.validateDuplicateRecommend(username);
 
         Long shopId = getShopByUsername(username);
-        if (CommonUtils.isNull(shopId)) {
-            return RestResponse.shopIsNull();
-        }
+        recommendValidator.validateShopNull(shopId);
 
         recommendService.createRecommend(shopId, username);
         log.info(ControllerLog.CREATE_RECOMMEND_SUCCESS.getValue());
@@ -74,14 +67,10 @@ public class RecommendController {
             BindingResult bindingResult,
             HttpServletRequest request
     ) {
-        if (bindingResult.hasErrors()) {
-            return RestResponse.validError(bindingResult);
-        }
+        recommendValidator.validateBinding(bindingResult);
 
         String username = authenticationInfo.getUsername(request);
-        if (recommendValidator.isNotExistRecommend(username)) {
-            return RestResponse.recommendIsNull();
-        }
+        recommendValidator.validateRecommendNull(username);
 
         recommendService.increaseImpression(impressionRequest, username);
         log.info(ControllerLog.INCREASE_IMPRESSION_SUCCESS.getValue());
