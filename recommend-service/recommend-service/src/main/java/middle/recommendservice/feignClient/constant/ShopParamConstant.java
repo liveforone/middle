@@ -1,5 +1,5 @@
 package middle.recommendservice.feignClient.constant;
 
-public class ShopParamConstant {
+public final class ShopParamConstant {
     public static final String USERNAME = "username";
 }
