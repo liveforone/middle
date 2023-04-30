@@ -35,9 +35,7 @@ public class ShopController {
     public ResponseEntity<?> shopDetail(
             @PathVariable(ParamConstant.SHOP_ID) Long shopId
     ) {
-        if (shopValidator.isNull(shopId)) {
-            return RestResponse.shopIsNull();
-        }
+        shopValidator.validateShopNull(shopId);
 
         ShopResponse shop = shopService.getShopById(shopId);
         return ResponseEntity.ok(shop);
@@ -46,15 +44,10 @@ public class ShopController {
     @GetMapping(ShopUrl.MY_SHOP)
     public ResponseEntity<?> myShop(HttpServletRequest request) {
         String auth = authenticationInfo.getAuth(request);
-
-        if (shopValidator.isNotOwner(auth)) {
-            return RestResponse.authIsNotOwner();
-        }
+        shopValidator.validateAuth(auth);
 
         String username = authenticationInfo.getUsername(request);
-        if (shopValidator.isNull(username)) {
-            return RestResponse.shopIsNull();
-        }
+        shopValidator.validateShopNull(username);
 
         ShopResponse shop = shopService.getShopByUsername(username);
         return ResponseEntity.ok(shop);
@@ -86,18 +79,11 @@ public class ShopController {
             HttpServletRequest request
     ) {
         String auth = authenticationInfo.getAuth(request);
-        if (shopValidator.isNotOwner(auth)) {
-            return RestResponse.authIsNotOwner();
-        }
+        shopValidator.validateAuth(auth);
 
         String username = authenticationInfo.getUsername(request);
-        if (shopValidator.isDuplicateOwner(username)) {
-            return RestResponse.duplicateOwner();
-        }
-
-        if (bindingResult.hasErrors()) {
-            return RestResponse.validError(bindingResult);
-        }
+        shopValidator.validateDuplicateOwner(username);
+        shopValidator.validateBinding(bindingResult);
 
         shopService.createShop(shopRequest, username);
         log.info(ControllerLog.CREATE_SHOP_SUCCESS.getValue());
@@ -112,18 +98,11 @@ public class ShopController {
             HttpServletRequest request
     ) {
         String auth = authenticationInfo.getAuth(request);
-        if (shopValidator.isNotOwner(auth)) {
-            return RestResponse.authIsNotOwner();
-        }
+        shopValidator.validateAuth(auth);
 
         String username = authenticationInfo.getUsername(request);
-        if (shopValidator.isNull(username)) {
-            return RestResponse.shopIsNull();
-        }
-
-        if (bindingResult.hasErrors()) {
-            return RestResponse.validError(bindingResult);
-        }
+        shopValidator.validateShopNull(username);
+        shopValidator.validateBinding(bindingResult);
 
         shopService.updateShopName(updateNameRequest, username);
         log.info(ControllerLog.UPDATE_NAME_SUCCESS.getValue() + username);
@@ -138,18 +117,11 @@ public class ShopController {
             HttpServletRequest request
     ) {
         String auth = authenticationInfo.getAuth(request);
-        if (shopValidator.isNotOwner(auth)) {
-            return RestResponse.authIsNotOwner();
-        }
+        shopValidator.validateAuth(auth);
 
         String username = authenticationInfo.getUsername(request);
-        if (shopValidator.isNull(username)) {
-            return RestResponse.shopIsNull();
-        }
-
-        if (bindingResult.hasErrors()) {
-            return RestResponse.validError(bindingResult);
-        }
+        shopValidator.validateShopNull(username);
+        shopValidator.validateBinding(bindingResult);
 
         shopService.updateTel(updateTelRequest, username);
         log.info(ControllerLog.UPDATE_TEL_SUCCESS.getValue() + username);
@@ -164,18 +136,11 @@ public class ShopController {
             HttpServletRequest request
     ) {
         String auth = authenticationInfo.getAuth(request);
-        if (shopValidator.isNotOwner(auth)) {
-            return RestResponse.authIsNotOwner();
-        }
+        shopValidator.validateAuth(auth);
 
         String username = authenticationInfo.getUsername(request);
-        if (shopValidator.isNull(username)) {
-            return RestResponse.shopIsNull();
-        }
-
-        if (bindingResult.hasErrors()) {
-            return RestResponse.validError(bindingResult);
-        }
+        shopValidator.validateShopNull(username);
+        shopValidator.validateBinding(bindingResult);
 
         shopService.updateAddress(updateAddressRequest, username);
         log.info(ControllerLog.UPDATE_ADDRESS_SUCCESS.getValue() + username);
