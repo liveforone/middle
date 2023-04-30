@@ -205,6 +205,10 @@ this.object -= 값
 또한 이를 반드시 코드 요구사항에 명시한다.
 9. validation시 단건 조회를 한다. 이때 validation을 위한 쿼리를 따로 만들어라. 주로 id만 조회하는 쿼리(한개 컬럼 조회)를 이용하면 성능에도 큰 영향을 미치 않을 뿐더러 null check하기도 아주 좋다.
 10. repo 단에서도 dto 프로젝션이나 booleanexpression으로 페이징처리할때 유틸클래스 만들어서 처리하기
+11. Object.equeals 같은 것으로 판별하는 경우(주로 문자열)에는 밸리데이터로 옮겨서 밸리데이터를 사용하도록 하라. => 밸리데이터에서만 검증하고, 그 이외에 검증 로직을 또 넣지 말기
+12. 동적쿼리 처럼 함수를 집약적으로 설계한다. 같은일을 하는 함수를 호출부에 따라 분리하지 말고 추상화 시켜서 하나로 만들어서 함수 내부에서 분류해서 작동하도록 한다.
+13. 상수를 담을 그릇은 final class로 한다.
+14. 밸리데이터는 선언형으로 하고, 선언형으로하기위해 컨트로럴 어드바이스와 커스텀 예외를 등록한다. dto validation 시 주의 점은 @Email 어노테이션 다음에 꼭 @NotBlank도 달아주어야 한다는 것이다. -> 컨트롤러를 선언형으로 함
 
 ## 프로젝트시 확인
 1. async 와 Authorization 폴더 복붙
@@ -225,18 +229,81 @@ request param은 문자일 경우 required=false로
 숫자일 경우 default value = "0"으로 설정하면 null 허용이 된다.
 페이징시에 default value(숫자)와 null(문자) 허용
 
+## count 쿼리 성능 최적화
+지금은 데이터가 적어서 실감이 안나지만 향후 데이터가 커지면 매번 count쿼리시 자원소모가 너무 심해질것이다.
+따라서 테이블을 하나 만들어서 단 하나의 데이터를 저장한다.
+그것은 count쿼리로 날린 전체 테이블의 수이고, 이를 저장해 하루 혹은 1시간 마다 배치로 다시 전체 테이블의 수를 업데이트하는(광고를 등록하는 수가 하루에 많지 않을 것이기 때문에 매번 count 쿼리를 날리는게 상당히 부담이 된다.) 방식을 사용하면 count 쿼리를 매번 날릴때와 달리 성능이 어마어마하게 최적화 될것이다.
+애초에 데이터를 읽는다는 것이 속도가 더 느리다.
+즉 count(컬럼)이 count(*)보다 느리다.
+https://parksay-dev.tistory.com/m/48
+https://m.blog.naver.com/birdparang/221574304831
+마지막 값
+
 ## 할것
-페이징 문서 만들어서 no offset이랑, 페이지 사이즈 10으로 고정 명시 + 스타일 가이드에도 작성
+* 선언형스타일 크롬 링크보고 참조해서 덧붙이기(선언형은 사실상 각 계층을 선언형으로 바꾸는것에 의의를 둠. 주로 복잡하고 중요한 부분이 컨트롤러, 서비스 + 도메인, 리파지토리 계층이기 때문에 이 계층들에 선언형을 적용해서 보다 아름답게 하는 데에 주 목적을 두고 작성한다록 생각하면 편함.) + 밸리데이터 사용법 추가(코드보고) | 도메인 : 도메인 모델로 변경, 리파지 : 유틸클래스와 동적쿼리, 서비스 : 도메인 모델 사용, 컨트롤러 밸리데이터 => 선언형 스타일로 전부다 변경, 왜? 아름다운 코드를 위해
+* 타임테이블 서비스제작
+* count쿼리 성능 최적화 문서 만들고 추천 리드미에 링크 추가
+* 페이징 문서 만들어서 no offset이랑, 페이지 사이즈 10으로 고정 명시 + 스타일 가이드에도 작성
+* 새 프로젝트 제작전 서비스끼리 주고받는 영향 체크하여 토픽/프로바이드컨트롤러/페인클라이언트 정리
 
 ## 테스트 할 것
-* put으로 impression 플러스 하는거 디폴트 값 들어가는지 확인 + 사용자 지정값 들어가는지 확인
-* 추천 서비스 0이상만 리턴 테스트
-* 추천 서비스 api 테스트
-* shop 11개 만들고, 추천에 10개 등록후 상점 페이징으로 알고리즘 테스트(조건은 프론트가 없기때문에 일단은 null로 order를 잡는다.)
-* 광고 서비스 만들고 상점 페이지로 조회테스트 해서 정상적으로 추천 해주는지 확인
+* 회원 탈퇴시 추천 서비스 삭제 확인
 * 리뷰 서비스 제작 후 상점 좋아요/싫어요 정상 작동 테스트
 * 시간표 서비스 제작후 유저 탈퇴시 시간표 삭제 테스트
 
+## 문서화
+* 더이상 문서화시에 위키를 만들 필요가 없다.
+* 깃헙에서 도큐먼트레포에 들어가서 각 문서별로 링크를 복사하여 넣는다. 이렇게하면 파일을 두개씩 수정할 필요가없다.
+
 ## 리팩토링
 * 코드 요구사항에 '기술' 내용을 정리하고, 스타일 가이드 내용 제목만 해서 필요한것 간단히 작성
-* 향후 사용된 기술 바탕으로 기존 프로젝트 리팩토링
+* 향후 '기술' 태그 바탕으로 기존 프로젝트 리팩토링
+
+## 밸리데이터
+```
+public class ValidationException extends RuntimeException {
+    public ValidationException(String message) {
+        super(message);
+    }
+}
+
+public class MyValidator {
+    public void validate1(MyRequestDto requestDto) {
+        // 검증 로직 수행
+        if (...) {
+            throw new ValidationException("Error message 1");
+        }
+    }
+
+    public void validate2(MyRequestDto requestDto) {
+        // 검증 로직 수행
+        if (...) {
+            throw new ValidationException("Error message 2");
+        }
+    }
+}
+
+@RestController
+public class MyController {
+    private final MyValidator validator;
+
+    public MyController(MyValidator validator) {
+        this.validator = validator;
+    }
+
+    @PostMapping("/myendpoint")
+    public ResponseEntity<?> myEndpoint(@RequestBody MyRequestDto requestDto) {
+        validator.validate1(requestDto);
+        validator.validate2(requestDto);
+
+        // 검증 성공 시에는 비즈니스 로직 수행
+        return ResponseEntity.ok().build();
+    }
+
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity<String> handleValidationException(ValidationException ex) {
+        // 검증 실패 시에는 예외 메시지를 반환
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+}
+```
