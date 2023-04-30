@@ -16,7 +16,6 @@ import middle.userservice.dto.signupAndLogin.MemberLoginRequest;
 import middle.userservice.dto.signupAndLogin.MemberSignupRequest;
 import middle.userservice.jwt.TokenInfo;
 import middle.userservice.jwt.constant.JwtConstant;
-import middle.userservice.kafka.UserProducer;
 import middle.userservice.service.MemberService;
 import middle.userservice.validator.MemberValidator;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +32,6 @@ public class MemberController {
     private final MemberService memberService;
     private final MemberValidator memberValidator;
     private final AuthenticationInfo authenticationInfo;
-    private final UserProducer userProducer;
 
     @GetMapping(MemberUrl.HOME)
     public ResponseEntity<?> home() {
@@ -50,14 +48,10 @@ public class MemberController {
             @RequestBody @Valid MemberSignupRequest memberSignupRequest,
             BindingResult bindingResult
     ) {
-        if (bindingResult.hasErrors()) {
-            return RestResponse.validError(bindingResult);
-        }
+        memberValidator.validateBinding(bindingResult);
 
         String email = memberSignupRequest.getEmail();
-        if (memberValidator.isDuplicateEmail(email)) {
-            return RestResponse.duplicateEmail();
-        }
+        memberValidator.validateDuplicateEmail(email);
 
         memberService.signup(memberSignupRequest);
         log.info(ControllerLog.SIGNUP_SUCCESS.getValue());
@@ -75,14 +69,10 @@ public class MemberController {
             @RequestBody @Valid MemberSignupRequest memberSignupRequest,
             BindingResult bindingResult
     ) {
-        if (bindingResult.hasErrors()) {
-            return RestResponse.validError(bindingResult);
-        }
+        memberValidator.validateBinding(bindingResult);
 
         String email = memberSignupRequest.getEmail();
-        if (memberValidator.isDuplicateEmail(email)) {
-            return RestResponse.duplicateEmail();
-        }
+        memberValidator.validateDuplicateEmail(email);
 
         memberService.signupOwner(memberSignupRequest);
         log.info(ControllerLog.SIGNUP_SUCCESS.getValue());
@@ -101,9 +91,7 @@ public class MemberController {
             BindingResult bindingResult,
             HttpServletResponse response
     ) {
-        if (bindingResult.hasErrors()) {
-            return RestResponse.validError(bindingResult);
-        }
+        memberValidator.validateBinding(bindingResult);
 
         TokenInfo tokenInfo = memberService.login(memberLoginRequest);
         log.info(ControllerLog.LOGIN_SUCCESS.getValue());
@@ -127,13 +115,7 @@ public class MemberController {
             BindingResult bindingResult,
             HttpServletRequest request
     ) {
-        if (bindingResult.hasErrors()) {
-            return RestResponse.validError(bindingResult);
-        }
-
-        if (memberValidator.isDuplicateEmail(changeEmailRequest.getEmail())) {
-            return RestResponse.duplicateEmail();
-        }
+        memberValidator.validateDuplicateEmail(changeEmailRequest.getEmail());
 
         String username = authenticationInfo.getUsername(request);
         memberService.updateEmail(changeEmailRequest, username);
@@ -148,15 +130,11 @@ public class MemberController {
             BindingResult bindingResult,
             HttpServletRequest request
     ) {
-        if (bindingResult.hasErrors()) {
-            return RestResponse.validError(bindingResult);
-        }
+        memberValidator.validateBinding(bindingResult);
 
         String inputPw = changePasswordRequest.getOldPassword();
         String username = authenticationInfo.getUsername(request);
-        if (memberValidator.isNotMatchingPassword(inputPw, username)) {
-            return RestResponse.notMatchPassword();
-        }
+        memberValidator.validatePassword(inputPw, username);
 
         String requestPw = changePasswordRequest.getNewPassword();
         memberService.updatePassword(requestPw, username);
@@ -171,14 +149,10 @@ public class MemberController {
             HttpServletRequest request
     ) {
         String username = authenticationInfo.getUsername(request);
-        if (memberValidator.isNotMatchingPassword(password, username)) {
-            return RestResponse.notMatchPassword();
-        }
+        memberValidator.validatePassword(password, username);
 
         String auth = authenticationInfo.getAuth(request);
-        if (memberValidator.isOwner(auth)) {
-            userProducer.removeShopBelongMember(username);
-        }
+        memberValidator.validateAuth(auth, username);
 
         memberService.withdrawByUsername(username);
         log.info(ControllerLog.WITHDRAW_SUCCESS.getValue() + username);
@@ -191,10 +165,7 @@ public class MemberController {
         String username = authenticationInfo.getUsername(request);
         MemberResponse foundMember = memberService.getMemberByUsername(username);
 
-        if (!memberValidator.isOwner(foundMember.getAuth())) {
-            log.error(ControllerLog.ADMIN_FAIL.getValue());
-            return RestResponse.prohibition();
-        }
+        memberValidator.validateAuth(foundMember.getAuth());
 
         List<MemberResponse> allMembers = memberService.getAllMemberForAdmin();
         log.info(ControllerLog.ADMIN_SUCCESS.getValue());
