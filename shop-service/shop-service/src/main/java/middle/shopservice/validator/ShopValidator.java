@@ -2,9 +2,13 @@ package middle.shopservice.validator;
 
 import lombok.RequiredArgsConstructor;
 import middle.shopservice.authentication.Role;
+import middle.shopservice.controller.restResponse.ResponseMessage;
+import middle.shopservice.exception.BindingCustomException;
+import middle.shopservice.exception.ShopCustomException;
 import middle.shopservice.repository.ShopRepository;
 import middle.shopservice.utility.CommonUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.BindingResult;
 
 import java.util.Objects;
 
@@ -14,25 +18,42 @@ public class ShopValidator {
 
     private final ShopRepository shopRepository;
 
-    public boolean isNull(Long shopId) {
+    public void validateShopNull(Long shopId) {
         Long foundId = shopRepository.findOneIdByIdForValidation(shopId);
 
-        return CommonUtils.isNull(foundId);
+        if (CommonUtils.isNull(foundId)) {
+            throw new ShopCustomException(ResponseMessage.SHOP_IS_NULL);
+        }
     }
 
-    public boolean isNull(String username) {
+    public void validateShopNull(String username) {
         Long foundId = shopRepository.findOneIdByUsernameForValidation(username);
 
-        return CommonUtils.isNull(foundId);
+        if (CommonUtils.isNull(foundId)) {
+            throw new ShopCustomException(ResponseMessage.SHOP_IS_NULL);
+        }
     }
 
-    public boolean isNotOwner(String auth) {
-        return !Objects.equals(auth, Role.OWNER.getValue());
+    public void validateAuth(String auth) {
+        if (!Objects.equals(auth, Role.OWNER.getValue())) {
+            throw new ShopCustomException(ResponseMessage.AUTH_IS_NOT_OWNER);
+        }
     }
 
-    public boolean isDuplicateOwner(String username) {
+    public void validateBinding(BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            String errorMessage = Objects
+                    .requireNonNull(bindingResult.getFieldError())
+                    .getDefaultMessage();
+            throw new BindingCustomException(errorMessage);
+        }
+    }
+
+    public void validateDuplicateOwner(String username) {
         Long foundId = shopRepository.findOneIdByUsernameForValidation(username);
 
-        return !CommonUtils.isNull(foundId);
+        if (!CommonUtils.isNull(foundId)) {
+            throw new ShopCustomException(ResponseMessage.DUPLICATE_OWNER);
+        }
     }
 }
