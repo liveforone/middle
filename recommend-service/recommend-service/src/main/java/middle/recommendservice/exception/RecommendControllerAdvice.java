@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class RecommendControllerAdvice {
 
     @ExceptionHandler(RecommendCustomException.class)
-    protected ResponseEntity<?> memberCustomHandle(RecommendCustomException customException) {
+    protected ResponseEntity<?> recommendCustomHandle(RecommendCustomException customException) {
         return ResponseEntity
                 .status(customException.getResponseMessage().getStatus())
                 .body(customException.getResponseMessage().getValue());
