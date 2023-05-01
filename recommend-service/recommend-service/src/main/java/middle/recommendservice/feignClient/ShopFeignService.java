@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 @FeignClient(ShopUrl.BASE)
 public interface ShopFeignService {
 
-    @PostMapping(ShopUrl.RETURN_SHOP_USERNAME)
+    @PostMapping(ShopUrl.RETURN_SHOP_BY_USERNAME)
     Long getShopByUsername(@PathVariable(ShopParamConstant.USERNAME) String username);
 }
