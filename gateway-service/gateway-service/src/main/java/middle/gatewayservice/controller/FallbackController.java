@@ -56,4 +56,24 @@ public class FallbackController {
     public Mono<String> fallbackRecommendPut() {
         return Mono.just(FallbackMessage.RECOMMEND_LOG);
     }
+
+    @GetMapping(FallbackUrl.TIMETABLE)
+    public Mono<String> fallbackTimetableGet() {
+        return Mono.just(FallbackMessage.TIMETABLE_LOG);
+    }
+
+    @PostMapping(FallbackUrl.TIMETABLE)
+    public Mono<String> fallbackTimetablePost() {
+        return Mono.just(FallbackMessage.TIMETABLE_LOG);
+    }
+
+    @PutMapping(FallbackUrl.TIMETABLE)
+    public Mono<String> fallbackTimetablePut() {
+        return Mono.just(FallbackMessage.TIMETABLE_LOG);
+    }
+
+    @DeleteMapping(FallbackUrl.TIMETABLE)
+    public Mono<String> fallbackTimetableDelete() {
+        return Mono.just(FallbackMessage.TIMETABLE_LOG);
+    }
 }

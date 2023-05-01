@@ -59,6 +59,18 @@ spring:
               args:
                 name: recommend-service
                 fallbackuri: forward:/fallback/recommend
+        - id: timetable-service
+          uri: lb://TIMETABLE-SERVICE
+          predicates:
+            - Path=/timetable-service/**
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/timetable-service/(?<segment>.*), /$\{segment}
+            - AuthorizationHeaderFilter
+            - name: CircuitBreaker
+              args:
+                name: timetable-service
+                fallbackuri: forward:/fallback/timetable
 
 management:
   endpoints:
