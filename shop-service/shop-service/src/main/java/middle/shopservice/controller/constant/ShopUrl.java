@@ -10,5 +10,4 @@ public final class ShopUrl {
     public static final String UPDATE_SHOP_NAME = "/update/name";
     public static final String UPDATE_SHOP_TEL = "/update/tel";
     public static final String UPDATE_SHOP_ADDRESS = "/update/address";
-    public static final String RETURN_SHOP_USERNAME = "/shop/username/{username}";
 }
