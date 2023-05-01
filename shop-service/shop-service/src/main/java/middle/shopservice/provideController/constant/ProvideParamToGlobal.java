@@ -1,5 +1,5 @@
 package middle.shopservice.provideController.constant;
 
-public final class ProvideParamToRecommend {
+public final class ProvideParamToGlobal {
     public static final String USERNAME = "username";
 }
