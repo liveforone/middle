@@ -2,9 +2,9 @@ package middle.timetableservice.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import middle.timetableservice.dto.TimeTableRequest;
 
 @Entity
 @Getter
@@ -21,18 +21,33 @@ public class Timetable {
     private String username;
     
     private long reservationTime;
+
     private long reservationMinute;
+
+    @Column(updatable = false)
+    private long basicRemaining;
+
     private long remaining;
 
-    @Builder
-    public Timetable(Long id, Long shopId, String username, long reservationTime, long reservationMinute, long remaining) {
-        this.id = id;
+    private Timetable(Long shopId, String username, long reservationTime, long reservationMinute, long basicRemaining, long remaining) {
         this.shopId = shopId;
         this.username = username;
         this.reservationTime = reservationTime;
         this.reservationMinute = reservationMinute;
+        this.basicRemaining = basicRemaining;
         this.remaining = remaining;
     }
 
+    public static Timetable create(Long shopId, String username, TimeTableRequest timeTableRequest) {
+        long remaining = timeTableRequest.getBasicRemaining();
+
+        return new Timetable(
+                shopId, username,
+                timeTableRequest.getReservationTime(),
+                timeTableRequest.getReservationMinute(),
+                timeTableRequest.getBasicRemaining(),
+                remaining
+        );
+    }
 
 }
