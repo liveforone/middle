@@ -84,6 +84,33 @@ class TimetableServiceTest {
     }
 
     @Test
-    void minusRemaining() {
+    @Transactional
+    void minusRemainingTest() {
+        //given
+        /*
+        * 기본적인 예약가능자수는 0이 될수 없다.
+        * 따라서 1로 초기화해주고 한번 마이너스하여 0을 만들고
+        * 두번째 마이너스 후에 boolean 값을 체크한다.
+         */
+        Long shopId = 99999L;
+        String username = "dlffeffjoewjfewffwfwnlanw";
+        long reservationHour = 12;
+        long basicRemaining = 1;
+        TimetableRequest timetableRequest = TimetableRequest.builder()
+                .reservationHour(reservationHour)
+                .basicRemaining(basicRemaining)
+                .build();
+        Long id = createTimetable(shopId, username, timetableRequest);
+        em.flush();
+        em.clear();
+
+        //when
+        timetableService.minusRemaining(id);  //0만들기
+        boolean finalResult = timetableService.minusRemaining(id);
+
+        //then
+        Assertions
+                .assertThat(finalResult)
+                .isEqualTo(false);
     }
 }
