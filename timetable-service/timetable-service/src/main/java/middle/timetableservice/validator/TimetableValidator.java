@@ -3,10 +3,12 @@ package middle.timetableservice.validator;
 import lombok.RequiredArgsConstructor;
 import middle.timetableservice.authentication.Role;
 import middle.timetableservice.controller.restResponse.ResponseMessage;
+import middle.timetableservice.exception.BindingCustomException;
 import middle.timetableservice.exception.TimetableCustomException;
 import middle.timetableservice.repository.TimetableRepository;
 import middle.timetableservice.utility.CommonUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.BindingResult;
 
 import java.util.Objects;
 
@@ -37,6 +39,15 @@ public class TimetableValidator {
 
         if (!foundShopId.equals(shopId)) {
             throw new TimetableCustomException(ResponseMessage.NOT_OWNER_OF_SHOP);
+        }
+    }
+
+    public void validateBinding(BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            String errorMessage = Objects
+                    .requireNonNull(bindingResult.getFieldError())
+                    .getDefaultMessage();
+            throw new BindingCustomException(errorMessage);
         }
     }
 }
