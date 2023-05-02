@@ -70,6 +70,7 @@ public class ShopConsumer {
             log.info(KafkaLog.KAFKA_NULL_LOG.getValue());
         } else {
             Shop shop = shopRepository.findOneByUsername(username);
+            shopProducer.removeReview(shop.getId());
             shopProducer.removeRecommend(shop.getId());
             shopProducer.removeTimetable(shop.getId());
             shopRepository.deleteOneByUsername(username);
