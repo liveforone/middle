@@ -37,20 +37,15 @@ public class MemberService {
         return MemberMapper.entityToDtoList(memberRepository.findAll());
     }
 
-
     @Transactional
     public String signup(MemberSignupRequest memberSignupRequest) {
-        Member member = Member.builder().build();
-        member.signup(memberSignupRequest);
-
+        Member member = Member.create(memberSignupRequest);
         return memberRepository.save(member).getUsername();
     }
 
     @Transactional
     public String signupOwner(MemberSignupRequest memberSignupRequest) {
-        Member member = Member.builder().build();
-        member.signupOwner(memberSignupRequest);
-
+        Member member = Member.createOwner(memberSignupRequest);
         return memberRepository.save(member).getUsername();
     }
 
