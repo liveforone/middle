@@ -77,6 +77,11 @@ request : shopId
 topic : remove-timetable
 request : shopId
 ```
+### 상점 삭제시 리뷰 삭제
+```
+topic : remove-review
+request : shopId
+```
 ### 추천하는 상점 id 받기
 * 페인 클라이언트로 추천 하는 상점의 id를 받아 리스트 페이지 최상단에 넣어 리턴한다.
 ```
