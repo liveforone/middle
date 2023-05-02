@@ -46,4 +46,10 @@ public class TimetableService {
     public boolean minusRemaining(Long id) {
         return timetableRepository.minusRemaining(id);
     }
+
+    @Transactional
+    @Async(AsyncConstant.commandAsync)
+    public void deleteTimetableById(Long id) {
+        timetableRepository.deleteOneById(id);
+    }
 }
