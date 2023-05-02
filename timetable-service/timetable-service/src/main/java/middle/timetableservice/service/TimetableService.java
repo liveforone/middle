@@ -1,6 +1,8 @@
 package middle.timetableservice.service;
 
 import lombok.RequiredArgsConstructor;
+import middle.timetableservice.domain.Timetable;
+import middle.timetableservice.dto.TimetableRequest;
 import middle.timetableservice.dto.TimetableResponse;
 import middle.timetableservice.repository.TimetableRepository;
 import middle.timetableservice.service.util.TimetableMapper;
@@ -22,6 +24,12 @@ public class TimetableService {
 
     public TimetableResponse getTimetableById(Long id) {
         return TimetableMapper.entityToDto(timetableRepository.findOneById(id));
+    }
+
+    @Transactional
+    public void createTimetable(Long shopId, String username, TimetableRequest timeTableRequest) {
+        Timetable timetable = Timetable.create(shopId, username, timeTableRequest);
+        timetableRepository.save(timetable);
     }
 
     @Transactional
