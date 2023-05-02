@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import middle.timetableservice.dto.TimeTableRequest;
+import middle.timetableservice.dto.TimetableRequest;
 
 @Entity
 @Getter
@@ -38,7 +38,7 @@ public class Timetable {
         this.remaining = remaining;
     }
 
-    public static Timetable create(Long shopId, String username, TimeTableRequest timeTableRequest) {
+    public static Timetable create(Long shopId, String username, TimetableRequest timeTableRequest) {
         long remaining = timeTableRequest.getBasicRemaining();
 
         return new Timetable(
@@ -56,10 +56,5 @@ public class Timetable {
 
     public void updateMinute(long minute) {
         this.reservationMinute = minute;
-    }
-
-    public void minusRemaining() {
-        final long BASIC_MINUS = 1;
-        this.remaining -= BASIC_MINUS;
     }
 }
