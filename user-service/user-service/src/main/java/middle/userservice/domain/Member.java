@@ -2,7 +2,6 @@ package middle.userservice.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import middle.userservice.domain.util.MemberConstant;
@@ -17,7 +16,6 @@ import java.util.*;
 
 @Entity
 @Getter
-@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member implements UserDetails {
 
@@ -40,9 +38,7 @@ public class Member implements UserDetails {
     @Enumerated(value = EnumType.STRING)
     private Role auth;
 
-    @Builder
-    public Member(Long id, String username, String email, String password, String realName, Role auth) {
-        this.id = id;
+    private Member(String username, String email, String password, String realName, Role auth) {
         this.username = username;
         this.email = email;
         this.password = password;
@@ -50,10 +46,9 @@ public class Member implements UserDetails {
         this.auth = auth;
     }
 
-
     //==Domain Logic Space==//
 
-    public void signup(MemberSignupRequest request) {
+    public static Member create(MemberSignupRequest request) {
         final String ADMIN = "admin@maybeAllHere.com";
 
         if (Objects.equals(request.getEmail(), ADMIN)) {
@@ -63,26 +58,29 @@ public class Member implements UserDetails {
         }
         request.setPassword(PasswordUtils.encodePassword(request.getPassword()));
 
-        buildingMember(request);
+        return new Member(
+                createUsername(),
+                request.getEmail(),
+                request.getPassword(),
+                request.getRealName(),
+                request.getAuth()
+        );
     }
 
-    public void signupOwner(MemberSignupRequest request) {
+    public static Member createOwner(MemberSignupRequest request) {
         request.setPassword(PasswordUtils.encodePassword(request.getPassword()));
         request.setAuth(Role.OWNER);
 
-        buildingMember(request);
+        return new Member(
+                createUsername(),
+                request.getEmail(),
+                request.getPassword(),
+                request.getRealName(),
+                request.getAuth()
+        );
     }
 
-    private void buildingMember(MemberSignupRequest request) {
-        this.id = request.getId();
-        this.username = createUsername();
-        this.email = request.getEmail();
-        this.password = request.getPassword();
-        this.realName = request.getRealName();
-        this.auth = request.getAuth();
-    }
-
-    private String createUsername() {
+    private static String createUsername() {
         return UUID.randomUUID() + RandomStringUtils.randomAlphabetic(MemberConstant.RANDOM_STRING_LENGTH);
     }
 
