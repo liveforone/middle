@@ -82,7 +82,7 @@ request : shopId
 ```
 [GET] /draw-shop
 ```
-### 상품 광고 서비스 등록시 검증 api
+### username으로 상점 정보 검증 provide api
 * username으로 찾아 shopId를 리턴하여, 검증가능하게할 뿐만 아니라,
 * 광고 서비스 등록시 shopId 를 자동으로 set할 수 있도록 했다.
 ```
