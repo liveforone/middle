@@ -12,4 +12,5 @@ public interface TimetableCustomRepository {
     Timetable findOneById(Long id);
     boolean minusRemaining(Long id);
     void deleteOneById(Long id);
+    void deleteBulkByShopId(Long shopId);
 }

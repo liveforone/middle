@@ -64,4 +64,11 @@ public class TimetableRepositoryImpl implements TimetableCustomRepository{
                 .where(timetable.id.eq(id))
                 .execute();
     }
+
+    public void deleteBulkByShopId(Long shopId) {
+        queryFactory
+                .delete(timetable)
+                .where(timetable.shopId.eq(shopId))
+                .execute();
+    }
 }
