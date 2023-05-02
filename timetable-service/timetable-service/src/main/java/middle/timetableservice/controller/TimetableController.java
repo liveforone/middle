@@ -97,6 +97,16 @@ public class TimetableController {
         return RestResponse.updateTimeSuccess();
     }
 
+    @DeleteMapping(TimetableUrl.DELETE_TIMETABLE)
+    public ResponseEntity<?> deleteTimetable(
+            @PathVariable(ParamConstant.ID) Long id,
+            HttpServletRequest request
+    ) {
+        timetableValidator.validateTimetableNullAndOwner(id, authenticationInfo.getUsername(request));
 
-    //삭제
+        timetableService.deleteTimetableById(id);
+        log.info(ControllerLog.DELETE_TIMETABLE_SUCCESS.getValue() + id);
+
+        return RestResponse.deleteTimetableSuccess();
+    }
 }
