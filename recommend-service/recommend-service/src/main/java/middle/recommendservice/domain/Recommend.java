@@ -2,7 +2,6 @@ package middle.recommendservice.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import middle.recommendservice.domain.constant.RecommendConstant;
@@ -24,18 +23,14 @@ public class Recommend {
 
     private long impression;
 
-    @Builder
-    public Recommend(Long id, Long shopId, String username, long impression) {
-        this.id = id;
+    private Recommend(Long shopId, String username, long impression) {
         this.shopId = shopId;
         this.username = username;
         this.impression = impression;
     }
 
-    public void createRecommend(Long shopId, String username) {
-        this.shopId = shopId;
-        this.username = username;
-        this.impression = RecommendConstant.ZERO;
+    public static Recommend create(Long shopId, String username) {
+        return new Recommend(shopId, username, RecommendConstant.ZERO);
     }
 
     public void increaseImpression(long inputImpression) {
