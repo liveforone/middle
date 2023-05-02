@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import middle.timetableservice.dto.TimetableRequest;
+import middle.timetableservice.dto.UpdateTimeRequest;
 
 @Entity
 @Getter
@@ -50,11 +51,17 @@ public class Timetable {
         );
     }
 
-    public void updateHour(long hour) {
-        this.reservationHour = hour;
-    }
+    public void updateTime(UpdateTimeRequest updateTimeRequest) {
+        final long ZERO = 0;
+        long reservationHour = updateTimeRequest.getReservationHour();
+        long reservationMinute = updateTimeRequest.getReservationMinute();
 
-    public void updateMinute(long minute) {
-        this.reservationMinute = minute;
+        if (reservationHour != ZERO) {
+            this.reservationHour = reservationHour;
+        }
+
+        if (reservationMinute != ZERO) {
+            this.reservationMinute = reservationMinute;
+        }
     }
 }
