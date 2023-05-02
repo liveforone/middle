@@ -9,6 +9,7 @@ import middle.timetableservice.dto.UpdateTimeRequest;
 import middle.timetableservice.repository.TimetableRepository;
 import middle.timetableservice.service.util.TimetableMapper;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,7 @@ import java.util.List;
 public class TimetableService {
 
     private final TimetableRepository timetableRepository;
+    private static final String EVERYDAY_ELEVEN_O_CLOCK = "0 0 0 * * *";
 
     public List<TimetableResponse> getTimetablesByShopId(Long shopId, Long lastId) {
         return timetableRepository.findTimetablesByShopId(shopId, lastId);
@@ -51,5 +53,11 @@ public class TimetableService {
     @Async(AsyncConstant.commandAsync)
     public void deleteTimetableById(Long id) {
         timetableRepository.deleteOneById(id);
+    }
+
+    @Transactional
+    @Scheduled(cron = EVERYDAY_ELEVEN_O_CLOCK)
+    public void restoreRemaining() {
+        timetableRepository.restoreRemaining();
     }
 }
