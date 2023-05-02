@@ -7,4 +7,5 @@ public final class Topic {
     public static final String REMOVE_SHOP_BELONG_MEMBER = "remove-shop-belong-member";
     public static final String REMOVE_RECOMMEND = "remove-recommend";
     public static final String REMOVE_TIMETABLE = "remove-timetable";
+    public static final String REMOVE_REVIEW = "remove-review";
 }
