@@ -30,5 +30,13 @@ public class TimetableValidator {
         }
     }
 
+    public void validateShop(Long foundShopId, Long shopId) {
+        if (CommonUtils.isNull(foundShopId)) {
+            throw new TimetableCustomException(ResponseMessage.SHOP_IS_NULL);
+        }
 
+        if (!foundShopId.equals(shopId)) {
+            throw new TimetableCustomException(ResponseMessage.NOT_OWNER_OF_SHOP);
+        }
+    }
 }
