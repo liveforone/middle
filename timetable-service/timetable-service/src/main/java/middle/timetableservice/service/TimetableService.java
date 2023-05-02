@@ -32,9 +32,9 @@ public class TimetableService {
     }
 
     @Transactional
-    public void createTimetable(Long shopId, String username, TimetableRequest timeTableRequest) {
+    public Long createTimetable(Long shopId, String username, TimetableRequest timeTableRequest) {
         Timetable timetable = Timetable.create(shopId, username, timeTableRequest);
-        timetableRepository.save(timetable);
+        return timetableRepository.save(timetable).getId();
     }
 
     @Transactional
