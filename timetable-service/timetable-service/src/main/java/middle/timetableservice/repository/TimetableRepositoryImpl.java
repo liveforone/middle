@@ -46,7 +46,7 @@ public class TimetableRepositoryImpl implements TimetableCustomRepository{
     }
 
     public boolean minusRemaining(Long id) {
-        long updatedRemaining = queryFactory
+        long affectedRows = queryFactory
                 .update(timetable)
                 .set(
                         timetable.remaining,
@@ -55,6 +55,6 @@ public class TimetableRepositoryImpl implements TimetableCustomRepository{
                 .where(TimetableRepoUtil.minusRemainingCondition(id))
                 .execute();
 
-        return updatedRemaining > TimetableRepoUtil.ZERO_VALUE;
+        return affectedRows > TimetableRepoUtil.ZERO_VALUE;
     }
 }
