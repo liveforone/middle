@@ -5,4 +5,5 @@ public final class TimetableUrl {
     public static final String TIMETABLE_PAGE_BY_SHOP = "/timetables/{shopId}";
     public static final String TIMETABLE_DETAIL = "/timetable/detail/{id}";
     public static final String CREATE_TIMETABLE = "/timetable/create/{shopId}";
+    public static final String UPDATE_TIME = "/update/time/{id}";
 }
