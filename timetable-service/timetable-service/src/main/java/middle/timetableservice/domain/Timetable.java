@@ -20,7 +20,7 @@ public class Timetable {
     @Column(nullable = false)
     private String username;
     
-    private long reservationTime;
+    private long reservationHour;
 
     private long reservationMinute;
 
@@ -29,10 +29,10 @@ public class Timetable {
 
     private long remaining;
 
-    private Timetable(Long shopId, String username, long reservationTime, long reservationMinute, long basicRemaining, long remaining) {
+    private Timetable(Long shopId, String username, long reservationHour, long reservationMinute, long basicRemaining, long remaining) {
         this.shopId = shopId;
         this.username = username;
-        this.reservationTime = reservationTime;
+        this.reservationHour = reservationHour;
         this.reservationMinute = reservationMinute;
         this.basicRemaining = basicRemaining;
         this.remaining = remaining;
@@ -43,11 +43,18 @@ public class Timetable {
 
         return new Timetable(
                 shopId, username,
-                timeTableRequest.getReservationTime(),
+                timeTableRequest.getReservationHour(),
                 timeTableRequest.getReservationMinute(),
                 timeTableRequest.getBasicRemaining(),
                 remaining
         );
     }
 
+    public void updateHour(long hour) {
+        this.reservationHour = hour;
+    }
+
+    public void updateMinute(long minute) {
+        this.reservationMinute = minute;
+    }
 }
