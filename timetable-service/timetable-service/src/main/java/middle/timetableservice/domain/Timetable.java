@@ -57,4 +57,9 @@ public class Timetable {
     public void updateMinute(long minute) {
         this.reservationMinute = minute;
     }
+
+    public void minusRemaining() {
+        final long BASIC_MINUS = 1;
+        this.remaining -= BASIC_MINUS;
+    }
 }
