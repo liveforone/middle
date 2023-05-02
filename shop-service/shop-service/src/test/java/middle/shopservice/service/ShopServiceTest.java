@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
-class ShopServiceTest {
+class ShopServiceTest {  //!!반드시 서비스에 async 어노테이션 주석처리하고 테스트 합니다!!
 
     @Autowired
     ShopService shopService;
