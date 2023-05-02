@@ -33,4 +33,12 @@ public class ShopProducer {
         kafkaTemplate.send(topic, jsonOrder);
         log.info(KafkaLog.KAFKA_SEND_LOG.getValue() + topic);
     }
+
+    @Async(AsyncConstant.commandAsync)
+    public void removeReview(Long shopId) {
+        String jsonOrder = gson.toJson(shopId);
+        String topic = Topic.REMOVE_REVIEW;
+        kafkaTemplate.send(topic, jsonOrder);
+        log.info(KafkaLog.KAFKA_SEND_LOG.getValue() + topic);
+    }
 }
