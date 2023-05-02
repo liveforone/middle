@@ -57,4 +57,11 @@ public class TimetableRepositoryImpl implements TimetableCustomRepository{
 
         return affectedRows > TimetableRepoUtil.ZERO_VALUE;
     }
+
+    public void deleteOneById(Long id) {
+        queryFactory
+                .delete(timetable)
+                .where(timetable.id.eq(id))
+                .execute();
+    }
 }
