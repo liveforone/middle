@@ -71,4 +71,11 @@ public class TimetableRepositoryImpl implements TimetableCustomRepository{
                 .where(timetable.shopId.eq(shopId))
                 .execute();
     }
+
+    public void restoreRemaining() {
+        queryFactory
+                .update(timetable)
+                .set(timetable.remaining, timetable.basicRemaining)
+                .execute();
+    }
 }
