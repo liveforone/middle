@@ -7,7 +7,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ControllerLog {
 
-    CREATE_TIMETABLE_SUCCESS("타임테이블을 성공적으로 등록했습니다.");
+    CREATE_TIMETABLE_SUCCESS("타임테이블을 성공적으로 등록했습니다."),
+    UPDATE_TIME_SUCCESS("시간을 성공적으로 업데이트 했습니다.");
 
     private final String value;
 }
