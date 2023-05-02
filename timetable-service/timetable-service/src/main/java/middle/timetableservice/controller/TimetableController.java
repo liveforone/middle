@@ -11,6 +11,7 @@ import middle.timetableservice.controller.constant.TimetableUrl;
 import middle.timetableservice.controller.restResponse.RestResponse;
 import middle.timetableservice.dto.TimetableRequest;
 import middle.timetableservice.dto.TimetableResponse;
+import middle.timetableservice.dto.UpdateTimeRequest;
 import middle.timetableservice.feignClient.ShopFeignService;
 import middle.timetableservice.feignClient.constant.CircuitLog;
 import middle.timetableservice.service.TimetableService;
@@ -82,7 +83,20 @@ public class TimetableController {
                 );
     }
 
+    @PutMapping(TimetableUrl.UPDATE_TIME)
+    public ResponseEntity<?> updateTime(
+            @PathVariable(ParamConstant.ID) Long id,
+            @RequestBody UpdateTimeRequest updateTimeRequest,
+            HttpServletRequest request
+    ) {
+        timetableValidator.validateTimetableNullAndOwner(id, authenticationInfo.getUsername(request));
 
-    //update
+        timetableService.updateTime(updateTimeRequest, id);
+        log.info(ControllerLog.UPDATE_TIME_SUCCESS.getValue());
+
+        return RestResponse.updateTimeSuccess();
+    }
+
+
     //삭제
 }
