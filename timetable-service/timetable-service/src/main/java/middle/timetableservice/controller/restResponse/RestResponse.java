@@ -14,4 +14,9 @@ public class RestResponse {
         return ResponseEntity
                 .ok(ResponseMessage.UPDATE_TIME_SUCCESS.getValue());
     }
+
+    public static ResponseEntity<?> deleteTimetableSuccess() {
+        return ResponseEntity
+                .ok(ResponseMessage.DELETE_TIMETABLE_SUCCESS.getValue());
+    }
 }
