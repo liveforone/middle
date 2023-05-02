@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 public class TimeTableRequest {
 
     @Positive(message = "예약 시간을 반드시 기입해주세요.")
-    private long reservationTime;
+    private long reservationHour;
     private long reservationMinute;
 
     @Positive(message = "예약 가능한 수는 반드시 기입해주세요.")
