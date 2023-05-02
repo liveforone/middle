@@ -4,16 +4,70 @@
 * 예약을 하기전 첫번째 관문역할을 합니다.
 * 각 타임테이블 별로 예약 가능한 수를 조정하고, 저장하고 있기도 합니다.
 
-등록시 권한검증 + 상점 검증(유저네임으로 상점 찾아서 id리턴 후 id랑 파라미터랑 검증하여 확인)
+## API 설계
+```
+[GET] : /timetables/{shopId} : 상점에 속한 타임테이블 페이징(15개)
+[GET] : /timetable/detail/{id} : 타임테이블 상세조회
+[POST] : /timetable/create/{shopId} : 타임테이블 등록
+[PUT] : /timetable/update-time/{id} : 시간 업데이트(시/분 하나만도 가능)
+[DELETE] : /timetable/delete/{id} : 타임테이블 삭제
+```
 
-삭제존재
+## Json Body 
+```
+[타임테이블 생성]
+{
+  "reservationHour": 11,
+  "reservationMinute": 10,
+  "basicRemaining": 10
+}
 
-페이징 주의해야함(리밋 15개)
+[시간 업데이트]
+{
+  "reservationHour": 12,
+  "reservationMinute": 45
+}
+```
 
+## 예약 가능자 수 마이너스 매커니즘
+* 해당 id에 맞는 데이터 중(한개임), 예약 가능자수가 0 초과인 경우의 데이터만 변경한다.
+* 그리고 영향받은 row의 수를 가져온다.
+* 영향받은 row의 수가 0 초과라면 마이너스가 정상적으로 완료되었다는 것이고,
+* 아니라면 정상적으로 처리되지 않은것이다.
+* 이를 boolean으로 컨트롤러에게 넘겨준다.
+```
+[repos]
+public boolean minusRemaining(Long id) {
+  long affectedRows = queryFactory
+        .update(timetable)
+        .set(
+              timetable.remaining,
+              timetable.remaining.add(TimetableRepoUtil.MINUS_ONE)
+        )
+        .where(TimetableRepoUtil.minusRemainingCondition(id))
+        .execute();
+
+  return affectedRows > TimetableRepoUtil.ZERO_VALUE;
+}
+
+[where 조건절]
+public static BooleanExpression minusRemainingCondition(Long id) {
+    return timetable.id.eq(id)
+        .and(timetable.remaining.gt(ZERO_VALUE));
+}
+```
+
+## 예약시간 기본 설정
+기본적으로 시간 설정이 가능하고, 분을 기입안하면 0으로 처리되어 들어간다.
+분을 기입하면 분이 들어간다.
+분을 기입하지 않는것에 대해 validation은 하지 않는다.
+
+## 동시성 제어
 동시성을 제어하려면
 예약을 할때 예약이 먼저 일어나면 안되고(서비스가 분리되어 있으니깐.)
 타임테이블에서 커맨드를 처리하고 완료하여 리턴하면 나머지 예약 시스템이 동작한다.
 
+## 서비스 분리
 단일 책임 원칙을 위해서 서비스 끼리는 종속적이면 안된다.
 그러나 기존 설계는 너무 서비스끼리 종속적이다.
 이를 분리하면
@@ -38,6 +92,14 @@ request : shopId
 ```
 url : /provide/shop/{username}
 ```
+
+배치처리시 굳이 새로운 테이블을 만들필요가 없다.
+orm(jpa)에서 제공하는 좋은 기능인 updateable = false가 있기 때문이다.
+이를 통해 해당 시간에 제공가능한 예약가능자수를 저장하고 묶어서 변경이 불가능하도록 한후,
+remaining, 즉 남은 예약 가능자수를 이용해 예약을 처리하고,
+배치를 이용해 remaing 값은 기본 예약 가능자수로 변경처리하면된다.
+단점은 딱 하나 있는데, 바로 기본 예약자수를 변경할때이다.
+그러나, 숙박업소, 영화관, 미용실등은 해당 시간에 예약자 수가 변동될 일은 거의 없으며, 변동을 원하면 해당 시간을 삭제하고 새로만들면 된다.
 
 ## 배치 - 후에 문서화
 스케줄러를 이용해 새벽시간에 벌크연산으로 처리하도록 하면된다.(insert, update, delete)
