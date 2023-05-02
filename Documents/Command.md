@@ -18,15 +18,23 @@ bin\windows\kafka-server-start.bat config\server.properties
 ## 서비스별 경로
 * discovery-service
 ```
-C:\Users\KYC\study\middle\discovery-service\discovery-service\build\libs
+cd C:\Users\KYC\study\middle\discovery-service\discovery-service\build\libs
 ```
 * gateway-service
 ```
-C:\Users\KYC\study\middle\gateway-service\gateway-service\build\libs
+cd C:\Users\KYC\study\middle\gateway-service\gateway-service\build\libs
 ```
 * user-service
 ```
-C:\Users\KYC\study\middle\user-service\user-service\build\libs
+cd C:\Users\KYC\study\middle\user-service\user-service\build\libs
+```
+* shop-service
+```
+cd C:\Users\KYC\study\middle\shop-service\shop-service\build\libs
+```
+* recommend-service
+```
+cd C:\Users\KYC\study\middle\recommend-service\recommend-service\build\libs
 ```
 
 ## 서비스별 실행(자바)
@@ -41,4 +49,12 @@ java -jar gateway-service-1.0.jar
 * user-service
 ```
 java -jar user-service-1.0.jar
+```
+* shop-service
+```
+java -jar shop-service-1.0.jar
+```
+* recommend-service
+```
+java -jar recommend-service-1.0.jar
 ```
