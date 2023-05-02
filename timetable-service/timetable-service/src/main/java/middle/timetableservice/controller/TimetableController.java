@@ -6,6 +6,7 @@ import middle.timetableservice.controller.constant.ParamConstant;
 import middle.timetableservice.controller.constant.TimetableUrl;
 import middle.timetableservice.dto.TimetableResponse;
 import middle.timetableservice.service.TimetableService;
+import middle.timetableservice.validator.TimetableValidator;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,7 @@ import java.util.List;
 public class TimetableController {
 
     private final TimetableService timetableService;
+    private final TimetableValidator timetableValidator;
 
     @GetMapping(TimetableUrl.TIMETABLE_PAGE_BY_SHOP)
     public ResponseEntity<?> timetablesPage(
@@ -33,12 +35,15 @@ public class TimetableController {
 
     @GetMapping(TimetableUrl.TIMETABLE_DETAIL)
     public ResponseEntity<?> timetableDetail(
-
+            @PathVariable(ParamConstant.ID) Long id
     ) {
+        timetableValidator.validateTimetableNull(id);
 
+        TimetableResponse timetable = timetableService.getTimetableById(id);
+        return ResponseEntity.ok(timetable);
     }
 
-    //상세 조회
+
     //provide controller로 예약 가능자수 마이너스 처리 후 bool 값 리턴
     //등록시 권한검증 + 상점 검증(유저네임으로 상점 찾아서 id리턴 후 id랑 파라미터랑 검증하여 확인)
     //삭제
