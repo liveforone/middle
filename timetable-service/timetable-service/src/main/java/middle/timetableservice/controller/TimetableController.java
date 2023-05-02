@@ -1,17 +1,24 @@
 package middle.timetableservice.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import middle.timetableservice.authentication.AuthenticationInfo;
+import middle.timetableservice.controller.constant.ControllerLog;
 import middle.timetableservice.controller.constant.ParamConstant;
 import middle.timetableservice.controller.constant.TimetableUrl;
+import middle.timetableservice.controller.restResponse.RestResponse;
+import middle.timetableservice.dto.TimetableRequest;
 import middle.timetableservice.dto.TimetableResponse;
+import middle.timetableservice.feignClient.ShopFeignService;
+import middle.timetableservice.feignClient.constant.CircuitLog;
 import middle.timetableservice.service.TimetableService;
 import middle.timetableservice.validator.TimetableValidator;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,6 +29,9 @@ public class TimetableController {
 
     private final TimetableService timetableService;
     private final TimetableValidator timetableValidator;
+    private final AuthenticationInfo authenticationInfo;
+    private final ShopFeignService shopFeignService;
+    private final CircuitBreakerFactory<?, ?> circuitBreakerFactory;
 
     @GetMapping(TimetableUrl.TIMETABLE_PAGE_BY_SHOP)
     public ResponseEntity<?> timetablesPage(
@@ -43,8 +53,36 @@ public class TimetableController {
         return ResponseEntity.ok(timetable);
     }
 
+    @PostMapping(TimetableUrl.CREATE_TIMETABLE)
+    public ResponseEntity<?> createTimetable(
+            @RequestBody @Valid TimetableRequest timetableRequest,
+            BindingResult bindingResult,
+            @PathVariable(ParamConstant.SHOP_ID) Long shopId,
+            HttpServletRequest request
+    ) {
+        timetableValidator.validateAuth(authenticationInfo.getAuth(request));
 
-    //provide controller로 예약 가능자수 마이너스 처리 후 bool 값 리턴
-    //등록시 권한검증 + 상점 검증(유저네임으로 상점 찾아서 id리턴 후 id랑 파라미터랑 검증하여 확인)
+        String username = authenticationInfo.getUsername(request);
+        Long foundShopId = getShopByUsername(username);
+        timetableValidator.validateShop(foundShopId, shopId);
+        timetableValidator.validateBinding(bindingResult);
+
+        timetableService.createTimetable(shopId, username, timetableRequest);
+        log.info(ControllerLog.CREATE_TIMETABLE_SUCCESS.getValue());
+
+        return RestResponse.createTimetableSuccess();
+    }
+
+    private Long getShopByUsername(String username) {
+        return circuitBreakerFactory
+                .create(CircuitLog.SHOP_CIRCUIT.getValue())
+                .run(
+                        () -> shopFeignService.getShopByUsername(username),
+                        throwable -> null
+                );
+    }
+
+
+    //update
     //삭제
 }
