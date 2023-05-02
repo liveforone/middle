@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import middle.timetableservice.async.AsyncConstant;
 import middle.timetableservice.kafka.constant.KafkaLog;
 import middle.timetableservice.kafka.constant.Topic;
+import middle.timetableservice.repository.TimetableRepository;
 import middle.timetableservice.utility.CommonUtils;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.scheduling.annotation.Async;
@@ -18,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class TimetableConsumer {
 
-    //repos
+    private final TimetableRepository timetableRepository;
     ObjectMapper objectMapper = new ObjectMapper();
 
     @KafkaListener(topics = Topic.REMOVE_TIMETABLE)
@@ -32,7 +33,7 @@ public class TimetableConsumer {
         if (CommonUtils.isNull(shopId)) {
             log.info(KafkaLog.KAFKA_NULL_LOG.getValue());
         } else {
-            //repos
+            timetableRepository.deleteBulkByShopId(shopId);
             log.info(KafkaLog.REMOVE_RECOMMEND.getValue() + shopId);
         }
     }
