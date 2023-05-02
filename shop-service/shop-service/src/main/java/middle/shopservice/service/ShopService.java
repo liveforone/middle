@@ -61,9 +61,7 @@ public class ShopService {
 
     @Transactional
     public void createShop(ShopRequest shopRequest, String username) {
-        Shop shop = Shop.builder().build();
-        shop.create(shopRequest, username);
-
+        Shop shop = Shop.create(shopRequest, username);
         shopRepository.save(shop);
     }
 
