@@ -2,7 +2,6 @@ package middle.shopservice.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import middle.shopservice.dto.updateShop.UpdateAddressRequest;
@@ -40,26 +39,24 @@ public class Shop {
     private long good;
     private long bad;
 
-    @Builder
-    public Shop(Long id, String username, String shopName, String tel, String city, String street, String detail, long good, long bad) {
-        this.id = id;
+    private Shop(String username, String shopName, String tel, String city, String street, String detail) {
         this.username = username;
         this.shopName = shopName;
         this.tel = tel;
         this.city = city;
         this.street = street;
         this.detail = detail;
-        this.good = good;
-        this.bad = bad;
     }
 
-    public void create(ShopRequest shopRequest, String username) {
-        this.username = username;
-        this.shopName = shopRequest.getShopName();
-        this.tel = shopRequest.getTel();
-        this.city = shopRequest.getCity();
-        this.street = shopRequest.getStreet();
-        this.detail = shopRequest.getDetail();
+    public static Shop create(ShopRequest shopRequest, String username) {
+        return new Shop(
+                username,
+                shopRequest.getShopName(),
+                shopRequest.getTel(),
+                shopRequest.getCity(),
+                shopRequest.getStreet(),
+                shopRequest.getDetail()
+        );
     }
 
     public void updateShopName(UpdateNameRequest updateNameRequest) {
@@ -77,10 +74,12 @@ public class Shop {
     }
 
     public void increaseGood() {
-        this.good += 1;
+        final long BASIC_INCREASE = 1;
+        this.good += BASIC_INCREASE;
     }
 
     public void increaseBad() {
-        this.bad += 1;
+        final long BASIC_DECREASE = 1;
+        this.bad += BASIC_DECREASE;
     }
 }
