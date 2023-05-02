@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class TimeTableRequest {
+public class TimetableRequest {
 
     @Positive(message = "예약 시간을 반드시 기입해주세요.")
     private long reservationHour;
