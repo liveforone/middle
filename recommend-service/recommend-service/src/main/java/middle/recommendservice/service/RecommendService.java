@@ -25,8 +25,7 @@ public class RecommendService {
 
     @Transactional
     public void createRecommend(Long shopId, String username) {
-        Recommend recommend = Recommend.builder().build();
-        recommend.createRecommend(shopId, username);
+        Recommend recommend = Recommend.create(shopId, username);
         recommendRepository.save(recommend);
     }
 
