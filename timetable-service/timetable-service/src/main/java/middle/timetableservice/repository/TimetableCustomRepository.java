@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface TimetableCustomRepository {
 
+    Long findOneByIdForValidation(Long id);
     List<TimetableResponse> findTimetablesByShopId(Long shopId, Long lastId);
     Timetable findOneById(Long id);
 }

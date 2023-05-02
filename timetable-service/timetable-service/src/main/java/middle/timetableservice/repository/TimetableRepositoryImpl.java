@@ -17,6 +17,14 @@ public class TimetableRepositoryImpl implements TimetableCustomRepository{
     private final JPAQueryFactory queryFactory;
     QTimetable timetable = QTimetable.timetable;
 
+    public Long findOneByIdForValidation(Long id) {
+        return queryFactory
+                .select(timetable.id)
+                .from(timetable)
+                .where(timetable.id.eq(id))
+                .fetchOne();
+    }
+
     public List<TimetableResponse> findTimetablesByShopId(Long shopId, Long lastId) {
         return queryFactory
                 .select(TimetableRepositoryUtil.timetableDtoConstructor())
