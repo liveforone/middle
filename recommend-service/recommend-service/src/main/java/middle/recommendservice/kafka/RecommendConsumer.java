@@ -6,13 +6,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import middle.recommendservice.async.AsyncConstant;
 import middle.recommendservice.kafka.constant.KafkaLog;
-import middle.recommendservice.kafka.constant.Topic;
 import middle.recommendservice.repository.RecommendRepository;
 import middle.recommendservice.utility.CommonUtils;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static middle.recommendservice.kafka.constant.Topic.*;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +23,7 @@ public class RecommendConsumer {
     private final RecommendRepository recommendRepository;
     ObjectMapper objectMapper = new ObjectMapper();
 
-    @KafkaListener(topics = Topic.REMOVE_RECOMMEND)
+    @KafkaListener(topics = REMOVE_RECOMMEND)
     @Async(AsyncConstant.commandAsync)
     @Transactional
     public void removeRecommend(String kafkaMessage) throws JsonProcessingException {
