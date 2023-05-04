@@ -15,6 +15,11 @@ bin\windows\zookeeper-server-start.bat config\zookeeper.properties
 bin\windows\kafka-server-start.bat config\server.properties
 ```
 
+## 빌드 명령
+```
+./gradlew.bat clean build --exclude-task test
+```
+
 ## 서비스별 경로
 * discovery-service
 ```
