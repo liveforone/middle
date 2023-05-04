@@ -5,11 +5,12 @@ import lombok.RequiredArgsConstructor;
 import middle.shopservice.domain.QShop;
 import middle.shopservice.domain.Shop;
 import middle.shopservice.dto.ShopResponse;
-import middle.shopservice.repository.util.ShopRepositoryUtil;
 import middle.shopservice.utility.CommonUtils;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+
+import static middle.shopservice.repository.util.ShopRepositoryUtil.*;
 
 @Repository
 @RequiredArgsConstructor
@@ -53,7 +54,7 @@ public class ShopRepositoryImpl implements ShopCustomRepository {
 
     private ShopResponse createRecommendShop(Long recommendShopId) {
         return queryFactory
-                .select(ShopRepositoryUtil.shopDtoConstructor())
+                .select(shopDtoConstructor())
                 .from(shop)
                 .where(shop.id.eq(recommendShopId))
                 .fetchOne();
@@ -61,11 +62,11 @@ public class ShopRepositoryImpl implements ShopCustomRepository {
 
     public List<ShopResponse> findHomePage(Long recommendShopId, Long lastId) {
         List<ShopResponse> shopPageList = queryFactory
-                .select(ShopRepositoryUtil.shopDtoConstructor())
+                .select(shopDtoConstructor())
                 .from(shop)
-                .where(ShopRepositoryUtil.ltShopId(lastId))
+                .where(ltShopId(lastId))
                 .orderBy(shop.id.desc())
-                .limit(ShopRepositoryUtil.PAGE_SIZE)
+                .limit(PAGE_SIZE)
                 .fetch();
 
         if (CommonUtils.isNull(recommendShopId)) {
@@ -75,7 +76,7 @@ public class ShopRepositoryImpl implements ShopCustomRepository {
         ShopResponse recommendShop = createRecommendShop(recommendShopId);
 
         if (!CommonUtils.isNull(recommendShop)) {
-            shopPageList.add(ShopRepositoryUtil.ZERO_INDEX, recommendShop);
+            shopPageList.add(ZERO_INDEX, recommendShop);
         }
 
         return shopPageList;
@@ -86,16 +87,16 @@ public class ShopRepositoryImpl implements ShopCustomRepository {
             String shopName, Long recommendShopId, Long lastId
     ) {
         List<ShopResponse> shopPageList = queryFactory
-                .select(ShopRepositoryUtil.shopDtoConstructor())
+                .select(shopDtoConstructor())
                 .from(shop)
                 .where(
-                        ShopRepositoryUtil.searchCity(city),
-                        ShopRepositoryUtil.searchStreet(street),
-                        ShopRepositoryUtil.searchName(shopName),
-                        ShopRepositoryUtil.ltShopId(lastId)
+                        searchCity(city),
+                        searchStreet(street),
+                        searchName(shopName),
+                        ltShopId(lastId)
                 )
                 .orderBy(shop.id.desc())
-                .limit(ShopRepositoryUtil.PAGE_SIZE)
+                .limit(PAGE_SIZE)
                 .fetch();
 
         if (CommonUtils.isNull(recommendShopId)) {
@@ -105,7 +106,7 @@ public class ShopRepositoryImpl implements ShopCustomRepository {
         ShopResponse recommendShop = createRecommendShop(recommendShopId);
 
         if (!CommonUtils.isNull(recommendShop)) {
-            shopPageList.add(ShopRepositoryUtil.ZERO_INDEX, recommendShop);
+            shopPageList.add(ZERO_INDEX, recommendShop);
         }
 
         return shopPageList;

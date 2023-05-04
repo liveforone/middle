@@ -11,7 +11,11 @@ public class ShopRepositoryUtil {
 
     public static final int ZERO_INDEX = 0;
     public static final int PAGE_SIZE = 10;
-    static QShop shop = QShop.shop;
+    private static final QShop shop;
+
+    static {
+        shop = QShop.shop;
+    }
 
     public static BooleanExpression ltShopId(Long lastId) {
         if (lastId == 0) {
