@@ -59,8 +59,9 @@ public class MemberValidator {
         }
     }
 
-    public void validateAuth(Role auth) {
-        if (!auth.equals(Role.ADMIN)) {
+    public void validateAdmin(String username) {
+        Member member = memberRepository.findByUsername(username);
+        if (!member.getAuth().equals(Role.ADMIN)) {
             log.error(ControllerLog.ADMIN_FAIL.getValue());
             throw new MemberCustomException(ResponseMessage.PROHIBITION);
         }
