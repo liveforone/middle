@@ -1,13 +1,14 @@
 package middle.timetableservice.feignClient;
 
-import middle.timetableservice.feignClient.constant.ShopParamConstant;
-import middle.timetableservice.feignClient.constant.ShopUrl;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-@FeignClient(ShopUrl.BASE)
+import static middle.timetableservice.feignClient.constant.ShopParamConstant.*;
+import static middle.timetableservice.feignClient.constant.ShopUrl.*;
+
+@FeignClient(BASE)
 public interface ShopFeignService {
-    @PostMapping(ShopUrl.RETURN_SHOP_BY_USERNAME)
-    Long getShopByUsername(@PathVariable(ShopParamConstant.USERNAME) String username);
+    @PostMapping(RETURN_SHOP_BY_USERNAME)
+    Long getShopByUsername(@PathVariable(USERNAME) String username);
 }
