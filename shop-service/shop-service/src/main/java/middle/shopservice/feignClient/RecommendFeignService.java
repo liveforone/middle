@@ -1,12 +1,13 @@
 package middle.shopservice.feignClient;
 
-import middle.shopservice.feignClient.constant.RecommendUrl;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 
-@FeignClient(name = RecommendUrl.BASE)
+import static middle.shopservice.feignClient.constant.RecommendUrl.*;
+
+@FeignClient(name = BASE)
 public interface RecommendFeignService {
 
-    @GetMapping(RecommendUrl.RECOMMEND_SHOP)
+    @GetMapping(RECOMMEND_SHOP)
     Long getRecommendShopId();
 }
