@@ -7,13 +7,14 @@ import lombok.extern.slf4j.Slf4j;
 import middle.shopservice.async.AsyncConstant;
 import middle.shopservice.domain.Shop;
 import middle.shopservice.kafka.constant.KafkaLog;
-import middle.shopservice.kafka.constant.Topic;
 import middle.shopservice.repository.ShopRepository;
 import middle.shopservice.utility.CommonUtils;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static middle.shopservice.kafka.constant.Topic.*;
 
 @Service
 @RequiredArgsConstructor
@@ -24,7 +25,7 @@ public class ShopConsumer {
     private final ShopProducer shopProducer;
     ObjectMapper objectMapper = new ObjectMapper();
 
-    @KafkaListener(topics = Topic.SHOP_IS_GOOD)
+    @KafkaListener(topics = SHOP_IS_GOOD)
     @Async(AsyncConstant.commandAsync)
     @Transactional
     public void increaseShopIsGood(String kafkaMessage) throws JsonProcessingException {
@@ -41,7 +42,7 @@ public class ShopConsumer {
         }
     }
 
-    @KafkaListener(topics = Topic.SHOP_IS_BAD)
+    @KafkaListener(topics = SHOP_IS_BAD)
     @Async(AsyncConstant.commandAsync)
     @Transactional
     public void increaseShopIsBad(String kafkaMessage) throws JsonProcessingException {
@@ -58,7 +59,7 @@ public class ShopConsumer {
         }
     }
 
-    @KafkaListener(topics = Topic.REMOVE_SHOP_BELONG_MEMBER)
+    @KafkaListener(topics = REMOVE_SHOP_BELONG_MEMBER)
     @Async(AsyncConstant.commandAsync)
     @Transactional
     public void removeShopBelongMember(String kafkaMessage) throws JsonProcessingException {
