@@ -11,7 +11,11 @@ public class TimetableRepoUtil {
     public static final int PAGE_SIZE = 15;
     public static final long MINUS_ONE = -1;
     public static final long ZERO_VALUE = 0;
-    static QTimetable timetable = QTimetable.timetable;
+    private static final QTimetable timetable;
+
+    static {
+        timetable = QTimetable.timetable;
+    }
 
     public static BooleanExpression ltTimetableId(Long lastId) {
         if (lastId == 0) {

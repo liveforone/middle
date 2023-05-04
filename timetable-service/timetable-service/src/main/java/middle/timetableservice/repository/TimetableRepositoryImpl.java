@@ -5,10 +5,11 @@ import lombok.RequiredArgsConstructor;
 import middle.timetableservice.domain.QTimetable;
 import middle.timetableservice.domain.Timetable;
 import middle.timetableservice.dto.TimetableResponse;
-import middle.timetableservice.repository.util.TimetableRepoUtil;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+
+import static middle.timetableservice.repository.util.TimetableRepoUtil.*;
 
 @Repository
 @RequiredArgsConstructor
@@ -27,14 +28,14 @@ public class TimetableRepositoryImpl implements TimetableCustomRepository{
 
     public List<TimetableResponse> findTimetablesByShopId(Long shopId, Long lastId) {
         return queryFactory
-                .select(TimetableRepoUtil.timetableDtoConstructor())
+                .select(timetableDtoConstructor())
                 .from(timetable)
                 .where(
                         timetable.shopId.eq(shopId),
-                        TimetableRepoUtil.ltTimetableId(lastId)
+                        ltTimetableId(lastId)
                 )
                 .orderBy(timetable.id.desc())
-                .limit(TimetableRepoUtil.PAGE_SIZE)
+                .limit(PAGE_SIZE)
                 .fetch();
     }
 
@@ -50,12 +51,12 @@ public class TimetableRepositoryImpl implements TimetableCustomRepository{
                 .update(timetable)
                 .set(
                         timetable.remaining,
-                        timetable.remaining.add(TimetableRepoUtil.MINUS_ONE)
+                        timetable.remaining.add(MINUS_ONE)
                 )
-                .where(TimetableRepoUtil.minusRemainingCondition(id))
+                .where(minusRemainingCondition(id))
                 .execute();
 
-        return affectedRows > TimetableRepoUtil.ZERO_VALUE;
+        return affectedRows > ZERO_VALUE;
     }
 
     public void deleteOneById(Long id) {
