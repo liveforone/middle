@@ -1,6 +1,8 @@
 package middle.timetableservice.authentication.constant;
 
 public final class JwtConstant {
+    private JwtConstant() {}
+
     public static final String HEADER = "Authorization";
     public static final String CLAIM_NAME = "auth";
     public static final String BEARER_TOKEN = "Bearer";
