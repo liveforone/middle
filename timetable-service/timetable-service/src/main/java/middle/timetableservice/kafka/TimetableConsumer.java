@@ -6,13 +6,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import middle.timetableservice.async.AsyncConstant;
 import middle.timetableservice.kafka.constant.KafkaLog;
-import middle.timetableservice.kafka.constant.Topic;
 import middle.timetableservice.repository.TimetableRepository;
 import middle.timetableservice.utility.CommonUtils;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static middle.timetableservice.kafka.constant.Topic.*;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +23,7 @@ public class TimetableConsumer {
     private final TimetableRepository timetableRepository;
     ObjectMapper objectMapper = new ObjectMapper();
 
-    @KafkaListener(topics = Topic.REMOVE_TIMETABLE)
+    @KafkaListener(topics = REMOVE_TIMETABLE)
     @Async(AsyncConstant.commandAsync)
     @Transactional
     public void removeTimetable(String kafkaMessage) throws JsonProcessingException {
