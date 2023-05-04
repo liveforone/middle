@@ -14,14 +14,25 @@
 
 ## 예약시 잔여 예약 가능자 수 마이너스 매커니즘과 동시성 처리
 ### 기본적인 해결책
-* 필자는 update 쿼리에서 동시성을 처리했다.
 * 먼저 조회하여 잔여 가능수를 체크하는 방법도 있지만, 이 경우에도 동시성 문제에서 자유로울 수는 없다.
 * 조회하였을때에는 잔여수가 남아있어도, update 처리하면서 잔여수가 남아있지 않을 수 있기 때문이다.
+```
+Timetable timetable = repo.findOneById(id);
+if (timetable.remaining > 0) { //조회하여 검증
+    repo.minusRemaining(id);  
+} 
+```
 ### 필자의 해결책
 * update 쿼리에서 해결하였다. 
 * update를 처리하면서 조건절에서 동시성을 제어할 수 있는 조건을 거는것이다.
 * 일반적인 update쿼리는 id로 값을 찾아서 바로 값을 update해버렸겠지만,
 * 필자의 경우에는 id로 값을 찾고, 잔여 예약수 컬럼의 값이 0 초과인 경우에만 update를 처리하게 하였다.
+* 쿼리에 표현하면 아래와 같다.
+```
+UPDATE timetable 
+    SET remaining = remaining - 1 
+    WHERE id = id and remaining > 0;
+```
 ### 어떻게 업데이트가 성공했는지 파악하는가?
 * query dsl 에서 업데이트 쿼리가 날라가면 변경된 데이터 수가 리턴된다.
 * 즉 업데이트가 성공적으로 이루어졌다면, 리턴값이 1 이상이 되어야한다.
@@ -40,17 +51,17 @@ public boolean minusRemaining(Long id) {
         .update(timetable)
         .set(
               timetable.remaining,
-              timetable.remaining.add(TimetableRepoUtil.MINUS_ONE)
+              timetable.remaining.add(-1)
         )
-        .where(TimetableRepoUtil.minusRemainingCondition(id))
+        .where(minusRemainingCondition(id))
         .execute();
 
-  return affectedRows > TimetableRepoUtil.ZERO_VALUE;
+  return affectedRows > 0;
 }
 
 [where 조건절]
-public static BooleanExpression minusRemainingCondition(Long id) {
-    return timetable.id.eq(id)  //id가 동일하고
-        .and(timetable.remaining.gt(ZERO_VALUE));  //0 초과인 데이터
+private BooleanExpression minusRemainingCondition(Long id) {
+    return timetable.id.eq(id) 
+        .and(timetable.remaining.gt(0));  //remaining > 0
 }
 ```
