@@ -2,19 +2,24 @@
 * 예약 중계 서비스입니다.
 * **"MSA에서 경계나누기"**
 * **"추천 알고리즘"**
-* **"코드로 푼 동시성 문제"**
+* **"DB 동시성 문제 해결"**
 * 위의 3가지 키워드를 집중적으로 고민하고 다룬 프로젝트 입니다.
 
 # 0. 목차
 1. [프로젝트 소개](#1-프로젝트-소개)
-
+2. [프로젝트 주요 고민 및 해결](#2-프로젝트-주요-고민-및-해결)
+3. [요구사항](#3-요구사항)
+4. [서비스별 설계 문서](#4-서비스별-설계-문서)
+5. [프로젝트 설계 문서](#5-프로젝트-설계-문서)
 
 # 1. 프로젝트 소개
 ## 소개
 * 병원/미용실/극장 등 그 어떤 곳이던, 
 * 예약이 필요한 모든 곳에서 사용가능한 "범용 예약 중계 서비스" 입니다.
 * 도메인 모델 패턴을 적용하였고, 마이크로 서비스 아키텍처를 적용하였습니다.
-* 해당 프로젝트는 3가지의 주요 주제를 집중적으로 고민하고 다루었습니다.
+* 계층 별 주요 로직에는 모두 선언형으로 작성하여 복잡도를 낮추고 응집도를 극대화 시켰습니다.
+* [스타일 가이드](https://github.com/liveforone/study/tree/main/%5B%EB%82%98%EB%A7%8C%EC%9D%98%20%EC%8A%A4%ED%83%80%EC%9D%BC%20%EA%B0%80%EC%9D%B4%EB%93%9C%5D)를 지키며 개발하였습니다.
+* 해당 프로젝트는 3가지의 아래의 주요 주제를 집중적으로 고민하고 다루었습니다.
 ## 주요 주제 및 고민
 #### 1. MSA에서 경계나누기
 * MSA에서 어떻게 경계를 나누고 어떤 기준으로 서비스를 분리했는지 고민하였습니다.
@@ -23,8 +28,10 @@
 * 추천 알고리즘의 다양한 사례를 살펴보고, 
 * 인프라가 많이 갖추어지지 않은 작은 기업에서도 적용할 수 있는 추천 알고리즘에 대해 고민해보았습니다.
 #### 3. 동시성 문제 처리
-* 예약에서 동시성 문제는 논리적 에러/장애를 야기하는 중요한 문제입니다.
-* 동시성 문제를 DB단이 아닌 프레임워크 단에서 코드로 해결한 방법을 보실 수 있습니다.
+* 예약을 처리하면서 잔여 예약가능수를 마이너스 하는 과정에서 동시성문제가 발생했습니다.
+* 이 문제는 논리적 에러/장애를 야기하는 중요한 문제입니다.
+* 성능을 떨어뜨리지 않으면서 동시성문제를 처리하는 것을 고민해 보았습니다.
+* [동시성 문제 해결](https://github.com/liveforone/middle/blob/master/Documents/SOLVE_CONCURRENCY_PROBLEM.md)
 ## 기술 스택
 * Framework : Spring Boot 3.0.5~ & Spring Cloud
 * Lang : Java17
@@ -36,61 +43,33 @@
 * Util : Apache Commons Lang3, LomBok
 * Batch : Spring scheduler + ORM (배치 프레임워크 이용 없이 순수 ORM과 스케줄러로 구현)
 
+# 2. 프로젝트 주요 고민 및 해결
+* [MSA에서 경계나누기]()
+* [추천 알고리즘]()
+* [음수가 되면 안되는 컬럼에서 동시성 문제 해결](https://github.com/liveforone/middle/blob/master/Documents/SOLVE_CONCURRENCY_PROBLEM.md)
+* [배치 처리는 어떤 메커니즘으로 만들어야할까](https://github.com/liveforone/middle/blob/master/Documents/BATCH_PROCESSING.md)
+* [조회 쿼리와 페이징 성능 최적화]()
+* [count 쿼리 성능 최적화]()
+* [repository 유틸 클래스에서 Q클래스 중복]()
+* [UUID 필요성]()
+
+# 3. 요구사항
+
+
+# 4. 서비스별 설계 문서
+* [유저 서비스](https://github.com/liveforone/middle/blob/master/Documents/README_USER.md)
+* [상점 서비스](https://github.com/liveforone/middle/blob/master/Documents/README_SHOP.md)
+* [추천 서비스](https://github.com/liveforone/middle/blob/master/Documents/README_RECOMMEND.md)
+* [타임테이블 서비스](https://github.com/liveforone/middle/blob/master/Documents/README_TIMETABLE.md)
+* [예약 서비스]()
+* [리뷰 서비스]()
+
+# 5. 프로젝트 설계 문서
+* [도메인 모델 패턴]
+
 ## 서비스
-유저 서비스
-상점 서비스
-추천 서비스
-시간표 서비스(timetable 상점에서 등록한 예약과, 그 예약들의 예약가능자 수를 저장하는 두개의 테이블을 저장함)
 예약 서비스(사용자가 예약하는 서비스, 예약 기록 저장)
 리뷰 서비스(good/bad로 평점 매김)
-
-## 예약서비스 동시성 문제
-같은 시간에 가능한 예약이 여러개일 수가 있다.
-예시로 한 병원에 4시반에 의사 3명이 동시에 진찰을 볼 수 있다면 그 시간에 3명의 환자를 예약받을 수 있을것이다.
-그러나 하나만 예약이 가능할때 거의 동시에 예약을 한다면 어떻게 처리해야할까?
-이를 통해 예약이 예약 가능 수를 초과한다면..?
-거의 동일한 시간에 발생하는 예약에 대해 예약 가능수를 초과하지 않도록 하는 방법에 대해 생각해보아야한다.
-1. 예약이 insert 쿼리로 나갈경우
-데이터가 생성되는 방식으로 예약을 할 때에는
-가게 주인이, 예약자 리스트에서 두번째 혹은 초과 예약자를 예약 취소시키고, 초과 되었다고 연락함.
-2. 동기로 처리
-해당 서비스 메소드를 동기로 처리하면된다.
-async 어노테이션 달지 말아라.
-완료 순서가 보장되지 않으니,, 고민은 좀 해봐야겠다만.. 동기로 처리하는 쪽으로 마음 굳힘
-3. 결론 : 자바는 음수를 제한하지 않는다. Wrapper를 이용해야함. 그리고 음수를 제한하다고 동시성에서 자유로워지진 않는다.
-동시성 문제는 쓰기작업시 발생하며, 주로
-값을 공유하는 경우에 문제가 생긴다.
-
-값을 공유한다는 것은 a회원이 자신의 값을 쓰기작업하는 경우를 뜻하는 것이 아닌.
-
-모두가 공유하여사용하는 값을 a회원도 쓰고 b 회원도 쓰는 경우 발생한다.
-모든 경우가 문제가 생기는 것이아니기에 공유하는 값을 동시에 쓰기작업이 가능할때
-동시성문제가 발생하는지 따져보아야한다.
-
-특히나 동시성에서는 반드시 비동기 처리를 하면안된다. 이러면 진짜 되돌릴수도없다.. 롤백 불가
-
-UPDATE item_quantity
-SET quantity = quantity - ${order count}
-WHERE id=${id}
-AND quantity >= ${order count}
-
-처럼 조건에 0이상 같은 조건을 걸어서 이러한 경우가 아니라면 예외가 발생하게 한다.
-
-실패시켜보고 에러 체크하기
-
-기본적으로 더티체킹을 사용하기 위해 단건 조회를 하지않나?
-따라서 이때 저렇게 조건 쿼리를 따로 만들어서 처리해도될것이다.
-업데이트 쿼리를 굳이 만들지않더라도.
-물론 업데이트 쿼리만 존재한다면 위와 같은 업데이트 쿼리가 필요할것이다.
-
-아 이경우는 더티체킹을 사용하면안된다.
-동시성이 문제가 되는경우 db에게 위임할 수 있도록 직접 쿼리르 날린다. 
-더티체킹의 특성상 즉각 반응이 어려울수있두.
-따라서 객체지향적이지 않지만 직접 쿼리를 날린다. 이때 위처럼 조건절을 넣어서 처리한다.
-4. 링크 
-[단건 프로젝션](https://icarus8050.tistory.com/m/5)
-[싱크로나이즈드](https://thalals.tistory.com/370)
-[어노테이션과 싱크로나이즈드 같이 사용](https://kdhyo98.tistory.com/59)
 
 
 ## 수익 모델
@@ -98,54 +77,8 @@ AND quantity >= ${order count}
 이번 프로젝트에서는 새롭게 플랫폼에 맞는 수익모델을 구상해보고
 구현까지 해보았다.(비즈니스 밸류 창출)
 
-## 동기 비동기 적절사용
-이커머스처럼 상품 조회(쿼리)가 많고 주문(커맨드)가 적은 형태가 아니라
-예약(커맨드)이 많고, 예약조회(쿼리)가 더 적기 때문에 카프카 커넥트를 이용해 커맨드에 대한 처리를 비동기로 처리해 서버에 부담을 줄인다.
-사실상 DB와 서버가 연결되어있긴 하지만 조회용도(조회는 반드시 동기로 처리해야하기때문에 조회를 DB와 서버를 끊는 다고 해결할 순 없다.)이지, 커맨드는 모두 비동기로 처리한다.
-또한 이번 어플리케이션에서 조회는 상품처럼 많은 양을 가져오진 않기때문에(기본이 검색을 통해 필요한 데이터만 가져오기 때문) 부하가 심하진 않다.
 
-## 비동기
-void 함수같은 경우 async로 선언해서 task를 날려버리고 무시한다.
-repo 함수같은 경우 selete 쿼리가 아닌 이상 async로 선언해서 날려버리고 무시한다.
-=> task 속도가 향상, 사용자에게 정상적으로 api가 처리됬다는 메세지를 빨리 보여줄수 있어서 순환효과를 가져온다.
-
-
-## 링크
-### 비동기와 쓰레드 풀
-[async 간단 설명](https://bepoz-study-diary.tistory.com/m/399)
-[스프링 쓰레드 풀](https://velog.io/@tritny6516/Spring-Thread-Pool)
-[비동기 쓰레드 풀1](https://antkdi.github.io/posts/post-java-springboot-async/)
-[비동기 쓰레드 풀2](https://sabarada.tistory.com/m/215)
-
-## 도메인 모델 패턴
-도메인 모델 패턴을 사용할 경우 서비스로직이 작아진다.
-또한 도메인 모델 패턴을 사용했다고 명시한다(문서에).
-도메인 모델 패턴에서 필수적인 요소는 조회다.
-id = 1이라는 order를 취소하려면
-Orders order = findOneById(id);
-으로 조회를 해놓고
-Orders 엔티티에 작성된 cancel()이라는 함수를 
-order.cancel();으로 이용해 상태 등을 변경하는 비즈니스 로직 처리를 해주면된다.
-엔티티의 멤버 함수는 this를 자주 이용하게 될것이다.
-[도메인 모델](https://applepick.tistory.com/153)
-
-## 예외는 전역에서 처리
-예외는 컨트롤러에서 끝내고 서비스에선 앞에서 처리되었으니깐..
-으로 일관하지 말고 서비스에서도 처리해야한다.
-exceptionhandler는 모든 메소드에 다 붙여야하나 controller advice는 그러지 않아도 알아서 컨트롤러를 통해 발생된 모든 예외를 다 처리해준다. 서비스로직에서 예외가 발생해도 그대로 예외를 컨트롤러로 넘겨주면된다.
-validator == true => throw new Exception();
-@ControllerAdvice는 Controller로 들어온 요청에 대해 에러를 핸들하게 되는데, Controller에서 Service를 호출하였을 때, 해당 Service에서 Exception을 발행하였다면, 해당 Service의 에러도 같이 처리하게 됩니다. 예외 클래스를 분리해서 등록하여 사용해 보세요.
-[예외처리](https://kwonyeeun.tistory.com/64)
-[커스텀 예외처리](https://velog.io/@hwsa1004/Spring-%EC%98%88%EC%99%B8%EC%B2%98%EB%A6%ACCustom-Exception-%EB%A7%8C%EB%93%A4%EA%B8%B0)
-[커스텀 예외처리2](https://www.daddyprogrammer.org/post/446/spring-boot2-5-exception-handling-controlleradvice/)
-[커스텀 예외처리3](https://thalals.tistory.com/272)
-
-## 영향지도 - 스타일가이드에 작성
-* 영향지도를 만들어서 경계를 나누어라
-* 누가 누구에게 영향을 끼치고, 누가 누구에게 영향을 받는지 영향지도를 그려보면, 쉽게 이벤트/도메인 별 경계를 나누기 쉬워진다.
-* 이 영향지도를 바탕으로 서비스를 나누고,
-* 서비스간 통신 설계를 꾸려나가면된다.
-### 예시
+## msa 경계
 * 상점예약 서비스와 예약서비스 두개의 분리를 고민하며 만들어낸 방법이다.
 * 3개의 테이블이 필요할것으로 예상된다.
 * 첫째는 예약을 기록하는 테이블, 
@@ -158,17 +91,34 @@ validator == true => throw new Exception();
 * 예약을 기록하는 테이블도 따로 서비스로 분리해도 문제가 생기지 않게 된다.
 * 따라서 3개의 테이블을 바탕으로 2개의 서비스로 분리가 가능하며, 이를 통해 지속적인 쿼리요청에 대비할 수 있는 구조가 만들어진다.
 * 또한 이렇게 영향지도를 그려서 쉽게 경계를 분리해, 설계단에서 미리 대응을 할 수 있게된다.
+## 예약 서비스 : 예약서비스를 msa 경계나누기 문서에도 정리
+단일 책임 원칙을 위해서 서비스 끼리는 종속적이면 안된다.
+그러나 기존 설계는 너무 서비스끼리 종속적이다.
+이를 분리하면
+예약 서비스에서 타임테이블로 쿼리를 보내서 예약 가능자수를 마이너스한다.
+이때 update쿼리가 불가능하여 에러를 내면 bool 값으로 false를 보내고,
+성공한다면 true를 보낸다.
+예약 서비스에서는 이를 validator로 체크하여 최종결과를 사용자에게 리턴한다.
+## 서비스 분리
+단일 책임 원칙을 위해서 서비스 끼리는 종속적이면 안된다.
+그러나 기존 설계는 너무 서비스끼리 종속적이다.
+이를 분리하면
+예약 서비스에서 타임테이블로 쿼리를 보내서 예약 가능자수를 마이너스한다.
+이때 update쿼리가 불가능하여 에러를 내면 bool 값으로 false를 보내고,
+성공한다면 true를 보낸다.
+예약 서비스에서는 이를 validator로 체크하여 최종결과를 사용자에게 리턴한다.
+
 
 ## UUID 필요성 - 고민한점
 * [uuid링크](https://wakestand.tistory.com/361)
 * email과 같이 외부에 종속되는 요소를 식별자로 사용하지 않고 uuid를 만든점 기술, 더하여 uuid의 중복을 완전히 걱정하기 싫어서 문자열도 덧댐, 이메일변경시 다바뀜(식별불가능, 주민번호의 사례를 인용)
 
-## 도메인 모델 패턴 적용 이유
+## 도메인 모델 패턴 적용 이유 - 설계
 돈이 오가는 송금 서비스의 경우 도메인 모델을 사용하면 그 효과가 극대화된다.
 직접 만들어보니 도메인 모델을 사용하지 않아서 복잡한 비즈니스 로직때문에 어플리케이션 레이어(service 계층)이 아주 더러워지고, 이해하기 난해했는데, 이것을 적용하면 아주 제격이겠다는 생각이 들었다.
 이러한 이유로 향후 프로젝트들에 도메인 모델패턴을 적용하고 있다.
 
-## 기술
+## 기술 - 고민점에 적기
 1. 비동기 -> 업데이트, insert, delete
 command의 경우 비동기로, 쿼리는 동기로
 조건은 void, 즉 리턴값이 없어야함. 커맨드, 즉 명령에 관한 작업은 모두 비동기로 처리(명령만 내리고 바로 할일을 하게하기위해)
@@ -208,6 +158,8 @@ this.object -= 값
 12. 동적쿼리 처럼 함수를 집약적으로 설계한다. 같은일을 하는 함수를 호출부에 따라 분리하지 말고 추상화 시켜서 하나로 만들어서 함수 내부에서 분류해서 작동하도록 한다.
 13. 상수를 담을 그릇은 final class로 한다.
 14. 밸리데이터는 선언형으로 하고, 선언형으로하기위해 컨트로럴 어드바이스와 커스텀 예외를 등록한다. dto validation 시 주의 점은 @Email 어노테이션 다음에 꼭 @NotBlank도 달아주어야 한다는 것이다. -> 컨트롤러를 선언형으로 함
+15. 상수는 static import 형태로 사용한다. 그러나 static import는 여러 곳에서 사용되는 상수에는 사용하면 안되고, 오로지 한 곳에서, 누가봐도 딱 그 상수클래스가 사용된 경우에 사용하자. 또한 private 생성자를 만들어서 생성을 막는다. 이때 noargs(access = private)이 아닌 직접 만들어서 사용한다.
+16. 리파지토리 유틸클래스에서 큐클래스 중복되는것을 static 블록과 final로 선언하여 동적으로 생성된 것 까지 참조 가능하도록 설정한다.
 
 ## 프로젝트시 확인
 1. async 와 Authorization 폴더 복붙
@@ -234,82 +186,28 @@ request param은 문자일 경우 required=false로
 그것은 count쿼리로 날린 전체 테이블의 수이고, 이를 저장해 하루 혹은 1시간 마다 배치로 다시 전체 테이블의 수를 업데이트하는(광고를 등록하는 수가 하루에 많지 않을 것이기 때문에 매번 count 쿼리를 날리는게 상당히 부담이 된다.) 방식을 사용하면 count 쿼리를 매번 날릴때와 달리 성능이 어마어마하게 최적화 될것이다.
 애초에 데이터를 읽는다는 것이 속도가 더 느리다.
 즉 count(컬럼)이 count(*)보다 느리다.
+또한 최고 id를 가져오는 것을 사용 불가능
 https://parksay-dev.tistory.com/m/48
-https://m.blog.naver.com/birdparang/221574304831
-마지막 값
 
-## 예약 서비스
-단일 책임 원칙을 위해서 서비스 끼리는 종속적이면 안된다.
-그러나 기존 설계는 너무 서비스끼리 종속적이다.
-이를 분리하면
-예약 서비스에서 타임테이블로 쿼리를 보내서 예약 가능자수를 마이너스한다.
-이때 update쿼리가 불가능하여 에러를 내면 bool 값으로 false를 보내고,
-성공한다면 true를 보낸다.
-예약 서비스에서는 이를 validator로 체크하여 최종결과를 사용자에게 리턴한다.
+## 모듈화시 Q클래스 중복 - 고민점
+Qclass를 이중으로 참조하는것을 막기위해
+클래스 내부에서 private static final QClass class;로 선언하고
+static {
+        shop = QShop.shop;
+    }
+을 이용해서 static 블럭으로 클래스 변수를 초기화시켜 사용한다.
+이렇게 생성한 큐클래스는 동적으로 생성된 큐클래스를 참조하는 것도 가능해져서 할 수 있는것이 늘어난다.
+후에 util클래스를 리파지토리임플에서 static import처리까지해주면 아주 깔끔한 코드가 탄생한다.
 
 ## 할것
-* 타임테이블 서비스 제작전 서비스끼리 주고받는 영향 체크하여 토픽/프로바이드컨트롤러/페인클라이언트 정리
-* 타임테이블 서비스제작
+* 예약 서비스 제작(reservation-service)
+* 예약시 remaining 0인 경우 timetable이 false 반환 테스트
+
+## 문서화
+* msa 경계 나누기 문서화
 * count쿼리 성능 최적화 문서 만들고 추천 서비스 리드미에 링크 추가
-* 페이징 문서 만들어서 no offset이랑, 페이지 사이즈 10으로 고정 명시 + 스타일 가이드에도 작성
+* 페이징 문서 만들어서 no offset이랑, 페이지 사이즈 고정 명시 + 스타일 가이드에도 작성
 
 ## 테스트 할 것
 * 리뷰 서비스 제작 후 상점 좋아요/싫어요 정상 작동 테스트
-* 시간표 서비스 제작후 유저 탈퇴시 시간표 삭제 테스트
-
-## 문서화
-* 더이상 문서화시에 위키를 만들 필요가 없다.
-* 깃헙에서 도큐먼트레포에 들어가서 각 문서별로 링크를 복사하여 넣는다. 이렇게하면 파일을 두개씩 수정할 필요가없다.
-
-## 리팩토링
-* 코드 요구사항에 '기술' 내용을 정리하고, 스타일 가이드 내용 제목만 해서 필요한것 간단히 작성
-* 향후 '기술' 태그 바탕으로 기존 프로젝트 리팩토링
-
-## 밸리데이터
-```
-public class ValidationException extends RuntimeException {
-    public ValidationException(String message) {
-        super(message);
-    }
-}
-
-public class MyValidator {
-    public void validate1(MyRequestDto requestDto) {
-        // 검증 로직 수행
-        if (...) {
-            throw new ValidationException("Error message 1");
-        }
-    }
-
-    public void validate2(MyRequestDto requestDto) {
-        // 검증 로직 수행
-        if (...) {
-            throw new ValidationException("Error message 2");
-        }
-    }
-}
-
-@RestController
-public class MyController {
-    private final MyValidator validator;
-
-    public MyController(MyValidator validator) {
-        this.validator = validator;
-    }
-
-    @PostMapping("/myendpoint")
-    public ResponseEntity<?> myEndpoint(@RequestBody MyRequestDto requestDto) {
-        validator.validate1(requestDto);
-        validator.validate2(requestDto);
-
-        // 검증 성공 시에는 비즈니스 로직 수행
-        return ResponseEntity.ok().build();
-    }
-
-    @ExceptionHandler(ValidationException.class)
-    public ResponseEntity<String> handleValidationException(ValidationException ex) {
-        // 검증 실패 시에는 예외 메시지를 반환
-        return ResponseEntity.badRequest().body(ex.getMessage());
-    }
-}
-```
+* 회원탈퇴시(=상점 삭제시) 리뷰 서비스 삭제
