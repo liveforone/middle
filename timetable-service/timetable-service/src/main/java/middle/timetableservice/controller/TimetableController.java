@@ -6,8 +6,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import middle.timetableservice.authentication.AuthenticationInfo;
 import middle.timetableservice.controller.constant.ControllerLog;
-import middle.timetableservice.controller.constant.ParamConstant;
-import middle.timetableservice.controller.constant.TimetableUrl;
 import middle.timetableservice.controller.restResponse.RestResponse;
 import middle.timetableservice.dto.TimetableRequest;
 import middle.timetableservice.dto.TimetableResponse;
@@ -23,6 +21,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static middle.timetableservice.controller.constant.ParamConstant.*;
+import static middle.timetableservice.controller.constant.TimetableUrl.*;
+
 @RestController
 @RequiredArgsConstructor
 @Slf4j
@@ -34,19 +35,19 @@ public class TimetableController {
     private final ShopFeignService shopFeignService;
     private final CircuitBreakerFactory<?, ?> circuitBreakerFactory;
 
-    @GetMapping(TimetableUrl.TIMETABLE_PAGE_BY_SHOP)
+    @GetMapping(TIMETABLE_PAGE_BY_SHOP)
     public ResponseEntity<?> timetablesPage(
-            @PathVariable(ParamConstant.SHOP_ID) Long shopId,
-            @RequestParam(name = ParamConstant.LAST_ID, defaultValue = ParamConstant.DEFAULT_ID) Long lastId
+            @PathVariable(SHOP_ID) Long shopId,
+            @RequestParam(name = LAST_ID, defaultValue = DEFAULT_ID) Long lastId
     ) {
         List<TimetableResponse> timetables = timetableService.getTimetablesByShopId(shopId, lastId);
 
         return ResponseEntity.ok(timetables);
     }
 
-    @GetMapping(TimetableUrl.TIMETABLE_DETAIL)
+    @GetMapping(TIMETABLE_DETAIL)
     public ResponseEntity<?> timetableDetail(
-            @PathVariable(ParamConstant.ID) Long id
+            @PathVariable(ID) Long id
     ) {
         timetableValidator.validateTimetableNull(id);
 
@@ -54,11 +55,11 @@ public class TimetableController {
         return ResponseEntity.ok(timetable);
     }
 
-    @PostMapping(TimetableUrl.CREATE_TIMETABLE)
+    @PostMapping(CREATE_TIMETABLE)
     public ResponseEntity<?> createTimetable(
             @RequestBody @Valid TimetableRequest timetableRequest,
             BindingResult bindingResult,
-            @PathVariable(ParamConstant.SHOP_ID) Long shopId,
+            @PathVariable(SHOP_ID) Long shopId,
             HttpServletRequest request
     ) {
         timetableValidator.validateAuth(authenticationInfo.getAuth(request));
@@ -83,9 +84,9 @@ public class TimetableController {
                 );
     }
 
-    @PutMapping(TimetableUrl.UPDATE_TIME)
+    @PutMapping(UPDATE_TIME)
     public ResponseEntity<?> updateTime(
-            @PathVariable(ParamConstant.ID) Long id,
+            @PathVariable(ID) Long id,
             @RequestBody UpdateTimeRequest updateTimeRequest,
             HttpServletRequest request
     ) {
@@ -97,9 +98,9 @@ public class TimetableController {
         return RestResponse.updateTimeSuccess();
     }
 
-    @DeleteMapping(TimetableUrl.DELETE_TIMETABLE)
+    @DeleteMapping(DELETE_TIMETABLE)
     public ResponseEntity<?> deleteTimetable(
-            @PathVariable(ParamConstant.ID) Long id,
+            @PathVariable(ID) Long id,
             HttpServletRequest request
     ) {
         timetableValidator.validateTimetableNullAndOwner(id, authenticationInfo.getUsername(request));
