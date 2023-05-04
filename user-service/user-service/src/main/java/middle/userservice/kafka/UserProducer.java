@@ -5,10 +5,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import middle.userservice.async.AsyncConstant;
 import middle.userservice.kafka.constant.KafkaLog;
-import middle.userservice.kafka.constant.Topic;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+
+import static middle.userservice.kafka.constant.Topic.*;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +22,7 @@ public class UserProducer {
     @Async(AsyncConstant.commandAsync)
     public void removeShopBelongMember(String username) {
         String jsonOrder = gson.toJson(username);
-        String topic = Topic.REMOVE_SHOP_BELONG_MEMBER;
+        String topic = REMOVE_SHOP_BELONG_MEMBER;
         kafkaTemplate.send(topic, jsonOrder);
         log.info(KafkaLog.KAFKA_SEND_LOG.getValue() + topic);
     }
