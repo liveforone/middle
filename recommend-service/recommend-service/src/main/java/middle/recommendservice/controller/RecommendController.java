@@ -19,6 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import static middle.recommendservice.controller.constant.RecommendUrl.*;
+
 @RestController
 @RequiredArgsConstructor
 @Slf4j
@@ -30,7 +32,7 @@ public class RecommendController {
     private final AuthenticationInfo authenticationInfo;
     private final RecommendValidator recommendValidator;
 
-    @GetMapping(RecommendUrl.MY_RECOMMEND)
+    @GetMapping(MY_RECOMMEND)
     public ResponseEntity<?> myRecommend(HttpServletRequest request) {
         String username = authenticationInfo.getUsername(request);
         recommendValidator.validateRecommendNull(username);
@@ -39,7 +41,7 @@ public class RecommendController {
         return ResponseEntity.ok(recommend);
     }
 
-    @PostMapping(RecommendUrl.CREATE_RECOMMEND)
+    @PostMapping(CREATE_RECOMMEND)
     public ResponseEntity<?> createRecommend(HttpServletRequest request) {
         String username = authenticationInfo.getUsername(request);
         recommendValidator.validateDuplicateRecommend(username);
@@ -61,7 +63,7 @@ public class RecommendController {
                 );
     }
 
-    @PutMapping(RecommendUrl.ADD_IMPRESSION)
+    @PutMapping(ADD_IMPRESSION)
     public ResponseEntity<?> addImpression(
             @RequestBody @Valid ImpressionRequest impressionRequest,
             BindingResult bindingResult,
