@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import middle.userservice.authentication.AuthenticationInfo;
 import middle.userservice.controller.constant.ControllerLog;
-import middle.userservice.controller.constant.MemberUrl;
 import middle.userservice.controller.restResponse.RestResponse;
 import middle.userservice.dto.changeInfo.ChangeEmailRequest;
 import middle.userservice.dto.changeInfo.ChangePasswordRequest;
@@ -24,6 +23,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static middle.userservice.controller.constant.MemberUrl.*;
+
 @RestController
 @RequiredArgsConstructor
 @Slf4j
@@ -33,17 +34,17 @@ public class MemberController {
     private final MemberValidator memberValidator;
     private final AuthenticationInfo authenticationInfo;
 
-    @GetMapping(MemberUrl.HOME)
+    @GetMapping(HOME)
     public ResponseEntity<?> home() {
         return RestResponse.home();
     }
 
-    @GetMapping(MemberUrl.SIGNUP)
+    @GetMapping(SIGNUP)
     public ResponseEntity<?> signupPage() {
         return RestResponse.signupPage();
     }
 
-    @PostMapping(MemberUrl.SIGNUP)
+    @PostMapping(SIGNUP)
     public ResponseEntity<?> signup(
             @RequestBody @Valid MemberSignupRequest memberSignupRequest,
             BindingResult bindingResult
@@ -59,12 +60,12 @@ public class MemberController {
         return RestResponse.signupSuccess();
     }
 
-    @GetMapping(MemberUrl.OWNER_SIGNUP)
+    @GetMapping(OWNER_SIGNUP)
     public ResponseEntity<?> signupOwnerPage() {
         return RestResponse.signupPage();
     }
 
-    @PostMapping(MemberUrl.OWNER_SIGNUP)
+    @PostMapping(OWNER_SIGNUP)
     public ResponseEntity<?> signupOwner(
             @RequestBody @Valid MemberSignupRequest memberSignupRequest,
             BindingResult bindingResult
@@ -80,12 +81,12 @@ public class MemberController {
         return RestResponse.signupSuccess();
     }
 
-    @GetMapping(MemberUrl.LOGIN)
+    @GetMapping(LOGIN)
     public ResponseEntity<?> loginPage() {
         return RestResponse.loginPage();
     }
 
-    @PostMapping(MemberUrl.LOGIN)
+    @PostMapping(LOGIN)
     public ResponseEntity<?> login(
             @RequestBody @Valid MemberLoginRequest memberLoginRequest,
             BindingResult bindingResult,
@@ -101,7 +102,7 @@ public class MemberController {
         return RestResponse.loginSuccess();
     }
 
-    @GetMapping(MemberUrl.MY_PAGE)
+    @GetMapping(MY_PAGE)
     public ResponseEntity<MemberResponse> myPage(HttpServletRequest request) {
         String username = authenticationInfo.getUsername(request);
         MemberResponse member = memberService.getMemberByUsername(username);
@@ -109,12 +110,13 @@ public class MemberController {
         return ResponseEntity.ok(member);
     }
 
-    @PatchMapping(MemberUrl.CHANGE_EMAIL)
+    @PatchMapping(CHANGE_EMAIL)
     public ResponseEntity<?> changeEmail(
             @RequestBody @Valid ChangeEmailRequest changeEmailRequest,
             BindingResult bindingResult,
             HttpServletRequest request
     ) {
+        memberValidator.validateBinding(bindingResult);
         memberValidator.validateDuplicateEmail(changeEmailRequest.getEmail());
 
         String username = authenticationInfo.getUsername(request);
@@ -124,7 +126,7 @@ public class MemberController {
         return RestResponse.changeEmailSuccess();
     }
 
-    @PatchMapping(MemberUrl.CHANGE_PASSWORD)
+    @PatchMapping(CHANGE_PASSWORD)
     public ResponseEntity<?> changePassword(
             @RequestBody @Valid ChangePasswordRequest changePasswordRequest,
             BindingResult bindingResult,
@@ -143,7 +145,7 @@ public class MemberController {
         return RestResponse.changePasswordSuccess();
     }
 
-    @DeleteMapping(MemberUrl.WITHDRAW)
+    @DeleteMapping(WITHDRAW)
     public ResponseEntity<?> withdraw(
             @RequestBody String password,
             HttpServletRequest request
@@ -160,12 +162,10 @@ public class MemberController {
         return RestResponse.withdrawSuccess();
     }
 
-    @GetMapping(MemberUrl.ADMIN)
+    @GetMapping(ADMIN)
     public ResponseEntity<?> adminPage(HttpServletRequest request) {
         String username = authenticationInfo.getUsername(request);
-        MemberResponse foundMember = memberService.getMemberByUsername(username);
-
-        memberValidator.validateAuth(foundMember.getAuth());
+        memberValidator.validateAdmin(username);
 
         List<MemberResponse> allMembers = memberService.getAllMemberForAdmin();
         log.info(ControllerLog.ADMIN_SUCCESS.getValue());
@@ -173,7 +173,7 @@ public class MemberController {
         return ResponseEntity.ok(allMembers);
     }
 
-    @GetMapping(MemberUrl.PROHIBITION)
+    @GetMapping(PROHIBITION)
     public ResponseEntity<?> prohibition() {
         return RestResponse.prohibition();
     }

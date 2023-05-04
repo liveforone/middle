@@ -2,6 +2,8 @@ package middle.userservice.controller.constant;
 
 public final class MemberUrl {
 
+    private MemberUrl() {}
+
     public static final String HOME = "/";
     public static final String SIGNUP = "/signup";
     public static final String OWNER_SIGNUP = "/signup/owner";
