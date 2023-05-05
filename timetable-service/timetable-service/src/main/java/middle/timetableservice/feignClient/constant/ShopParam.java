@@ -1,8 +1,8 @@
 package middle.timetableservice.feignClient.constant;
 
-public final class ShopParamConstant {
+public final class ShopParam {
 
-    private ShopParamConstant() {}
+    private ShopParam() {}
 
     public static final String USERNAME = "username";
 }
