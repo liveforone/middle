@@ -11,4 +11,7 @@ import static middle.reservationservice.feignClient.constant.TimetableUrl.*;
 public interface TimetableFeignService {
     @PostMapping(RESERVE_TIMETABLE)
     boolean reserveTimetable(@PathVariable(ID) Long timetableId);
+
+    @PostMapping(CANCEL_TIMETABLE)
+    boolean cancelReservationTimetable(@PathVariable(ID) Long timetableId);
 }
