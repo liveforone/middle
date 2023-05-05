@@ -22,7 +22,7 @@ public class ProvideControllerToReservation {
         return timetableService.minusRemaining(id);
     }
 
-    @PostMapping(CANCEL_RESERVE_TIMETABLE)
+    @PostMapping(CANCEL_TIMETABLE)
     public boolean cancelTimetable(
             @PathVariable(ID) Long id
     ) {
