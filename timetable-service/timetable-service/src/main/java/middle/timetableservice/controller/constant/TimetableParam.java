@@ -1,8 +1,8 @@
 package middle.timetableservice.controller.constant;
 
-public final class ParamConstant {
+public final class TimetableParam {
 
-    private ParamConstant() {}
+    private TimetableParam() {}
 
     public static final String SHOP_ID = "shopId";
     public static final String LAST_ID = "lastId";

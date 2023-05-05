@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static middle.timetableservice.controller.constant.ParamConstant.*;
+import static middle.timetableservice.controller.constant.TimetableParam.*;
 import static middle.timetableservice.controller.constant.TimetableUrl.*;
 
 @RestController
