@@ -1,8 +1,8 @@
 package middle.shopservice.controller.constant;
 
-public final class ParamConstant {
+public final class ShopParam {
 
-    private ParamConstant() {}
+    private ShopParam() {}
 
     public static final String SHOP_ID = "shopId";
     public static final String LAST_ID = "lastId";

@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static middle.shopservice.controller.constant.ParamConstant.*;
+import static middle.shopservice.controller.constant.ShopParam.*;
 import static middle.shopservice.controller.constant.ShopUrl.*;
 
 @RestController
