@@ -50,6 +50,11 @@ public class TimetableService {
     }
 
     @Transactional
+    public boolean plusRemaining(Long id) {
+        return timetableRepository.plusRemaining(id);
+    }
+
+    @Transactional
     @Async(AsyncConstant.commandAsync)
     public void deleteTimetableById(Long id) {
         timetableRepository.deleteOneById(id);
