@@ -59,6 +59,19 @@ public class TimetableRepositoryImpl implements TimetableCustomRepository{
         return affectedRows > ZERO_VALUE;
     }
 
+    public boolean plusRemaining(Long id) {
+        long affectedRows = queryFactory
+                .update(timetable)
+                .set(
+                        timetable.remaining,
+                        timetable.remaining.add(PLUS_ONE)
+                )
+                .where(plusRemainingCondition(id))
+                .execute();
+
+        return affectedRows > ZERO_VALUE;
+    }
+
     public void deleteOneById(Long id) {
         queryFactory
                 .delete(timetable)
