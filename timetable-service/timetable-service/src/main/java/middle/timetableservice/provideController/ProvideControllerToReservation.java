@@ -15,10 +15,17 @@ public class ProvideControllerToReservation {
 
     private final TimetableService timetableService;
 
-    @PostMapping(MINUS_REMAINING)
-    public boolean minusRemainingToReservation(
+    @PostMapping(RESERVE_TIMETABLE)
+    public boolean reserveTimetable(
             @PathVariable(ID) Long id
     ) {
         return timetableService.minusRemaining(id);
+    }
+
+    @PostMapping(CANCEL_RESERVE_TIMETABLE)
+    public boolean cancelTimetable(
+            @PathVariable(ID) Long id
+    ) {
+        return timetableService.plusRemaining(id);
     }
 }
