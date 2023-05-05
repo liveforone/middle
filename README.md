@@ -52,6 +52,7 @@
 * [count 쿼리 성능 최적화]()
 * [repository 유틸 클래스에서 Q클래스 중복]()
 * [UUID 필요성]()
+* [예약취소시 현재시간을 어떻게 검증해야할까?](https://github.com/liveforone/middle/blob/master/Documents/SOLVE_CANCEL_RESERVATION_TIME_VALIDATION_PROBLEM.md)
 
 # 3. 요구사항
 
@@ -160,6 +161,7 @@ this.object -= 값
 14. 밸리데이터는 선언형으로 하고, 선언형으로하기위해 컨트로럴 어드바이스와 커스텀 예외를 등록한다. dto validation 시 주의 점은 @Email 어노테이션 다음에 꼭 @NotBlank도 달아주어야 한다는 것이다. -> 컨트롤러를 선언형으로 함
 15. 상수는 static import 형태로 사용한다. 그러나 static import는 여러 곳에서 사용되는 상수에는 사용하면 안되고, 오로지 한 곳에서, 누가봐도 딱 그 상수클래스가 사용된 경우에 사용하자. 또한 private 생성자를 만들어서 생성을 막는다. 이때 noargs(access = private)이 아닌 직접 만들어서 사용한다.
 16. 리파지토리 유틸클래스에서 큐클래스 중복되는것을 static 블록과 final로 선언하여 동적으로 생성된 것 까지 참조 가능하도록 설정한다.
+17. 상수 클래스들의 네이밍은 뒤에 constant붙이지 않고 그냥 명시한다.디렉터리 이름이 constant여서 상관없다.(도메인 상수클래스처럼 정말 상수라는것 이외에 이름이 없는 경우가 아니면 모두 적용한다.)
 
 ## 프로젝트시 확인
 1. async 와 Authorization 폴더 복붙
@@ -170,6 +172,7 @@ this.object -= 값
 6. 빈 객체의 id를 가지고 null체크, id가 없을 경우에는 대표 컬럼
 7. feign 사용시 log level 설정
 8. 서킷브레이커에 null 체크후 null인경우 new로 빈객체 리턴
+9. 상수 클래스들의 네이밍은 뒤에 constant붙이지 않고 그냥 명시한다.디렉터리 이름이 constant여서 상관없다.
 
 ## 페이징
 자유검색 기회, 동적쿼리로 하나의 메서드로 다양한 검색을 지원
