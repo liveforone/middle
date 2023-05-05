@@ -76,4 +76,19 @@ public class FallbackController {
     public Mono<String> fallbackTimetableDelete() {
         return Mono.just(FallbackMessage.TIMETABLE_LOG);
     }
+
+    @GetMapping(FallbackUrl.RESERVATION)
+    public Mono<String> fallbackReservationGet() {
+        return Mono.just(FallbackMessage.RESERVATION_LOG);
+    }
+
+    @PostMapping(FallbackUrl.RESERVATION)
+    public Mono<String> fallbackReservationPost() {
+        return Mono.just(FallbackMessage.RESERVATION_LOG);
+    }
+
+    @PutMapping(FallbackUrl.RESERVATION)
+    public Mono<String> fallbackReservationPut() {
+        return Mono.just(FallbackMessage.RESERVATION_LOG);
+    }
 }

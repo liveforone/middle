@@ -7,4 +7,5 @@ public final class FallbackUrl {
     public static final String SHOP = "/shop";
     public static final String RECOMMEND = "/recommend";
     public static final String TIMETABLE = "/timetable";
+    public static final String RESERVATION = "/reservation";
 }
