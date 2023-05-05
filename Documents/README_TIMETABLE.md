@@ -43,12 +43,19 @@
 ```
 
 ## 서비스간 통신
-### 예약 가능자수 마이너스 처리 후 bool 값 리턴
+### 예약시 잔여 예약 가능자수 마이너스
 * 예약 서비스에 provide controller 제공
 * 예약시 예약가능자수 마이너스 처리후,
 * 변경된 데이터가 존재한다면 true를, 아니면 false를 리턴하여 동시성을 잡아낸다.
 ```
-[POST] : /reserve/timetable
+[POST] : /reserve/timetable/{id}
+```
+### 예약 취소시 예약 가능자 수 복구
+* 현재 시간이 한시간 이상 전인지 검증하여, 
+* 가능하다면 잔여 예약 가능자수 플러스후 true를 리턴.
+* 불가능하다면 false리턴
+```
+[POST] : /cancel-reserve/timetable/{id}
 ```
 ### 상점 삭제시 타임테이블 삭제
 ```
@@ -97,6 +104,11 @@ public static BooleanExpression minusRemainingCondition(Long id) {
         .and(timetable.remaining.gt(ZERO_VALUE));
 }
 ```
+
+## 예약 취소시 잔여 예약자수 원상복구 매커니즘
+* 해당 문서에대해서는 아래링크를 참조하길 바란다.
+* 너무 길어져서 따로 문서를 작성하였다.
+* [예약취소시 현재시간을 어떻게 검증해야할까?](https://github.com/liveforone/middle/blob/master/Documents/SOLVE_CANCEL_RESERVATION_TIME_VALIDATION_PROBLEM.md)
 
 ## 배치 처리
 * 매일 저녁 12시 정각이 되면 하루동안 변경되었던 예약 가능자 수를,
