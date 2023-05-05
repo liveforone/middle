@@ -55,7 +55,7 @@
 * 가능하다면 잔여 예약 가능자수 플러스후 true를 리턴.
 * 불가능하다면 false리턴
 ```
-[POST] : /cancel-reserve/timetable/{id}
+[POST] : /cancel/timetable/{id}
 ```
 ### 상점 삭제시 타임테이블 삭제
 ```
