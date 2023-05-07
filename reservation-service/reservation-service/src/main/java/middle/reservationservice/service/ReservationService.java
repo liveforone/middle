@@ -23,4 +23,8 @@ public class ReservationService {
     public List<ReservationResponse> getReservationsByUsername(String username, Long lastId) {
         return reservationRepository.findPageByUsername(username, lastId);
     }
+
+    public List<ReservationResponse> getReservationsByShopId(Long shopId, Long lastId) {
+        return reservationRepository.findPageByShopId(shopId, lastId);
+    }
 }
