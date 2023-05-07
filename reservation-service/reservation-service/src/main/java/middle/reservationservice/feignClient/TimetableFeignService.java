@@ -9,6 +9,10 @@ import static middle.reservationservice.feignClient.constant.TimetableUrl.*;
 
 @FeignClient(name = BASE)
 public interface TimetableFeignService {
+
+    @PostMapping(GET_SHOP_ID)
+    Long getShopId(@PathVariable(ID) Long timetableId);
+
     @PostMapping(RESERVE_TIMETABLE)
     boolean reserveTimetable(@PathVariable(ID) Long timetableId);
 
