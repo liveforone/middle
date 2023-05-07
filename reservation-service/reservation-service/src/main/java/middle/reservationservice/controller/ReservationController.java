@@ -4,7 +4,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import middle.reservationservice.authentication.AuthenticationInfo;
-import middle.reservationservice.controller.constant.ReservationParam;
 import middle.reservationservice.dto.ReservationResponse;
 import middle.reservationservice.service.ReservationService;
 import middle.reservationservice.validator.ReservationValidator;
@@ -30,7 +29,7 @@ public class ReservationController {
 
     @GetMapping(RESERVATION_DETAIL)
     public ResponseEntity<?> reservationDetail(
-            @PathVariable(ReservationParam.ID) Long id,
+            @PathVariable(ID) Long id,
             HttpServletRequest request
     ) {
         reservationValidator.validateReservationNull(id);
@@ -42,11 +41,20 @@ public class ReservationController {
 
     @GetMapping(MY_RESERVATION)
     public ResponseEntity<List<ReservationResponse>> myReservation(
-            @RequestParam(name = LAST_ID) Long lastId,
+            @RequestParam(name = LAST_ID, defaultValue = DEFAULT_ID) Long lastId,
             HttpServletRequest request
     ) {
         List<ReservationResponse> reservations = reservationService
                 .getReservationsByUsername(authenticationInfo.getUsername(request), lastId);
+        return ResponseEntity.ok(reservations);
+    }
+
+    @GetMapping(RESERVATION_BELONG_SHOP)
+    public ResponseEntity<List<ReservationResponse>> reservationsBelongToShop(
+            @PathVariable(SHOP_ID) Long shopId,
+            @RequestParam(name = LAST_ID, defaultValue = DEFAULT_ID) Long lastId
+    ) {
+        List<ReservationResponse> reservations = reservationService.getReservationsByShopId(shopId, lastId);
         return ResponseEntity.ok(reservations);
     }
 }
