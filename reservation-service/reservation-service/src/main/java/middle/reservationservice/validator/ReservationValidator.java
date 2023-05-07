@@ -35,5 +35,9 @@ public class ReservationValidator {
         }
     }
 
-
+    public void validateShop(Long shopId) {
+        if (CommonUtils.isNull(shopId)) {
+            throw new ReservationCustomException(ResponseMessage.CANT_FIND_SHOP);
+        }
+    }
 }
