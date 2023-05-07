@@ -9,4 +9,8 @@ public class RestResponse {
                 .status(ResponseMessage.RESERVE_SUCCESS.getStatus())
                 .body(ResponseMessage.RESERVE_SUCCESS.getValue());
     }
+
+    public static ResponseEntity<?> cancelSuccess() {
+        return ResponseEntity.ok(ResponseMessage.CANCEL_SUCCESS.getValue());
+    }
 }
