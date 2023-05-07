@@ -5,5 +5,6 @@ public final class ReservationParam {
     }
 
     public static final String ID = "id";
+    public static final String LAST_ID = "lastId";
 
 }
