@@ -7,4 +7,5 @@ public final class ReservationUrl {
     public static final String MY_RESERVATION = "/reservation/me";
     public static final String RESERVATION_BELONG_SHOP = "/reservation/shop/{shopId}";
     public static final String RESERVE = "/reserve/{timetableId}";
+    public static final String CANCEL = "/cancel/{id}";
 }
