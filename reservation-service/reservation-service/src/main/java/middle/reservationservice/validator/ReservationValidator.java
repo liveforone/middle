@@ -7,6 +7,8 @@ import middle.reservationservice.repository.ReservationRepository;
 import middle.reservationservice.utility.CommonUtils;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+
 @Component
 @RequiredArgsConstructor
 public class ReservationValidator {
@@ -38,6 +40,15 @@ public class ReservationValidator {
     public void validateShop(Long shopId) {
         if (CommonUtils.isNull(shopId)) {
             throw new ReservationCustomException(ResponseMessage.CANT_FIND_SHOP);
+        }
+    }
+
+    public void validateCancelDate(Long id) {
+        LocalDate createdDate = reservationRepository.findCreatedDateForValidationById(id);
+        LocalDate nowDate = LocalDate.now();
+
+        if (!nowDate.equals(createdDate)) {
+            throw new ReservationCustomException(ResponseMessage.CANCEL_FAIL);
         }
     }
 }
