@@ -15,6 +15,13 @@ public class ProvideControllerToReservation {
 
     private final TimetableService timetableService;
 
+    @PostMapping(GET_SHOP_ID)
+    public Long getShopId(
+            @PathVariable(ID) Long id
+    ) {
+        return timetableService.getShopIdById(id);
+    }
+
     @PostMapping(RESERVE_TIMETABLE)
     public boolean reserveTimetable(
             @PathVariable(ID) Long id
