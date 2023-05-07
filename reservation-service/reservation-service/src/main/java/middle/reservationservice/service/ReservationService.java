@@ -29,6 +29,10 @@ public class ReservationService {
         return reservationRepository.findPageByShopId(shopId, lastId);
     }
 
+    public Long getTimetableIdById(Long id) {
+        return reservationRepository.findTimetableIdForCancel(id);
+    }
+
     @Transactional
     public void reserve(Long timetableId, String username, Long shopId) {
         Reservation reservation = Reservation.create(timetableId, username, shopId);
