@@ -7,6 +7,7 @@ import middle.reservationservice.domain.Reservation;
 import middle.reservationservice.dto.ReservationResponse;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static middle.reservationservice.repository.util.ReservationRepositoryUtil.*;
@@ -29,6 +30,14 @@ public class ReservationRepositoryImpl implements ReservationCustomRepository {
     public String findUsernameForValidationById(Long id) {
         return queryFactory
                 .select(reservation.username)
+                .from(reservation)
+                .where(reservation.id.eq(id))
+                .fetchOne();
+    }
+
+    public LocalDate findCreatedDateForValidationById(Long id) {
+        return queryFactory
+                .select(reservation.createdDate)
                 .from(reservation)
                 .where(reservation.id.eq(id))
                 .fetchOne();
