@@ -26,6 +26,13 @@ public class TimetableRepositoryImpl implements TimetableCustomRepository{
                 .fetchOne();
     }
 
+    public Long findOneShopIdById(Long id) {
+        return queryFactory.select(timetable.shopId)
+                .from(timetable)
+                .where(timetable.id.eq(id))
+                .fetchOne();
+    }
+
     public List<TimetableResponse> findTimetablesByShopId(Long shopId, Long lastId) {
         return queryFactory
                 .select(timetableDtoConstructor())
