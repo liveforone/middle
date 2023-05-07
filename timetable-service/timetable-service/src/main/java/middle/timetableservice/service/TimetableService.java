@@ -23,6 +23,10 @@ public class TimetableService {
     private final TimetableRepository timetableRepository;
     private static final String EVERYDAY_ELEVEN_O_CLOCK = "0 0 0 * * *";
 
+    public Long getShopIdById(Long id) {
+        return timetableRepository.findOneShopIdById(id);
+    }
+
     public List<TimetableResponse> getTimetablesByShopId(Long shopId, Long lastId) {
         return timetableRepository.findTimetablesByShopId(shopId, lastId);
     }
