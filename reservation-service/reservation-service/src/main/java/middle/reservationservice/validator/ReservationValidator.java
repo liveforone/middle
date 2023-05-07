@@ -51,4 +51,10 @@ public class ReservationValidator {
             throw new ReservationCustomException(ResponseMessage.CANCEL_FAIL);
         }
     }
+
+    public void validateCancelTimetable(boolean bool) {
+        if (!bool) {
+            throw new ReservationCustomException(ResponseMessage.CANCEL_FAIL);
+        }
+    }
 }
