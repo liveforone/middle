@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import middle.timetableservice.service.TimetableService;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import static middle.timetableservice.provideController.constant.ProvideParamToReservation.*;
@@ -29,7 +30,7 @@ public class ProvideControllerToReservation {
         return timetableService.minusRemaining(id);
     }
 
-    @PostMapping(CANCEL_TIMETABLE)
+    @PutMapping(CANCEL_TIMETABLE)
     public boolean cancelTimetable(
             @PathVariable(ID) Long id
     ) {
