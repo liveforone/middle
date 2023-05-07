@@ -25,6 +25,9 @@ public class Reservation {
     @Column(nullable = false, updatable = false)
     private String username;
 
+    @Column(nullable = false, updatable = false)
+    private Long shopId;
+
     @Enumerated(EnumType.STRING)
     private ReservationState reservationState;
 
@@ -32,14 +35,15 @@ public class Reservation {
     @Column(updatable = false)
     private LocalDate createdDate;
 
-    private Reservation(Long timetableId, String username, ReservationState reservationState) {
+    private Reservation(Long timetableId, String username, Long shopId, ReservationState reservationState) {
         this.timetableId = timetableId;
         this.username = username;
+        this.shopId = shopId;
         this.reservationState = reservationState;
     }
 
-    public static Reservation create(Long timetableId, String username) {
-        return new Reservation(timetableId, username, ReservationState.RESERVATION);
+    public static Reservation create(Long timetableId, String username, Long shopId) {
+        return new Reservation(timetableId, username, shopId, ReservationState.RESERVATION);
     }
 
     public void cancel() {
