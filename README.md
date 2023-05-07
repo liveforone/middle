@@ -32,6 +32,7 @@
 * 예약을 처리하면서 잔여 예약가능수를 마이너스 하는 과정에서 동시성문제가 발생했습니다.
 * 이 문제는 논리적 에러/장애를 야기하는 중요한 문제입니다.
 * 성능을 떨어뜨리지 않으면서 동시성문제를 처리하는 것을 고민해 보았습니다.
+* 동시성 문제 해결은 타임테이블 서비스에서 아주 잘 확인할 수 있습니다.(예약 서비스보다 타임테이블 서비스에서 더 잘 드러남)
 * [동시성 문제 해결](https://github.com/liveforone/middle/blob/master/Documents/SOLVE_CONCURRENCY_PROBLEM.md)
 ## 기술 스택
 * Framework : Spring Boot 3.0.5~ & Spring Cloud
@@ -63,7 +64,7 @@
 * [상점 서비스](https://github.com/liveforone/middle/blob/master/Documents/README_SHOP.md)
 * [추천 서비스](https://github.com/liveforone/middle/blob/master/Documents/README_RECOMMEND.md)
 * [타임테이블 서비스](https://github.com/liveforone/middle/blob/master/Documents/README_TIMETABLE.md)
-* [예약 서비스]()
+* [예약 서비스](https://github.com/liveforone/middle/blob/master/Documents/README_RESERVATION.md)
 * [리뷰 서비스]()
 
 # 5. 프로젝트 설계 문서
@@ -132,6 +133,7 @@ this.object -= 값
 15. 상수는 static import 형태로 사용한다. 그러나 static import는 여러 곳에서 사용되는 상수에는 사용하면 안되고, 오로지 한 곳에서, 누가봐도 딱 그 상수클래스가 사용된 경우에 사용하자. 또한 private 생성자를 만들어서 생성을 막는다. 이때 noargs(access = private)이 아닌 직접 만들어서 사용한다.
 16. 리파지토리 유틸클래스에서 큐클래스 중복되는것을 static 블록과 final로 선언하여 동적으로 생성된 것 까지 참조 가능하도록 설정한다.
 17. 상수 클래스들의 네이밍은 뒤에 constant붙이지 않고 그냥 명시한다.디렉터리 이름이 constant여서 상관없다.(도메인 상수클래스처럼 정말 상수라는것 이외에 이름이 없는 경우가 아니면 모두 적용한다.)
+18. last id에 default value 반드시 넣기
 
 ## 프로젝트시 확인
 1. async 와 Authorization 폴더 복붙
@@ -173,8 +175,10 @@ static {
 후에 util클래스를 리파지토리임플에서 static import처리까지해주면 아주 깔끔한 코드가 탄생한다.
 
 ## 할것
-* 예약 서비스 제작(reservation-service)
+* timetable 서비스 죽이고 서킷브레이커 false 반환 테스트
 * 예약시 remaining 0인 경우 timetable이 false 반환 테스트
+* 예약 성공 등록 테스트
+* 조회 api 테스트
 
 ## 문서화
 * count쿼리 성능 최적화 문서 만들고 추천 서비스 리드미에 링크 추가
