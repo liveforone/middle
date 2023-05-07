@@ -8,4 +8,5 @@ import java.util.List;
 public interface ReservationCustomRepository {
     Reservation findOneById(Long id);
     List<ReservationResponse> findPageByUsername(String username, Long lastId);
+    List<ReservationResponse> findPageByShopId(Long shopId, Long lastId);
 }

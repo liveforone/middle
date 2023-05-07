@@ -37,4 +37,17 @@ public class ReservationRepositoryImpl implements ReservationCustomRepository {
                 .limit(PAGE_SIZE)
                 .fetch();
     }
+
+    public List<ReservationResponse> findPageByShopId(Long shopId, Long lastId) {
+        return queryFactory
+                .select(reservationDtoConstructor())
+                .from(reservation)
+                .where(
+                        reservation.shopId.eq(shopId),
+                        ltReservationId(lastId)
+                )
+                .orderBy(reservation.id.desc())
+                .limit(PAGE_SIZE)
+                .fetch();
+    }
 }
