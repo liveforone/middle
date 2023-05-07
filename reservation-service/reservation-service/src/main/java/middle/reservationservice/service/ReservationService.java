@@ -34,4 +34,10 @@ public class ReservationService {
         Reservation reservation = Reservation.create(timetableId, username, shopId);
         reservationRepository.save(reservation);
     }
+
+    @Transactional
+    public void cancel(Long id) {
+        Reservation reservation = reservationRepository.findOneById(id);
+        reservation.cancel();
+    }
 }
