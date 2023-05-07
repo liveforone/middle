@@ -8,7 +8,7 @@ import lombok.Getter;
 public enum ResponseMessage {
 
     RESERVATION_IS_NULL(404, "예약이 존재하지 않습니다."),
-
+    USERNAME_NOT_MATCH(401, "일치하는 유저가 아닙니다."),
     RESERVE_SUCCESS(201, "예약에 성공하였습니다.");
 
     private final int status;
