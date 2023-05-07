@@ -18,6 +18,16 @@ public class ReservationRepositoryImpl implements ReservationCustomRepository {
     private final JPAQueryFactory queryFactory;
     QReservation reservation = QReservation.reservation;
 
+    public Long findIdForValidationById(Long id) {
+        return queryFactory
+                .select(reservation.id)
+                .from(reservation)
+                .where(reservation.id.eq(id))
+                .fetchOne();
+    }
+
+
+
     public Reservation findOneById(Long id) {
         return queryFactory
                 .selectFrom(reservation)
