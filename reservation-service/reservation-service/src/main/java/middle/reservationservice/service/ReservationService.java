@@ -7,6 +7,8 @@ import middle.reservationservice.service.util.ReservationMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -16,5 +18,9 @@ public class ReservationService {
 
     public ReservationResponse getReservationById(Long id) {
         return ReservationMapper.entityToDto(reservationRepository.findOneById(id));
+    }
+
+    public List<ReservationResponse> getReservationsByUsername(String username, Long lastId) {
+        return reservationRepository.findPageByUsername(username, lastId);
     }
 }
