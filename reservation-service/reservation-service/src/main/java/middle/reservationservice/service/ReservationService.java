@@ -1,6 +1,7 @@
 package middle.reservationservice.service;
 
 import lombok.RequiredArgsConstructor;
+import middle.reservationservice.domain.Reservation;
 import middle.reservationservice.dto.ReservationResponse;
 import middle.reservationservice.repository.ReservationRepository;
 import middle.reservationservice.service.util.ReservationMapper;
@@ -26,5 +27,11 @@ public class ReservationService {
 
     public List<ReservationResponse> getReservationsByShopId(Long shopId, Long lastId) {
         return reservationRepository.findPageByShopId(shopId, lastId);
+    }
+
+    @Transactional
+    public void reserve(Long timetableId, String username, Long shopId) {
+        Reservation reservation = Reservation.create(timetableId, username, shopId);
+        reservationRepository.save(reservation);
     }
 }
