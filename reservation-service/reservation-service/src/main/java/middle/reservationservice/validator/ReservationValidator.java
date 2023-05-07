@@ -21,5 +21,11 @@ public class ReservationValidator {
         }
     }
 
+    public void validateUsername(Long id, String username) {
+        String foundUsername = reservationRepository.findUsernameForValidationById(id);
 
+        if (!foundUsername.equals(username)) {
+            throw new ReservationCustomException(ResponseMessage.USERNAME_NOT_MATCH);
+        }
+    }
 }
