@@ -28,4 +28,12 @@ public class ReservationValidator {
             throw new ReservationCustomException(ResponseMessage.USERNAME_NOT_MATCH);
         }
     }
+
+    public void validateReserveTimetable(boolean bool) {
+        if (!bool) {
+            throw new ReservationCustomException(ResponseMessage.RESERVE_FAIL);
+        }
+    }
+
+
 }
