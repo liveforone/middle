@@ -86,7 +86,7 @@ public class ReservationController {
         return circuitBreakerFactory
                 .create(CircuitLog.TIMETABLE_CIRCUIT_LOG.getValue())
                 .run(
-                        ()-> timetableFeignService.reserveTimetable(timetableId),
+                        () -> timetableFeignService.reserveTimetable(timetableId),
                         throwable -> false
                 );
     }
@@ -95,8 +95,35 @@ public class ReservationController {
         return circuitBreakerFactory
                 .create(CircuitLog.TIMETABLE_CIRCUIT_LOG.getValue())
                 .run(
-                        ()-> timetableFeignService.getShopId(timetableId),
+                        () -> timetableFeignService.getShopId(timetableId),
                         throwable -> null
+                );
+    }
+
+    @PutMapping(CANCEL)
+    public ResponseEntity<?> cancel(
+            @PathVariable(ID) Long id,
+            HttpServletRequest request
+    ) {
+        reservationValidator.validateReservationNull(id);
+        reservationValidator.validateUsername(id, authenticationInfo.getUsername(request));
+        reservationValidator.validateCancelDate(id);
+
+        Long timetableId = reservationService.getTimetableIdById(id);
+        reservationValidator.validateCancelTimetable(cancelTimetable(timetableId));
+
+        reservationService.cancel(id);
+        log.info(ControllerLog.CANCEL_SUCCESS.getValue());
+
+        return RestResponse.cancelSuccess();
+    }
+
+    private boolean cancelTimetable(Long timetableId) {
+        return circuitBreakerFactory
+                .create(CircuitLog.TIMETABLE_CIRCUIT_LOG.getValue())
+                .run(
+                        () -> timetableFeignService.cancelReservationTimetable(timetableId),
+                        throwable -> false
                 );
     }
 }
