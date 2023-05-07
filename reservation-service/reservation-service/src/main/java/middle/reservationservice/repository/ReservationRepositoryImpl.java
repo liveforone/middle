@@ -26,7 +26,13 @@ public class ReservationRepositoryImpl implements ReservationCustomRepository {
                 .fetchOne();
     }
 
-
+    public String findUsernameForValidationById(Long id) {
+        return queryFactory
+                .select(reservation.username)
+                .from(reservation)
+                .where(reservation.id.eq(id))
+                .fetchOne();
+    }
 
     public Reservation findOneById(Long id) {
         return queryFactory
