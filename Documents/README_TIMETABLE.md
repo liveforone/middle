@@ -57,6 +57,11 @@
 ```
 [POST] : /cancel/timetable/{id}
 ```
+### 상점 id 리턴
+* 예약시 타임테이블 id로 요청하면 상점 id를 리턴해준다.
+```
+[POST] : /get/shop-id/{id}
+```
 ### 상점 삭제시 타임테이블 삭제
 ```
 topic : remove-timetable
