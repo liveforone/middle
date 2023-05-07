@@ -43,6 +43,14 @@ public class ReservationRepositoryImpl implements ReservationCustomRepository {
                 .fetchOne();
     }
 
+    public Long findTimetableIdForCancel(Long id) {
+        return queryFactory
+                .select(reservation.timetableId)
+                .from(reservation)
+                .where(reservation.id.eq(id))
+                .fetchOne();
+    }
+
     public Reservation findOneById(Long id) {
         return queryFactory
                 .selectFrom(reservation)
