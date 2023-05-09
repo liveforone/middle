@@ -32,9 +32,7 @@ public class ShopRepositoryUtil {
                 shop.tel,
                 shop.city,
                 shop.street,
-                shop.detail,
-                shop.good,
-                shop.bad);
+                shop.detail);
     }
 
     public static BooleanExpression searchName(String shopName) {
