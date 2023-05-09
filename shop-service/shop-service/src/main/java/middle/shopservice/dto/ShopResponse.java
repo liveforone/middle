@@ -17,6 +17,4 @@ public class ShopResponse {
     private String city;
     private String street;
     private String detail;
-    private long good;
-    private long bad;
 }
