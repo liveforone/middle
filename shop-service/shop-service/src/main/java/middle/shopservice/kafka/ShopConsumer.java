@@ -25,40 +25,6 @@ public class ShopConsumer {
     private final ShopProducer shopProducer;
     ObjectMapper objectMapper = new ObjectMapper();
 
-    @KafkaListener(topics = SHOP_IS_GOOD)
-    @Async(AsyncConstant.commandAsync)
-    @Transactional
-    public void increaseShopIsGood(String kafkaMessage) throws JsonProcessingException {
-        log.info(KafkaLog.KAFKA_RECEIVE_LOG.getValue() + kafkaMessage);
-
-        Long shopId = objectMapper.readValue(kafkaMessage, Long.class);
-
-        if (CommonUtils.isNull(shopId)) {
-            log.info(KafkaLog.KAFKA_NULL_LOG.getValue());
-        } else {
-            Shop shop = shopRepository.findOneById(shopId);
-            shop.increaseGood();
-            log.info(KafkaLog.INCREASE_SHOP_GOOD.getValue() + shopId);
-        }
-    }
-
-    @KafkaListener(topics = SHOP_IS_BAD)
-    @Async(AsyncConstant.commandAsync)
-    @Transactional
-    public void increaseShopIsBad(String kafkaMessage) throws JsonProcessingException {
-        log.info(KafkaLog.KAFKA_RECEIVE_LOG.getValue() + kafkaMessage);
-
-        Long shopId = objectMapper.readValue(kafkaMessage, Long.class);
-
-        if (CommonUtils.isNull(shopId)) {
-            log.info(KafkaLog.KAFKA_NULL_LOG.getValue());
-        } else {
-            Shop shop = shopRepository.findOneById(shopId);
-            shop.increaseBad();
-            log.info(KafkaLog.INCREASE_SHOP_BAD.getValue() + shopId);
-        }
-    }
-
     @KafkaListener(topics = REMOVE_SHOP_BELONG_MEMBER)
     @Async(AsyncConstant.commandAsync)
     @Transactional
