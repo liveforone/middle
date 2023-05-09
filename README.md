@@ -28,6 +28,7 @@
 * 가게를 추천하는 가게 추천 시스템(가게 광고)이 해당 서비스의 주 수익모델입니다. 
 * 추천 알고리즘의 다양한 사례를 살펴보고, 
 * 인프라가 많이 갖추어지지 않은 작은 기업에서도 적용할 수 있는 추천 알고리즘에 대해 고민해보았습니다.
+* [추천 알고리즘](https://github.com/liveforone/middle/blob/master/Documents/RECOMMENDATION_ALGORITHM.md)
 #### 3. 동시성 문제 처리
 * 예약을 처리하면서 잔여 예약가능수를 마이너스 하는 과정에서 동시성문제가 발생했습니다.
 * 이 문제는 논리적 에러/장애를 야기하는 중요한 문제입니다.
@@ -47,13 +48,12 @@
 
 # 2. 프로젝트 주요 고민 및 해결
 * [MSA에서 경계나누기](https://github.com/liveforone/middle/blob/master/Documents/DIVIDE_BOUNDARIES_MSA.md)
-* [추천 알고리즘]()
+* [추천 알고리즘](https://github.com/liveforone/middle/blob/master/Documents/RECOMMENDATION_ALGORITHM.md)
 * [음수가 되면 안되는 컬럼에서 동시성 문제 해결](https://github.com/liveforone/middle/blob/master/Documents/SOLVE_CONCURRENCY_PROBLEM.md)
 * [배치 처리는 어떤 메커니즘으로 만들어야할까](https://github.com/liveforone/middle/blob/master/Documents/BATCH_PROCESSING.md)
-* [조회 쿼리와 페이징 성능 최적화]()
-* [count 쿼리 성능 최적화]()
-* [repository 유틸 클래스에서 Q클래스 중복]()
-* [UUID 필요성]()
+* [count 쿼리 성능 최적화](https://github.com/liveforone/middle/blob/master/Documents/COUNT_QUERY_OPTIMIZATION.md)
+* [repository 유틸 클래스에서 Q클래스 중복](https://github.com/liveforone/middle/blob/master/Documents/REPO_UTIL_DUPLICATE_QCLASS.md)
+* [UUID 필요성](https://github.com/liveforone/middle/blob/master/Documents/IDENTIFIER_MUST_USE_UUID.md)
 * [예약취소시 현재시간을 어떻게 검증해야할까?](https://github.com/liveforone/middle/blob/master/Documents/SOLVE_CANCEL_RESERVATION_TIME_VALIDATION_PROBLEM.md)
 
 # 3. 요구사항
@@ -65,25 +65,16 @@
 * [추천 서비스](https://github.com/liveforone/middle/blob/master/Documents/README_RECOMMEND.md)
 * [타임테이블 서비스](https://github.com/liveforone/middle/blob/master/Documents/README_TIMETABLE.md)
 * [예약 서비스](https://github.com/liveforone/middle/blob/master/Documents/README_RESERVATION.md)
-* [리뷰 서비스]()
 
 # 5. 프로젝트 설계 문서
 * [도메인 모델 패턴]()
 
-## 서비스
-리뷰 서비스(good/bad로 평점 매김)
 
 
 ## 수익 모델
 이전 프로젝트에서는 수익모델을 직접 구현해보지 않고 구상만 해보았으나,
 이번 프로젝트에서는 새롭게 플랫폼에 맞는 수익모델을 구상해보고
 구현까지 해보았다.(비즈니스 밸류 창출)
-
-
-
-## UUID 필요성 - 고민한점
-* [uuid링크](https://wakestand.tistory.com/361)
-* email과 같이 외부에 종속되는 요소를 식별자로 사용하지 않고 uuid를 만든점 기술, 더하여 uuid의 중복을 완전히 걱정하기 싫어서 문자열도 덧댐, 이메일변경시 다바뀜(식별불가능, 주민번호의 사례를 인용)
 
 ## 도메인 모델 패턴 적용 이유 - 설계
 돈이 오가는 송금 서비스의 경우 도메인 모델을 사용하면 그 효과가 극대화된다.
@@ -135,6 +126,7 @@ this.object -= 값
 17. 상수 클래스들의 네이밍은 뒤에 constant붙이지 않고 그냥 명시한다.디렉터리 이름이 constant여서 상관없다.(도메인 상수클래스처럼 정말 상수라는것 이외에 이름이 없는 경우가 아니면 모두 적용한다.)
 18. last id에 default value 반드시 넣기
 19. provide controller는 하나만 만든다. 특정 서비스에 종속되게 네이밍하지 않는다.
+20. request param의 경우 문자열은 required=false로, 숫자는 defaultvalue 설정해서 입력에대한 처리 유연하게하기
 
 ## 프로젝트시 확인
 1. async 와 Authorization 폴더 복붙
@@ -147,42 +139,6 @@ this.object -= 값
 8. 서킷브레이커에 null 체크후 null인경우 new로 빈객체 리턴
 9. 상수 클래스들의 네이밍은 뒤에 constant붙이지 않고 그냥 명시한다.디렉터리 이름이 constant여서 상관없다.
 
-## 페이징
-자유검색 기회, 동적쿼리로 하나의 메서드로 다양한 검색을 지원
-검색 조건 순서로 인덱스 만들어야함
-도시 -> 도로명 -> 이름
-동적쿼리시 null이면 where에서 무시함
-request param은 문자일 경우 required=false로
-숫자일 경우 default value = "0"으로 설정하면 null 허용이 된다.
-페이징시에 default value(숫자)와 null(문자) 허용
-
-## count 쿼리 성능 최적화
-지금은 데이터가 적어서 실감이 안나지만 향후 데이터가 커지면 매번 count쿼리시 자원소모가 너무 심해질것이다.
-따라서 테이블을 하나 만들어서 단 하나의 데이터를 저장한다.
-그것은 count쿼리로 날린 전체 테이블의 수이고, 이를 저장해 하루 혹은 1시간 마다 배치로 다시 전체 테이블의 수를 업데이트하는(광고를 등록하는 수가 하루에 많지 않을 것이기 때문에 매번 count 쿼리를 날리는게 상당히 부담이 된다.) 방식을 사용하면 count 쿼리를 매번 날릴때와 달리 성능이 어마어마하게 최적화 될것이다.
-애초에 데이터를 읽는다는 것이 속도가 더 느리다.
-즉 count(컬럼)이 count(*)보다 느리다.
-또한 최고 id를 가져오는 것을 사용 불가능
-https://parksay-dev.tistory.com/m/48
-
-## 모듈화시 Q클래스 중복 - 고민점
-Qclass를 이중으로 참조하는것을 막기위해
-클래스 내부에서 private static final QClass class;로 선언하고
-static {
-        shop = QShop.shop;
-    }
-을 이용해서 static 블럭으로 클래스 변수를 초기화시켜 사용한다.
-이렇게 생성한 큐클래스는 동적으로 생성된 큐클래스를 참조하는 것도 가능해져서 할 수 있는것이 늘어난다.
-후에 util클래스를 리파지토리임플에서 static import처리까지해주면 아주 깔끔한 코드가 탄생한다.
-
 ## 할것
 * api네이밍 리팩터링(직관적, rest 스타일)
 * 전체 api를 오로지 데이터 전달만 하는 api로 변경하고, 그 전에 화면 정의서 먼저 만들기
-
-## 문서화
-* count쿼리 성능 최적화 문서 만들고 추천 서비스 리드미에 링크 추가
-* 페이징 문서 만들어서 no offset이랑, 페이지 사이즈 고정 명시 + 스타일 가이드에도 작성
-
-## 테스트 할 것
-* 리뷰 서비스 제작 후 상점 좋아요/싫어요 정상 작동 테스트
-* 회원탈퇴시(=상점 삭제시) 리뷰 서비스 삭제
