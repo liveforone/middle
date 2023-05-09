@@ -8,4 +8,5 @@ public final class FallbackUrl {
     public static final String RECOMMEND = "/recommend";
     public static final String TIMETABLE = "/timetable";
     public static final String RESERVATION = "/reservation";
+    public static final String REVIEW = "/review";
 }

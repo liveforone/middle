@@ -91,4 +91,24 @@ public class FallbackController {
     public Mono<String> fallbackReservationPut() {
         return Mono.just(FallbackMessage.RESERVATION_LOG);
     }
+
+    @GetMapping(FallbackUrl.REVIEW)
+    public Mono<String> fallbackReviewGet() {
+        return Mono.just(FallbackMessage.REVIEW_LOG);
+    }
+
+    @PostMapping(FallbackUrl.REVIEW)
+    public Mono<String> fallbackReviewPost() {
+        return Mono.just(FallbackMessage.REVIEW_LOG);
+    }
+
+    @PutMapping(FallbackUrl.REVIEW)
+    public Mono<String> fallbackReviewPut() {
+        return Mono.just(FallbackMessage.REVIEW_LOG);
+    }
+
+    @DeleteMapping(FallbackUrl.REVIEW)
+    public Mono<String> fallbackReviewDelete() {
+        return Mono.just(FallbackMessage.REVIEW_LOG);
+    }
 }
