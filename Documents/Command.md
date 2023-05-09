@@ -15,11 +15,6 @@ bin\windows\zookeeper-server-start.bat config\zookeeper.properties
 bin\windows\kafka-server-start.bat config\server.properties
 ```
 
-## 빌드 명령
-```
-./gradlew.bat clean build --exclude-task test
-```
-
 ## 서비스별 경로
 * discovery-service
 ```
@@ -40,6 +35,14 @@ cd C:\Users\KYC\study\middle\shop-service\shop-service\build\libs
 * recommend-service
 ```
 cd C:\Users\KYC\study\middle\recommend-service\recommend-service\build\libs
+```
+* timetable-service
+```
+cd C:\Users\KYC\study\middle\timetable-service\timetable-service\build\libs
+```
+* reservation-service
+```
+cd C:\Users\KYC\study\middle\reservation-service\reservation-service\build\libs
 ```
 
 ## 서비스별 실행(자바)
@@ -62,4 +65,12 @@ java -jar shop-service-1.0.jar
 * recommend-service
 ```
 java -jar recommend-service-1.0.jar
+```
+* timetable-service
+```
+java -jar timetable-service-1.0.jar
+```
+* reservation-service
+```
+java -jar reservation-service-1.0.jar
 ```
