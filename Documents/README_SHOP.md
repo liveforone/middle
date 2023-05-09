@@ -54,11 +54,6 @@
 ```
 
 ## 서비스간 통신
-### 상점 좋아요/싫어요
-```
-topic : shop-is-good/shop-is-bad
-request : shopId
-```
 ### 회원탈퇴시 회원에 속한 상점 삭제
 * 회원이 탈퇴할때 회원의 auth가 OWNER일 경우 해당 메세지를 받게 된다.
 ```
@@ -75,11 +70,6 @@ request : shopId
 * 이때 시간표 서비스에 해당 상점에 속하는 시간표 삭제 요청을 보낸다.
 ```
 topic : remove-timetable
-request : shopId
-```
-### 상점 삭제시 리뷰 삭제
-```
-topic : remove-review
 request : shopId
 ```
 ### 추천하는 상점 id 받기
