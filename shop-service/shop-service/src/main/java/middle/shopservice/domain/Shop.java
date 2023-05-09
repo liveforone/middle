@@ -36,9 +36,6 @@ public class Shop {
     @Column(nullable = false)
     private String detail;
 
-    private long good;
-    private long bad;
-
     private Shop(String username, String shopName, String tel, String city, String street, String detail) {
         this.username = username;
         this.shopName = shopName;
@@ -71,15 +68,5 @@ public class Shop {
         this.city = request.getCity();
         this.street = request.getStreet();
         this.detail = request.getDetail();
-    }
-
-    public void increaseGood() {
-        final long BASIC_INCREASE = 1;
-        this.good += BASIC_INCREASE;
-    }
-
-    public void increaseBad() {
-        final long BASIC_DECREASE = 1;
-        this.bad += BASIC_DECREASE;
     }
 }
