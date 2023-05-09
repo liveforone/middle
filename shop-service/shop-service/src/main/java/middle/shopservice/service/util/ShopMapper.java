@@ -18,8 +18,6 @@ public class ShopMapper {
                 .city(shop.getCity())
                 .street(shop.getStreet())
                 .detail(shop.getDetail())
-                .good(shop.getGood())
-                .bad(shop.getBad())
                 .build();
     }
 }
