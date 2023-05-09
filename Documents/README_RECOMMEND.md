@@ -66,4 +66,5 @@ request : shopId
 * 그러나 이것을 해결하려면 캐쉬를 써야한다.
 * redis같은 캐쉬를 등록하고 연결해서 사용하는것이 더욱 느리고, 오버 엔지니어링이라 판단되었다.
 * 따라서 count쿼리의 성능을 최적화 하는 방법을 선택했다.
-* 이것에 대해서는 [count 쿼리 성능 최적화]()에서 볼 수 있다.
+* 이것에 대해서는 [count 쿼리 성능 최적화](https://github.com/liveforone/middle/blob/master/Documents/COUNT_QUERY_OPTIMIZATION.md)에서 볼 수 있다.
+* 또한 더욱 상세한 추천 알고리즘은 [추천알고리즘](https://github.com/liveforone/middle/blob/master/Documents/RECOMMENDATION_ALGORITHM.md)에서 볼 수 있다.
