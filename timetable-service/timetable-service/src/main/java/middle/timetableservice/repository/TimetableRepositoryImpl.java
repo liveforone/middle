@@ -1,6 +1,7 @@
 package middle.timetableservice.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import middle.timetableservice.domain.QTimetable;
 import middle.timetableservice.domain.Timetable;
@@ -16,6 +17,7 @@ import static middle.timetableservice.repository.util.TimetableRepoUtil.*;
 public class TimetableRepositoryImpl implements TimetableCustomRepository{
 
     private final JPAQueryFactory queryFactory;
+    private final EntityManager em;
     QTimetable timetable = QTimetable.timetable;
 
     public Long findOneByIdForValidation(Long id) {
@@ -91,6 +93,7 @@ public class TimetableRepositoryImpl implements TimetableCustomRepository{
                 .delete(timetable)
                 .where(timetable.shopId.eq(shopId))
                 .execute();
+        em.clear();
     }
 
     public void restoreRemaining() {
@@ -98,5 +101,6 @@ public class TimetableRepositoryImpl implements TimetableCustomRepository{
                 .update(timetable)
                 .set(timetable.remaining, timetable.basicRemaining)
                 .execute();
+        em.clear();
     }
 }
