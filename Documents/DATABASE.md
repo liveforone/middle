@@ -64,6 +64,7 @@ create table timetable (
 );
 CREATE INDEX shop_id_idx ON timetable (shop_id);
 CREATE INDEX username_idx ON timetable (username);
+CREATE INDEX id_remaining_idx ON timetable (id, remaining);
 
 create table reservation (
     id bigint not null auto_increment,
